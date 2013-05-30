@@ -1,0 +1,251 @@
+﻿@import "variables.less";
+// Mixins
+.themeStyle(@color){
+	.accent,
+	.live-tile > div,
+	.copy-tile > div,
+	.live-tile > .face,
+	.copy-tile > .face,
+    .live-tile > .slide,
+	.live-tile > .flip-back,
+	.live-tile > .flip-front,
+	.live-tile > .slide-back,		
+	.live-tile > .slide-front,	
+    .list-tile > div,
+    .flip-list > li > div
+    {
+        background-color: @color;
+    }
+
+    .accentColor,
+    .accentHover:hover,	
+    .accentHover a:hover,		
+	.accentLink a,
+	.accentLink a:hover,
+	.accentLink a:visited,	
+	a.accentLink,
+	a.accentLink:hover,
+	a.accentLink:visited		
+    {
+        color: @color;
+    }
+
+    .accentBorder
+    {
+		border-color:@color;
+    }
+    .accentBorderBottom
+    {
+		border-bottom-color:@color;
+    }
+    .accentBorderLeft
+    {
+		border-left-color:@color;
+    }
+    .accentBorderRight
+    {
+		border-right-color:@color;
+    }
+    .accentBorderTop
+    {
+		border-top-color:@color;
+    }
+}
+.localStyle(@color)
+{
+    &.accent,
+	&.live-tile > .accent,
+	&.list-tile > .accent,
+	&.copy-tile > .accent,
+    &.live-tile > div,
+	&.copy-tile > div,
+    &.list-tile > div,
+	&.live-tile > .face,
+    &.list-tile > .face,
+	&.copy-tile > .face,
+    &.live-tile > .slide,
+	&.live-tile > .flip-back,
+	&.live-tile > .flip-front,	
+	&.live-tile > .slide-back,	
+	&.live-tile > .slide-front,	
+	&.flip-list > li > .accent,
+    &.flip-list > li > .flip-back,
+	&.flip-list > li > .flip-front,
+	&.slide.accent,	
+	&.slide-front.accent,
+	&.slide-back.accent,
+	&.flip-front.accent,
+	&.flip-back.accent
+    {
+        background-color: @color;
+    }
+    
+    &.accentColor,
+    &.accentHover:hover,
+    &.accentHover a:hover,
+    &.accentLink a,
+    &.accentLink a:hover,
+    &.accentLink a:visited,
+    a.accentLink&,
+    a.accentLink&:hover,
+    a.accentLink&:visited
+    {
+		color:@color;
+    }
+
+	&.accentBorder
+    {
+		border-color:@color;
+    }
+    &.accentBorderBottom
+    {
+		border-bottom-color:@color;
+    }
+    &.accentBorderLeft
+    {
+		border-left-color:@color;
+    }
+    &.accentBorderRight
+    {
+		border-right-color:@color;
+    }
+    &.accentBorderTop
+    {
+		border-top-color:@color;
+    }
+}
+
+.metroBig,
+.metroExtraLarge,
+.face.metroBig,
+.face.metroExtraLarge,
+.live-tile .metroExtraLarge
+{
+    font-size: 2em;
+    line-height: 1.1em;
+    a&:link
+    {
+		text-decoration:none;
+    }
+}
+.metroLarger,
+.face.metroLarger,
+.live-tile .metroLarger
+{
+	font-size:1.5em;
+	line-height:1.1em;
+	a&:link
+    {
+		text-decoration:none;
+    }
+}
+.metroLarge,
+.face.metroLarge,
+.live-tile .metroLarge
+{
+	font-size:1.2em;
+	line-height:1.1em;
+	a&:link
+    {
+		text-decoration:none;
+    }
+}
+.metroSmall,
+.face.metroSmall,
+.live-tile .metroSmall
+{
+	font-size:.9em;
+	line-height:1em;
+	a&:link
+    {
+		text-decoration:none;
+    }
+}
+.metroSmaller,
+.face.metroSmaller,
+.live-tile .metroSmaller
+{
+	font-size:.8em;
+	line-height:1em;
+	a&:link
+    {
+		text-decoration:none;
+    }
+}
+.metroExtraSmall,
+.face.metroExtraSmall,
+.live-tile .metroExtraSmall
+{
+	font-size:.7em;
+	line-height:1em;
+	a&:link
+    {
+		text-decoration:none;
+    }
+}
+.live-tile.me .metroBig,
+.live-tile .bottom { display:block; position:absolute; left:10px; bottom:10px; padding: 0; text-decoration:none; }
+.live-tile.half-tile .bottom { left:5px; }
+
+/***** Theme Definitions *****/
+.light { background-color:#fff; color:#000; }
+.dark { background-color:#000; color:#fff; }
+.light.accent { background-color:#fff; }
+.dark.accent { background-color:#000; }
+.light .appbar { background-color:#dfdfdf; }
+.dark .appbar { background-color:#212021; }
+/*live tile accent colors */
+.amber { .themeStyle(@amber) }
+.blue { .themeStyle(@blue) }
+.brown { .themeStyle(@brown) }
+.cobalt { .themeStyle(@cobalt) }
+.crimson { .themeStyle(@crimson) }
+.cyan { .themeStyle(@cyan) }
+.emerald { .themeStyle(@emerald) }
+.green { .themeStyle(@green) }
+.indigo { .themeStyle(@indigo) }
+.lime { .themeStyle(@lime) }
+.magenta { .themeStyle(@magenta) }
+.mango { .themeStyle(@mango) }
+.mauve { .themeStyle(@mauve) }
+.olive { .themeStyle(@olive) }
+.orange { .themeStyle(@orange) }
+.pink { .themeStyle(@pink) }
+.purple { .themeStyle(@purple) }
+.violet { .themeStyle(@violet) }
+.red { .themeStyle(@red) }
+.sienna { .themeStyle(@sienna) }
+.steel { .themeStyle(@steel) }
+.teal { .themeStyle(@teal) }
+.yellow { .themeStyle(@yellow) }
+
+.trans { .themeStyle(@trans) }
+.white { .themeStyle(@white) }
+.black { .themeStyle(@black) }
+/* Local style overrides */
+html body .amber { .localStyle(@amber) }
+html body .blue { .localStyle(@blue) }
+html body .brown { .localStyle(@brown) }
+html body .cobalt { .localStyle(@cobalt) }
+html body .crimson { .localStyle(@crimson) }
+html body .cyan { .localStyle(@cyan) }
+html body .emerald { .localStyle(@emerald) }
+html body .green { .localStyle(@green) }
+html body .indigo { .localStyle(@indigo) }
+html body .lime { .localStyle(@lime) }
+html body .magenta { .localStyle(@magenta) }
+html body .mango { .localStyle(@mango) }
+html body .mauve { .localStyle(@mauve) }
+html body .olive { .localStyle(@olive) }
+html body .orange { .localStyle(@orange) }
+html body .pink { .localStyle(@pink) }
+html body .purple { .localStyle(@purple) }
+html body .violet { .localStyle(@violet) }
+html body .red { .localStyle(@red) }
+html body .sienna { .localStyle(@sienna) }
+html body .steel { .localStyle(@steel) }
+html body .teal { .localStyle(@teal) }
+html body .yellow { .localStyle(@yellow) }
+html body .trans { .localStyle(@trans) }
+html body .white { .localStyle(@white) }
+html body .black { .localStyle(@black) }

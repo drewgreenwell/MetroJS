@@ -1,0 +1,218 @@
+﻿@import "variables.less";
+/* sizes */
+.appbar
+{
+	font-size: .9em;
+    height: 60px;
+    max-height:100%;
+	padding: 10px 0;
+	width: 100%;	
+	&.small
+    {
+		height: 28px;
+    }
+}
+.appbar-buttons
+{	
+	padding: 0 0 2px;
+	width:252px;
+}
+.appbar.small .appbar-buttons
+{
+	width:162px;
+}
+.appbar a.etc, .appbar a.etc:hover, .appbar a.etc:visited
+{
+	font-size:32px;
+	/* add some extra padding to make it easier to touch */
+	height:60px;
+	width:90px; 
+}
+    .appbar.small a.etc, .appbar.small a.etc:hover, .appbar.small a.etc:visited
+    {
+		font-size:16px;
+		height:60px;
+		width:90px;
+    }
+.appbar .theme-options { display:block; margin:0px auto; position: relative; max-width:620px; width: 85%; }
+.appbar .base-theme-options { display:block; margin:0px auto; position: relative; max-width:120px; width:30%; }
+/* application-bar styles */
+.appbar
+{
+    background-color: #212021;
+    bottom: 0px;
+    color: #fff; 
+    left: 0px;
+    line-height: normal;
+    margin: 0;
+    overflow: hidden;    
+    position: fixed;
+    text-align: right;
+    z-index: 100;
+	-ms-touch-action:manipulation;
+}
+
+.light .appbar { background-color:#dfdfdf; color:#000; }
+.dark .appbar { background-color:#212021; }
+.appbar .clear { clear:both; }
+.light .appbar-buttons li a { color:#000; }
+.appbar-buttons a>img { background-image:url('images/metroIcons.jpg'); background-repeat:no-repeat; height:64px; width:64px; border:none; }
+.appbar-buttons a.small > img { height:32px; width:32px; }
+.light .appbar-buttons a>img { background-image:url('images/metroIcons_light.jpg'); }
+
+.appbar-buttons
+{
+	
+	position: relative;
+	margin: 0 auto;
+	text-align: right;	   
+	a {
+		&.search > img { background-position: -12px -12px; }
+		&.home > img { background-position: -104px -12px; }
+		&.twitter > img { background-position: -196px -12px; }
+		&.calendar > img { background-position: -288px -12px; }
+		&.storm > img { background-position: -380px -12px; }
+		&.down > img { background-position: -472px -12px; }
+		&.camera > img { background-position: -12px -99px; }
+		&.camcorder > img { background-position: -104px -99px; }
+		&.qmark > img,
+		&.about > img { background-position: -196px -99px; }
+		&.share > img { background-position: -288px -99px; }
+		&.rain > img { background-position: -380px -99px; }
+		&.cancel > img,
+		&.close > img { background-position: -472px -99px; }
+		&.delete > img,
+		&.trash > img { background-position: -12px -188px; }
+		&.tag > img { background-position: -104px -188px; }
+		&.addcontact > img { background-position: -196px -188px; }
+		&.save> img { background-position: -288px -188px; }
+		&.snow > img { background-position: -380px -188px; }
+		&.msg > img { background-position: -472px -188px; }
+		&.email > img { background-position: -12px -274px; }
+		&.clock > img { background-position: -104px -274px; }
+		&.edit > img { background-position: -196px -274px; }
+		&.circle > img { background-position: -288px -274px; }
+		&.moon > img { background-position: -380px -274px; }
+		&.calc > img { background-position: -12px -362px; }
+		&.gear > img { background-position: -104px -362px; }
+		&.plus > img { background-position: -196px -362px; }
+		&.dot > img { background-position: -288px -362px; }
+		&.restart > img,
+		&.return > img { background-position: -380px -362px; }
+		&.add > img { background-position: -472px -362px; }
+		&.phone > img { background-position: -12px -453px; }
+		&.film > img { background-position: -104px -453px; }
+		&.back > img { background-position: -196px -453px; }
+		&.car > img { background-position: -288px -453px; }
+		&.forward > img { background-position: -380px -453px; }
+		&.selectmany > img { background-position: -472px -453px; }
+		&.stop > img { background-position: -12px -538px; }
+		&.contacts > img { background-position: -104px -538px; }
+		&.select > img { background-position: -196px -538px; }
+		&.sun > img { background-position: -288px -538px; }
+		&.dpad > img { background-position: -380px -538px; }
+		&.play > img { background-position: -472px -538px; }
+
+		&.small.search > img { background-position: -562px -6px; }
+		&.small.home > img { background-position: -608px -6px; }
+		&.small.twitter > img { background-position: -654px -6px; }
+		&.small.calendar > img { background-position: -700px -6px; }
+		&.small.storm > img { background-position: -746px -6px; }
+		&.small.down > img { background-position: -792px -6px; }
+		&.small.camera > img { background-position: -562px -50px; }
+		&.small.camcorder > img { background-position: -608px -50px; }
+		&.small.qmark > img,
+		&.small.about > img { background-position: -654px -50px; }
+		&.small.share > img { background-position: -700px -50px; }
+		&.small.rain > img { background-position: -746px -50px; }
+		&.small.cancel > img,
+		&.small.close > img { background-position: -792px -50px; }
+		&.small.delete > img,
+		&.small.trash > img { background-position: -562px -94px; }
+		&.small.tag > img { background-position: -608px -94px; }
+		&.small.addcontact > img { background-position: -654px -94px; }
+		&.small.save> img { background-position: -700px -94px; }
+		&.small.snow > img { background-position: -746px -94px; }
+		&.small.msg > img { background-position: -792px -94px; }
+		&.small.email > img { background-position: -562px -137px; }
+		&.small.clock > img { background-position: -608px -137px; }
+		&.small.edit > img { background-position: -654px -137px; }
+		&.small.circle > img { background-position: -700px -137px; }
+		&.small.moon > img { background-position: -746px -137px; }
+		&.small.calc > img { background-position: -562px -181px; }
+		&.small.gear > img { background-position: -608px -181px; }
+		&.small.plus > img { background-position: -654px -181px; }
+		&.small.dot > img { background-position: -700px -181px; }
+		&.small.restart > img,
+		&.small.return > img { background-position: -746px -181px; }
+		&.small.add > img { background-position: -792px -181px; }
+		&.small.phone > img { background-position: -562px -226px; }
+		&.small.film > img { background-position: -608px -226px; }
+		&.small.back > img { background-position: -654px -226px; }
+		&.small.car > img { background-position: -700px -226px; }
+		&.small.forward > img { background-position: -746px -226px; }
+		&.small.selectmany > img { background-position: -792px -226px; }
+		&.small.stop > img { background-position: -562px -269px; }
+		&.small.contacts > img { background-position: -608px -269px; }
+		&.small.select > img { background-position: -654px -269px; }
+		&.small.sun > img { background-position: -700px -269px; }
+		&.small.dpad > img { background-position: -746px -269px; }
+		&.small.play > img { background-position: -792px -269px; }
+	}
+
+	li {
+		display: inline;
+		padding: 0 10px;
+		float:left;
+		list-style: none;
+	}
+	li a {
+		font-weight: bold;
+		background-color: transparent;
+		color: #fff;
+	}
+    li a:active, ul#menu li.selected a, .appbar-buttons li a:hover
+    {
+        text-decoration: none;
+    }
+}
+
+
+.appbar a.etc, .appbar a.etc:hover,.appbar a.etc:visited
+{   
+	color:#fff;
+	cursor:pointer; 
+	display:block; 
+	position:absolute; 
+	right:8px;
+	text-decoration:none;
+	top:0px;
+	z-index:100;
+}
+.light .appbar a.etc, .light .appbar a.etc:hover, 
+.light .appbar a.etc:visited { color:#000; }
+.appbar .charm-title { font-size:10px; display:block; text-align:center; }
+.appbar .theme-options>li { display:block; margin:8px; float:left; line-height:32px; height:32px; width:32px; }
+.appbar .theme-options>li>a, .appbar .theme-options>li>a:hover,
+.appbar .theme-options>li>a:visited { display:block; padding:0px; text-decoration:none; height:32px; width:32px; }
+.appbar .base-theme-options>li { display:block; margin:8px; float:left; line-height:32px; height:32px; width:32px; }
+.appbar .base-theme-options>li>a, .appbar .base-theme-options>li>a:hover, 
+.appbar .base-theme-options>li>a:visited { display:block; padding:0px; text-decoration:none; height:32px; width:32px; }
+.appbar .base-theme-options>li>a.dark.accent { background-color:#000; }
+/* Media queries */
+@media screen and (max-width: 1025px) 
+{
+	/*.appbar .theme-options { width:650px; } /* ensures alignment and no wrapping on ipad */
+	/*.appbar .base-theme-options { width:140px; } /* ensures alignment and no wrapping on ipad */
+	.appbar .theme-options li, .appbar .theme-options li a
+    {
+        display:block; 
+        height:32px;
+        margin:4px;
+        width:32px;
+    }
+}
+@media screen and (max-width: 801px)
+{
+	/*.appbar .theme-options { width:360px; }*/
+}
