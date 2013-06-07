@@ -3,7 +3,7 @@
 * http://drewgreenwell.com/ 
 * For details and usage info see: http://drewgreenwell.com/projects/metrojs
 
-Copyright (C) 2012, Drew Greenwell
+Copyright (C) 2013, Drew Greenwell
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -683,15 +683,15 @@ var privMethods = {
                         $slide.addClass("active");
                     } else if (aniDir === "forward") {
                         if (dir === "vertical") {
-                            $slide.css({ top: tdata.height + 'px', left:'0px' });
+                            $slide.css({ top: '100%', left:'0%' });
                         } else {
-                            $slide.css({ left: tdata.width + 'px', top: '0px' });
+                            $slide.css({ left: '100%', top: '0%' });
                         }
                     } else if (aniDir === "backward") {
                         if (dir === "vertical") {
-                            $slide.css({ top: -tdata.height + 'px', left:'0px' });
+                            $slide.css({ top: '-100%', left:'0%' });
                         } else {
-                            $slide.css({ left: -tdata.width + 'px', top:'0px' });
+                            $slide.css({ left: '-100%', top:'0%' });
                         }
                     }
                     // link and bounce can be bound per slide
@@ -1047,8 +1047,8 @@ var privMethods = {
                         }
                         var offsetOfParent = data.$tileParent.offset();
                         data.bounceMethods.eventPos = {
-                            x: (offsetOfTile.left - offsetOfParent.left) + ($tile.width() / 2),
-                            y: (offsetOfTile.top - offsetOfParent.top) + ($tile.height() / 2)
+                            x: (offsetOfTile.left - offsetOfParent.left) + ($tile.width()),// / 2),
+                            y: (offsetOfTile.top - offsetOfParent.top) + ($tile.height())// / 2)
                         };
                         var hit = data.bounceMethods.hitTest($tile, data.bounceMethods.inTilePos, data.bounceDirections, 0.25);
                         if (hit == null)
@@ -1062,8 +1062,6 @@ var privMethods = {
                             } else {
                                 $(document).bind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
                             }
-                            //$(".test").text(hit.name + "pageX:" + point.pageX + " scrollX:" + scrollX + " inX:" + data.bounceMethods.eventPos.x
-                            //+ " pageY:" + point.pageY + " scrollY:" + scrollY + " inY:" + data.bounceMethods.eventPos.y);
                             bClass = "bounce-" + hit.name;
                             $tile.addClass(bClass);
                             data.bounceMethods.down = bClass;
@@ -1099,8 +1097,10 @@ var privMethods = {
                     },
                     unBounce: function () {
                         $tile.removeClass(data.bounceMethods.down);
-                        if(data.bounceMethods.downPcss)
+                        if (data.bounceMethods.downPcss) {
                             data.bounceMethods.downPcss = helperMethods.applyStyleValue(data.bounceMethods.downPcss, '');
+                            data.$tileParent.css(data.bounceMethods.downPcss);
+                        }
                         data.bounceMethods.down = "no";
                         data.bounceMethods.inTilePos = data.bounceMethods.zeroPos;
                         data.bounceMethods.eventPos = data.bounceMethods.zeroPos;
@@ -1288,7 +1288,7 @@ var privMethods = {
                 nxtCss.top = "-100%";
                 nxtCss.left = "0px";
             } else {
-                nxtCss.top = "0px";
+                nxtCss.top = "0%";
                 nxtCss.left = "-100%";                
             }
             tdata.faces.$front = $cur;
@@ -1297,23 +1297,22 @@ var privMethods = {
         } else {
             if (direction === "vertical") {
                 nxtCss.top = "100%";
-                nxtCss.left = "0px";
+                nxtCss.left = "0%";
             } else {
-                nxtCss.top = "0px";
+                nxtCss.top = "0%";
                 nxtCss.left = "100%";                
             }
             tdata.faces.$front = $nxt;
             tdata.faces.$back = $cur;
-            tdata.stops = ['0px'];
+            tdata.stops = ['0%'];
         }
         $nxt.css(nxtCss);
         // the timeout wrapper gives the css call above enough time to finish in case we dynamically set the direction
         window.setTimeout(function () {            
-            
-            privMethods.slide($tile, count, tdata, 0, function ()
-            {   
-                $cur.removeClass("active");
+            $cur.removeClass("active");
                 $nxt.addClass("active");
+            privMethods.slide($tile, count, tdata, 0, function ()
+            {                   
                 tdata.currentIndex = nxtIdx;
                 aniData = null;
                 $cur = null;
