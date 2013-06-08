@@ -956,6 +956,9 @@ var privMethods = {
                             strictMatch = null,
                             looseMatch = null,
                             defResult = { hit: [0, 0], name: 'c' };
+                        // scale only for android 2.x
+                        if (metrojs.capabilities.isOldAndroid)
+                            return defResult;
                         if (typeof (checkFor) == "undefined") {
                             if (typeof(targetRegions) === "string")
                                 checkFor = targetRegions.split(',');
@@ -965,15 +968,16 @@ var privMethods = {
                                 defResult = null;
                             }
                         }
-                        if (metrojs.capabilities.isOldAndroid)
-                            return { hit: regions['c'], name:'c' };
                         // check for a matching region
                         var w = $el.width(),
                            h = $el.height(),
-                           ct = [w * omegaC, h * omegaC], // center threshold -  maximum amount from center
-                           diffX = pos.x - (w * 0.5), // how far from the center
+                           // center threshold -  maximum amount from center
+                           ct = [w * omegaC, h * omegaC],
+                           // how far from the center is the point
+                           diffX = pos.x - (w * 0.5), 
                            diffY = pos.y - (h * 0.5),
-                           hit = [ // if we're beyond the center threshold, set -1 or 1 else 0
+                            // if we're beyond the center threshold, set -1 or 1 else 0
+                           hit = [
                                diffX > 0 ? (Math.abs(diffX) <= ct[0] ? 0 : 1) : (Math.abs(diffX) <= ct[0] ? 0 : -1),
                                diffY > 0 ? (Math.abs(diffY) <= ct[1] ? 0 : 1) : (Math.abs(diffY) <= ct[1] ? 0 : -1)
                            ];
@@ -1019,8 +1023,8 @@ var privMethods = {
                         }
                         var offsetOfParent = data.$tileParent.offset();
                         data.bounceMethods.eventPos = {
-                            x: (offsetOfTile.left - offsetOfParent.left) + ($tile.width()),// / 2),
-                            y: (offsetOfTile.top - offsetOfParent.top) + ($tile.height())// / 2)
+                            x: (offsetOfTile.left - offsetOfParent.left) + ($tile.width() / 2),
+                            y: (offsetOfTile.top - offsetOfParent.top) + ($tile.height() / 2)
                         };
                         var hit = data.bounceMethods.hitTest($tile, data.bounceMethods.inTilePos, data.bounceDirections, 0.25);
                         if (hit == null)
@@ -1071,7 +1075,11 @@ var privMethods = {
                         $tile.removeClass(data.bounceMethods.down);
                         if (data.bounceMethods.downPcss) {
                             data.bounceMethods.downPcss = helperMethods.applyStyleValue(data.bounceMethods.downPcss, '');
-                            data.$tileParent.css(data.bounceMethods.downPcss);
+                            // let the bounce finish and then strip out the perspective
+                            window.setTimeout(function () {
+                                data.$tileParent.css(data.bounceMethods.downPcss);
+                            }, 200);
+                            
                         }
                         data.bounceMethods.down = "no";
                         data.bounceMethods.inTilePos = data.bounceMethods.zeroPos;
