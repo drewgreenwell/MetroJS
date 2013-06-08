@@ -130,6 +130,7 @@ var pubMethods = {
             // append back tiles and add appropriate classes to prepare tiles
             data.faces = privMethods.prepTile($this, data);
             // action methods
+            data.fade = function (count) { privMethods.fade($this, count); };
             data.slide = function (count) { privMethods.slide($this, count); };
             data.carousel = function (count) { privMethods.carousel($this, count); };
             data.flip = function (count) { privMethods.flip($this, count); };
@@ -137,10 +138,12 @@ var pubMethods = {
 
             data.doAction = function (count) {
                 var actions = {
+                    fade: data.fade,
                     slide: data.slide,
                     carousel: data.carousel,
                     flip: data.flip,
                     'flip-list': data.flipList
+                    
                 },
                 // get the action for the current mode
                 action = actions[data.mode];
@@ -638,6 +641,22 @@ var privMethods = {
         var rotateDir, backFaceCss, frontCss, backCss;
         // prepare the tile based on the current mode
         switch (tdata.mode) {
+            case "fade":
+                // front and back tile faces
+                ret.$tileFaces = $tile.find(tdata.tileFaceSelector).not(".tile-title");
+                ret.$front = (tdata.faces.$front != null && tdata.faces.$front.length > 0) ?
+                               tdata.faces.$front.addClass('fade-front') :
+                               ret.$tileFaces.filter(":first").addClass('fade-front');
+                // get back face from settings, via selector, or append it if necessary
+                if (tdata.faces.$back != null && tdata.faces.$back.length > 0)    // use $back option
+                    ret.$back = tdata.faces.$back.addClass('fade-back');
+                else if (ret.$tileFaces.length > 1)                             // get the last tile face
+                    ret.$back = ret.$tileFaces.filter(":last").addClass('fade-back');
+                else if (tdata.appendBack)                                       // append the back tile
+                    ret.$back = $('<div class="fade-back"></div>').appendTo($tile);
+                else                                                            // just keep an empty placeholder
+                    ret.$back = $('<div></div>');
+                break;
             case "slide":
                 // front and back tile faces
                 ret.$tileFaces = $tile.find(tdata.tileFaceSelector).not(".tile-title");
@@ -957,10 +976,11 @@ var privMethods = {
             (function () {                
                 data.bounceMethods = {
                     down: "no",
-                    threshold: 10,
+                    threshold: 20,
                     zeroPos: { x: 0, y: 0 },
                     eventPos: { x: 0, y: 0 },
                     inTilePos: { x: 0, y: 0 },
+                    pointPos: { x: 0, y: 0 },
                     regions: {
                         c: [0, 0],      // center
                         tl: [-1, -1],   // top left
@@ -1041,6 +1061,10 @@ var privMethods = {
                             offsetOfTile = $tile.offset(),
                             scrollX = window.pageXOffset,
                             scrollY = window.pageYOffset;
+                        data.bounceMethods.pointPos = {
+                            x: point.pageX,
+                            y: point.pageY
+                        };
                         data.bounceMethods.inTilePos = {
                             x: point.pageX - offsetOfTile.left,
                             y: point.pageY - offsetOfTile.top
@@ -1061,10 +1085,12 @@ var privMethods = {
                             if (window.navigator.msPointerEnabled) {
                                 document.addEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 $tile[0].addEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
-                                $tile[0].addEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
-                                document.addEventListener('dragstart', data.bounceMethods.bounceUp, false);
+                                document.addEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
+                                $tile[0].addEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);                                
                             } else {
                                 $(document).bind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
+                                $tile.bind("touchmove.liveTile", data.bounceMethods.bounceMove);
+                                $tile.bind("mousemove.liveTile", data.bounceMethods.bounceMove);
                             }
                             bClass = "bounce-" + hit.name;
                             $tile.addClass(bClass);
@@ -1081,21 +1107,26 @@ var privMethods = {
                             data.bounceMethods.unBounce();
                             if (window.navigator.msPointerEnabled) {
                                 document.removeEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
+                                $tile[0].removeEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 document.removeEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
-                                document.removeEventListener('dragstart', data.bounceMethods.bounceUp, false);
+                                $tile[0].removeEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
+                                
                             } else
                                 $(document).unbind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
+                                $tile.unbind("touchmove.liveTile", data.bounceMethods.bounceMove);
+                                $tile.unbind("mousemove.liveTile", data.bounceMethods.bounceMove);
                         }
                     },// not currently used
                     bounceMove: function(e) {
-                        if (data.bounceMethods.down == "no") {
-                            var point = e.originalEvent && e.originalEvent.touches ? e.originalEvent.touches[0] : e;
-                            data.bounceMethods.inTilePos = {
-                                x: point.pageX - offsetInTile.left,
-                                y: point.pageY - offsetInTile.top
-                            };
-                            if (Math.abs(point.pageX - data.bounceMethods.inTilePos.x) > this.threshold || Math.abs(point.pageY - data.bounceMethods.inTilePos.y) > this.threshold) {
-                                data.bounceMethods.unBounce();
+                        if (data.bounceMethods.down != "no") {
+                            var point = e.originalEvent && e.originalEvent.touches ? e.originalEvent.touches[0] : e,
+                                x = Math.abs(point.pageX - data.bounceMethods.pointPos.x),
+                                y = Math.abs(point.pageY - data.bounceMethods.pointPos.y);
+                            if (x > data.bounceMethods.threshold || y > data.bounceMethods.threshold) {
+                                var bounceClass = data.bounceMethods.down;
+                                data.bounceMethods.bounceDown(e);
+                                if (bounceClass != data.bounceMethods.down)
+                                    $tile.removeClass(bounceClass);
                             }
                         }
                     },
@@ -1116,16 +1147,13 @@ var privMethods = {
                 };            
                 // IE 10+
                 if (window.navigator.msPointerEnabled) {// touch only -> // && window.navigator.msMaxTouchPoints) {
-                    $tile[0].addEventListener('MSPointerDown', data.bounceMethods.bounceDown, false);                    
-                    //$tile[0].addEventListener('MSPointerOut', data.bounceMethods.bounceUp, false);
-                    //$tile[0].addEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
+                    $tile[0].addEventListener('MSPointerDown', data.bounceMethods.bounceDown, false);                   
                 } else if (metrojs.capabilities.canTouch) {
                     // everybody else                    
                     $tile.bind("touchstart.liveTile", data.bounceMethods.bounceDown);
-                    // $tile.bind("touchmove.liveTile", data.bounceMethods.bounceMove);
+                     
                 } else {
-                    $tile.bind("mousedown.liveTile", data.bounceMethods.bounceDown);
-                    // $tile.bind("mousemove.liveTile", data.bounceMethods.bounceMove);
+                    $tile.bind("mousedown.liveTile", data.bounceMethods.bounceDown);                     
                 }
             })();
         }
@@ -1150,8 +1178,31 @@ var privMethods = {
             });
         }
     },
+    fade: function ($tile, count, data) {
+        var tdata = typeof (data) === "object" ? data : $tile.data("LiveTile");
+        tdata.isReversed = count % 2 === 0; // the count starts at 1
+        if (tdata.faces.$front.is(":animated"))
+            return;
+        tdata.timer.pause();
+        var faded = function () {
+            // if the tile should run again start the timer back with the current delay
+            if (tdata.timer.repeatCount > 0 || tdata.timer.repeatCount == -1) {
+                if (tdata.timer.count != tdata.timer.repeatCount) {
+                    tdata.timer.start(tdata.delay);
+                }
+            }
+            // run content modules and animationComplete callback
+            for (var module in tdata.contentModules)
+                tdata.contentModules[module].action(tdata, tdata.faces.$front, tdata.faces.$back);
+            tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);
+        };
+        if (tdata.isReversed)
+            tdata.faces.$front.fadeIn(tdata.speed, faded);
+        else
+            tdata.faces.$front.fadeOut(tdata.speed, faded);
+    },
     slide: function ($tile, count, data, stopIndex, callback) {
-        var tdata = typeof (data) === "undefined" ? $tile.data("LiveTile") : data;
+        var tdata = typeof (data) === "object" ? data : $tile.data("LiveTile");
         var aniData = $tile.data("metrojs.tile");
         if (aniData.animating == true || $tile.is(":animated")) {
             tdata = null;
@@ -1344,7 +1395,18 @@ var privMethods = {
         var $front, $back, direction, deg, rotateDir, css,
             raiseEvt = typeof (callback) === "undefined",
             index = 0,
-            isReversed = count % 2 === 0;  // the count starts at 1
+            isReversed = count % 2 === 0,  // the count starts at 1
+            resumeTimer = function () {
+                // if the tile should run again start the timer back with the current delay
+                if (tdata.timer.repeatCount > 0 || tdata.timer.repeatCount == -1) {
+                    if (tdata.timer.count != tdata.timer.repeatCount) {
+                        tdata.timer.start(tdata.delay);
+                    }
+                }
+            };
+        // the timer is only paused if animationComplete is fired
+        if (raiseEvt)
+            tdata.timer.pause();        
         if (tdata.mode === "flip-list") {
             index = aniData.index;
             $front = tdata.listData[index].faces.$front;
@@ -1362,7 +1424,7 @@ var privMethods = {
             height = tdata.height;
             width = tdata.width;
             margin = tdata.margin;
-        }
+        }        
         if (metrojs.capabilities.canFlip3d && tdata.useHardwareAccel) { // Hardware accelerated :)
             deg = !isReversed ? "180deg" : "360deg";
             rotateDir = direction === "vertical" ? "rotateX(" + deg + ")" : "rotateY(" + deg + ")";
@@ -1379,9 +1441,10 @@ var privMethods = {
                 if (!isReversed) {
                     for (module in tdata.contentModules)
                         tdata.contentModules[module].action(tdata, $back, $front, index);
-                    if (raiseEvt)
-                        tdata.animationComplete.call($tile[0], tdata, $back, $front);
-                    else
+                    if (raiseEvt) {
+                        resumeTimer();
+                        tdata.animationComplete.call($tile[0], tdata, $back, $front);                        
+                    } else
                         callback(tdata, $back, $front);
                 } else {                    
                         resetDir = direction === "vertical" ? "rotateX(0deg)" : "rotateY(0deg)";
@@ -1399,9 +1462,10 @@ var privMethods = {
                         //call content modules
                         for (module in tdata.contentModules)
                             tdata.contentModules[module].action(tdata, $front, $back, index);
-                        if (raiseEvt)
-                            tdata.animationComplete.call($tile[0],tdata, $front, $back);
-                        else
+                        if (raiseEvt) {
+                            resumeTimer();
+                            tdata.animationComplete.call($tile[0], tdata, $front, $back);                            
+                        } else
                             callback(tdata, $front, $back);
                         $front = null;
                         $back = null;
@@ -1435,9 +1499,10 @@ var privMethods = {
                         duration: speed, complete: function () {
                             for (var module in tdata.contentModules)
                                 tdata.contentModules[module].action(tdata, $back, $front, index);
-                            if (raiseEvt)
-                                tdata.animationComplete.call($tile[0],tdata, $back, $front);
-                            else
+                            if (raiseEvt) {
+                                resumeTimer();
+                                tdata.animationComplete.call($tile[0], tdata, $back, $front);
+                            } else
                                 callback(tdata, $back, $front);
                             $front = null;
                             $back = null;
@@ -1462,9 +1527,10 @@ var privMethods = {
                         duration: speed, complete: function () {
                             for (var module in tdata.contentModules)
                                 tdata.contentModules[module].action(tdata, $front, $back, index);
-                            if (raiseEvt)
+                            if (raiseEvt) {
+                                resumeTimer();
                                 tdata.animationComplete.call($tile[0], tdata, $front, $back);
-                            else
+                            } else
                                 callback(tdata, $front, $back);
                             aniData = null;
                             $front = null;

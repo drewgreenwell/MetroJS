@@ -649,6 +649,8 @@
 .noselect > .slide,
 .noselect > .slide-front,
 .noselect > .slide-back,
+.noselect > .fade-front,
+.noselect > .fade-back,
 .noselect > .flip-front,
 .noselect > .flip-back {
   -webkit-user-select: none;
@@ -662,6 +664,8 @@
 .carousel > .slide,
 .live-tile > .slide-front,
 .live-tile > .slide-back,
+.live-tile > .fade-front,
+.live-tile > .fade-back,
 .live-tile > .flip-front,
 .live-tile > .flip-back {
   top: 0px;
@@ -689,6 +693,7 @@ a.full,
 }
 .live-tile > .back,
 .live-tile > .slide-back,
+.live-tile > .fade-back,
 .live-tile > .flip-back,
 .flip-list .flip-back {
   position: absolute;
