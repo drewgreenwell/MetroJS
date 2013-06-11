@@ -65,7 +65,7 @@ $.fn.liveTile.contentModules = {
 
 // default option values for .liveTile
 $.fn.liveTile.defaults = {
-    mode: 'slide',                          // 'slide', 'flip', 'flip-list', carousel
+    mode: 'slide',                          // 'fade', 'slide', 'flip', 'flip-list', carousel
     speed: 500,                             // how fast should animations be performed, in milliseconds
     initDelay: -1,                          // how long to wait before the initial animation
     delay: 5000,                            // how long to wait between animations 
@@ -81,6 +81,7 @@ $.fn.liveTile.defaults = {
     newWindow: false,                       // should the link be opened in a new window
     bounce: false,                          // should the tile shrink when tapped
     bounceDirections: 'all',                // which direction the tile will tile 'all', 'edges, 'corners'
+    bounceFollowsMovement: true,            // should a tile in bounce state tilt in the direction of the mouse as it moves
     pauseOnHover: false,                    // should tile animations be paused on hover in and restarted on hover out
     playOnHover: false,                     // should "play" be called on hover
     onHoverDelay: 0,                        // the amount of time to wait before the onHover event is fired
@@ -510,6 +511,7 @@ var privMethods = {
                 tileFaceSelector: this.getDataOrDefault($tile, "face-selector", stgs.tileFaceSelector),
                 bounce: this.getDataOrDefault($tile, "bounce", stgs.bounce),
                 bounceDirections: this.getDataOrDefault($tile, "bounce-dir", stgs.bounceDirections),
+                bounceFollowsMovement: this.getDataOrDefault($tile, "bounce-follows", stgs.bounceFollowsMovement),
                 link: this.getDataOrDefault($tile, "link", stgs.link),
                 newWindow: this.getDataOrDefault($tile, "new-window", stgs.newWindow),
                 alwaysTrigger: this.getDataOrDefault($tile, "always-trigger", stgs.alwaysTrigger),
@@ -976,7 +978,7 @@ var privMethods = {
             (function () {                
                 data.bounceMethods = {
                     down: "no",
-                    threshold: 20,
+                    threshold: 30,
                     zeroPos: { x: 0, y: 0 },
                     eventPos: { x: 0, y: 0 },
                     inTilePos: { x: 0, y: 0 },
@@ -1086,11 +1088,14 @@ var privMethods = {
                                 document.addEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 $tile[0].addEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 document.addEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
-                                $tile[0].addEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);                                
+                                if (data.bounceFollowsMovement)
+                                    $tile[0].addEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);                                
                             } else {
                                 $(document).bind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
-                                $tile.bind("touchmove.liveTile", data.bounceMethods.bounceMove);
-                                $tile.bind("mousemove.liveTile", data.bounceMethods.bounceMove);
+                                if (data.bounceFollowsMovement) {
+                                    $tile.bind("touchmove.liveTile", data.bounceMethods.bounceMove);
+                                    $tile.bind("mousemove.liveTile", data.bounceMethods.bounceMove);
+                                }
                             }
                             bClass = "bounce-" + hit.name;
                             $tile.addClass(bClass);
@@ -1109,12 +1114,15 @@ var privMethods = {
                                 document.removeEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 $tile[0].removeEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 document.removeEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
-                                $tile[0].removeEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
+                                if (data.bounceFollowsMovement)
+                                    $tile[0].removeEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
                                 
                             } else
                                 $(document).unbind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
+                            if (data.bounceFollowsMovement) {
                                 $tile.unbind("touchmove.liveTile", data.bounceMethods.bounceMove);
                                 $tile.unbind("mousemove.liveTile", data.bounceMethods.bounceMove);
+                            }
                         }
                     },// not currently used
                     bounceMove: function(e) {
