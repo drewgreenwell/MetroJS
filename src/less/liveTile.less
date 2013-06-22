@@ -3,7 +3,6 @@
 /* Sizes */
 .live-tile, .list-tile, .copy-tile, .tile-strip .flip-list>li
 {
-    background-color:red!important;
     height: @height;
     margin: @margin;
     outline: 1px solid transparent;
@@ -192,8 +191,7 @@
         backface-visibility:hidden;        
 
         &.bounce-c
-        {            
-            -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.95, M12=0, M21=0, M22=0.95)";
+        {
             filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.95,M12=0,M21=0,M22=0.95);            
             -webkit-transform: scale(0.95);
             -ms-transform: scale(0.95);
