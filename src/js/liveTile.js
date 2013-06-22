@@ -28,7 +28,7 @@ $.fn.liveTile.contentModules = {
             this.modules = {};
         this.modules[moduleName] = module;
     },
-    hasContentModule: function(moduleName){
+    hasContentModule: function (moduleName) {
         if (typeof (moduleName) === "undefined" || typeof (this.modules) !== "object")
             return false;
         return (typeof (this.modules[moduleName]) !== "undefined");
@@ -118,9 +118,9 @@ var pubMethods = {
                 slide: data.slide,
                 carousel: data.carousel,
                 flip: data.flip,
-                'flip-list': data.flipList                    
+                'flip-list': data.flipList
             };
-            data.doAction = function (count) {                
+            data.doAction = function (count) {
                 // get the action for the current mode
                 var action = actions[data.mode];
                 if (typeof (action) === "function") {
@@ -131,7 +131,7 @@ var pubMethods = {
                 if (count == data.timer.repeatCount)
                     data.runEvents = false;
             };
-            
+
             // create a new tile timer
             data.timer = new $.fn.metrojs.TileTimer(data.delay, data.doAction, data.repeatCount);
             // apply the data
@@ -146,7 +146,7 @@ var pubMethods = {
                 }
             }
             // add a click / link to the tile
-            if (data.link.length > 0 || typeof(data.click) === "function") {
+            if (data.link.length > 0 || typeof (data.click) === "function") {
                 $this.css({ cursor: 'pointer' }).bind("click.liveTile", function (e) {
                     var proceed = true;
                     if (typeof (data.click) === "function") {
@@ -161,9 +161,8 @@ var pubMethods = {
                     }
                 });
             }
-            // add bounce if set
-            if (data.useHardwareAccel && metrojs.capabilities.canTransition)
-                privMethods.bindBounce($this, data);            
+            // add bounce if set            
+            privMethods.bindBounce($this, data);
             // start timer
             if (data.startNow && data.mode != "none") {
                 data.runEvents = true;
@@ -174,7 +173,7 @@ var pubMethods = {
     // goto is a future reserved word
     'goto': function (options) {
         var opts, t = typeof (options);
-        if(t === "undefined"){
+        if (t === "undefined") {
             opts = {
                 index: -99, //  same as next
                 delay: 0,
@@ -186,7 +185,7 @@ var pubMethods = {
                 index: parseInt(options, 10),
                 delay: 0
             };
-        } else if(t === "string"){
+        } else if (t === "string") {
             if (options == "next") {
                 opts = {
                     index: -99,
@@ -201,7 +200,7 @@ var pubMethods = {
                 $.error(options + " is not a recognized action for .liveTile(\"goto\")");
                 return;
             }
-        }else if (t === "object") {
+        } else if (t === "object") {
             if (typeof (options.delay) === "undefined") {
                 options.delay = 0;
             }
@@ -215,7 +214,7 @@ var pubMethods = {
                     options.index = -100;
             }
             opts = options;
-        }       
+        }
         return $(this).each(function (tileIndex, ele) {
             var $tile = $(ele),
                 data = $tile.data("LiveTile"),
@@ -230,9 +229,9 @@ var pubMethods = {
                 // carousel will look for these values as triggers
                 if (goTo === -100) { // prev
                     // autoAniDirection determines if a forward or backward animation should be used based on the goTo index
-                    if(typeof(opts.autoAniDirection) === "undefined" || opts.autoAniDirection == true)
-                        data.tempValues.animationDirection = typeof(opts.animationDirection) === "undefined" ? "backward" : opts.animationDirection;
-                    goTo = curIdx === 0 ? data.faces.$listTiles.length -1 : curIdx - 1;
+                    if (typeof (opts.autoAniDirection) === "undefined" || opts.autoAniDirection == true)
+                        data.tempValues.animationDirection = typeof (opts.animationDirection) === "undefined" ? "backward" : opts.animationDirection;
+                    goTo = curIdx === 0 ? data.faces.$listTiles.length - 1 : curIdx - 1;
                 } else if (goTo === -99) { // next
                     if (typeof (opts.autoAniDirection) === "undefined" || opts.autoAniDirection == true)
                         data.tempValues.animationDirection = typeof (opts.animationDirection) === "undefined" ? "forward" : opts.animationDirection;
@@ -257,7 +256,7 @@ var pubMethods = {
             // start the timer
             data.runEvents = true;
             data.timer.start(opts.delay >= 0 ? opts.delay : data.delay);
-        });  
+        });
     },
     play: function (options) {
         var opts, t = typeof (options);
@@ -270,8 +269,8 @@ var pubMethods = {
                 delay: options
             };
         } else if (t === "object") {
-            if(typeof(options.delay) === "undefined"){
-                options.delay = -1;                
+            if (typeof (options.delay) === "undefined") {
+                options.delay = -1;
             }
             opts = options;
         }
@@ -280,7 +279,7 @@ var pubMethods = {
                 data = $tile.data("LiveTile");
             data.runEvents = true;
             if (opts.delay < 0 && !data.hasRun)
-                opts.delay = data.initDelay;            
+                opts.delay = data.initDelay;
             data.timer.start(opts.delay >= 0 ? opts.delay : data.delay);
         });
     },
@@ -302,7 +301,6 @@ var pubMethods = {
             window.clearTimeout(data.flCompleteTimeout);
             window.clearTimeout(data.completeTimeout);
             if (data.mode === "flip-list") {
-                window.clearTimeout(data.completeTimeout);
                 data.faces.$listTiles.each(function (idx, li) {
                     var ldata = $(li).data("metrojs.tile");
                     window.clearTimeout(ldata.eventTimeout);
@@ -359,11 +357,10 @@ var pubMethods = {
     },
     rebind: function (options) {
         return $(this).each(function (tileIndex, ele) {
-            var $tile = $(ele);
             if (typeof (options) !== "undefined") {
                 if (typeof (options.timer) !== "undefined" && options.timer != null) {
                     options.timer.stop();
-                }                
+                }
                 options.hasRun = false;
                 pubMethods["init"].apply(ele, options);
             } else {
@@ -494,6 +491,7 @@ var privMethods = {
                 playOnHover: this.getDataOrDefault($tile, "play-onhover", stgs.playOnHover),
                 onHoverDelay: this.getDataOrDefault($tile, "hover-delay", stgs.onHoverDelay),
                 noHAflipOpacity: this.getDataOrDefault($tile, "flip-opacity", stgs.noHAflipOpacity),
+                useTranslate: stgs.useTranslate,
                 runEvents: false,
                 isReversed: false,
                 loopCount: 0,
@@ -547,7 +545,7 @@ var privMethods = {
             if (swaps[i].length > 0 && typeof ($.fn.liveTile.contentModules.modules[swaps[i]]) !== "undefined") {
                 tdata.contentModules[swaps[i]] = $.fn.liveTile.contentModules.modules[swaps[i]];
             }
-        }        
+        }
         // set the initDelay value to the delay if it's not set
         tdata.initDelay = useData ? this.getDataOrDefault($tile, "initdelay", stgs.initDelay) : stgs.initDelay;
         // if the delay is -1 call the triggerDelay function to get a value
@@ -654,7 +652,7 @@ var privMethods = {
                 if (tdata.stack == true) {
                     var vertical = tdata.direction === "vertical",
                         prop = vertical ? "top" : "left",
-                        translate = vertical ? 'translate(0%, -100%) translateZ(0) scale(1)' : 'translate(-100%, 0%) translateZ(0) scale(1)';
+                        translate = vertical ? 'translate(0%, -100%) translateZ(0)' : 'translate(-100%, 0%) translateZ(0)';
                     backCss = {};
                     if (tdata.useTranslate)
                         helperMethods.appendStyleProperties(backCss, ['transform'], [translate]);
@@ -667,7 +665,7 @@ var privMethods = {
                     $tile.addClass("ha");
                     ret.$front.addClass("ha");
                     ret.$back.addClass("ha");
-                }                
+                }
                 break;
             case "carousel":
                 ret.$listTiles = $tile.find(tdata.tileSelector).not(".tile-title");
@@ -683,21 +681,21 @@ var privMethods = {
                         $slide.addClass("active");
                     } else if (aniDir === "forward") {
                         if (dir === "vertical") {
-                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(0%, 100%) translateZ(0) scale(1)']) :
+                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(0%, 100%) translateZ(0)']) :
                                                    { left: '0%', top: '100%' };
                             $slide.css(tileCss); //{ top: tdata.height + 'px', left:'0px' });
                         } else {
-                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(100%, 0%) translateZ(0) scale(1)']) :
+                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(100%, 0%) translateZ(0)']) :
                                                    { left: '100%', top: '0%' };
                             $slide.css(tileCss); //{ left: tdata.width + 'px', top: '0px' });
                         }
                     } else if (aniDir === "backward") {
                         if (dir === "vertical") {
-                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(0%, -100%) translateZ(0) scale(1)']) :
+                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(0%, -100%) translateZ(0)']) :
                                                    { left: '0%', top: '-100%' };
                             $slide.css(tileCss); //{ top: -tdata.height + 'px', left:'0px' });
                         } else {
-                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(-100%, 0%) translateZ(0) scale(1)']) :
+                            tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(-100%, 0%) translateZ(0)']) :
                                                    { left: '-100%', top: '0%' };
                             $slide.css(tileCss); //{ left: -tdata.width + 'px', top:'0px' });
                         }
@@ -707,7 +705,7 @@ var privMethods = {
                     privMethods.bindLink($slide, sdata);
                     // add the bounce effect
                     if (tdata.useHardwareAccel && metrojs.capabilities.canTransition)
-                        privMethods.bindBounce($slide, sdata);                    
+                        privMethods.bindBounce($slide, sdata);
                     $slide = null;
                     sdata = null;
                 });
@@ -761,7 +759,7 @@ var privMethods = {
                         $lFront.css(frontCss);
                         $lBack.css(backCss);
                     }
-                    var flipEnded = function() {
+                    var flipEnded = function () {
                         ldata.count++;
                         if (ldata.count >= MAX_LOOP_COUNT)
                             ldata.count = 1;
@@ -769,10 +767,10 @@ var privMethods = {
                     if (tdata.flipListOnHover) {
                         var event = tdata.flipListOnHoverEvent + ".liveTile";
                         $lFront.bind(event, function () {
-                                privMethods.flip($li, ldata.count, tdata, flipEnded);
+                            privMethods.flip($li, ldata.count, tdata, flipEnded);
                         });
                         $lBack.bind(event, function () {
-                                privMethods.flip($li, ldata.count, tdata, flipEnded);
+                            privMethods.flip($li, ldata.count, tdata, flipEnded);
                         });
                     }
                     if (tdata.listData[idx].link.length > 0) {
@@ -824,8 +822,8 @@ var privMethods = {
 								        { height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
                     // the back tile face is hidden by default and expanded halfway through a flip
                     backCss = (tdata.direction === "vertical") ?
-							            { height: '0px', width: tdata.width + 'px', marginTop: tdata.margin + 'px', opacity: '0' } :
-							            { height: tdata.height + 'px', width: '0px', marginLeft: tdata.margin + 'px', opacity: '0' };
+							            { height: '0%', width: '100%', marginTop: tdata.margin + 'px', opacity: '0' } :
+							            { height: '100%', width: '0%', marginLeft: tdata.margin + 'px', opacity: '0' };
                     ret.$front.css(frontCss);
                     ret.$back.css(backCss);
                 }
@@ -833,7 +831,7 @@ var privMethods = {
         }
         return ret;
     },
-    bindPauseOnHover: function($tile){        
+    bindPauseOnHover: function ($tile) {
         // stop the tile when hovered and resume after a delay
         (function () {
             var data = $tile.data("LiveTile"),
@@ -897,7 +895,7 @@ var privMethods = {
             var isOver = false,
                 isPending = false;
             data.onHoverMethods = {
-                over: function(event) {
+                over: function (event) {
                     if (isOver || isPending || (data.bounce && data.bounceMethods.down != "no"))
                         return;
                     // if startNow is set use the opposite of isReversed so we're in sync            
@@ -912,7 +910,7 @@ var privMethods = {
                         }, data.onHoverDelay);
                     }
                 },
-                out: function(event) {
+                out: function (event) {
                     if (isPending) {
                         window.clearTimeout(data.eventTimeout);
                         isPending = false;
@@ -927,17 +925,17 @@ var privMethods = {
                             pubMethods["play"].apply($tile[0], [0]);
                         }
                         isOver = false;
-                    }, data.speed + 200);            
+                    }, data.speed + 200);
                 }
             };
             $tile.addClass("noselect");
             if (!metrojs.capabilities.canTouch) {
-                $tile.bind('mouseenter.liveTile', function (e) {                    
+                $tile.bind('mouseenter.liveTile', function (e) {
                     data.onHoverMethods.over(e);
                 });
-                $tile.bind('mouseleave.liveTile', function (e) {                    
-                        data.onHoverMethods.out(e);
-                });            
+                $tile.bind('mouseleave.liveTile', function (e) {
+                    data.onHoverMethods.out(e);
+                });
                 //$tile.bind("mouseenter.liveTile", over);
                 //$tile.bind("mouseleave.liveTile", out);
             } else {
@@ -958,11 +956,11 @@ var privMethods = {
             $tile[0].removeEventListener('MSPointerDown', data.onHoverMethods.over, false);
         }
     },
-    bindBounce: function($tile, data){
+    bindBounce: function ($tile, data) {
         // add bounce
         if (data.bounce) {
             $tile.addClass("bounce");
-            (function () {                
+            (function () {
                 data.bounceMethods = {
                     down: "no",
                     threshold: 30,
@@ -993,11 +991,11 @@ var privMethods = {
                             strictMatch = null,
                             looseMatch = null,
                             defResult = { hit: [0, 0], name: 'c' };
-                        // scale only for android 2.x
-                        if (metrojs.capabilities.isOldAndroid)
+                        // scale only for android 2.x and old ie
+                        if (metrojs.capabilities.isOldAndroid || !metrojs.capabilities.canTransform)
                             return defResult;
                         if (typeof (checkFor) == "undefined") {
-                            if (typeof(targetRegions) === "string")
+                            if (typeof (targetRegions) === "string")
                                 checkFor = targetRegions.split(',');
                             // only default to center if explicitly requested
                             if ($.isArray(checkFor) && $.inArray('c') == -1) {
@@ -1011,7 +1009,7 @@ var privMethods = {
                            // center threshold -  maximum amount from center
                            ct = [w * omegaC, h * omegaC],
                            // how far from the center is the point
-                           diffX = pos.x - (w * 0.5), 
+                           diffX = pos.x - (w * 0.5),
                            diffY = pos.y - (h * 0.5),
                             // if we're beyond the center threshold, set -1 or 1 else 0
                            hit = [
@@ -1019,7 +1017,7 @@ var privMethods = {
                                diffY > 0 ? (Math.abs(diffY) <= ct[1] ? 0 : 1) : (Math.abs(diffY) <= ct[1] ? 0 : -1)
                            ];
                         for (; i < checkFor.length; i++) {
-                            if(strictMatch != null)
+                            if (strictMatch != null)
                                 return strictMatch;
                             var r = checkFor[i],
                                 region = regions[r];
@@ -1030,7 +1028,7 @@ var privMethods = {
                             if (hit[0] == region[0] && hit[1] == region[1]) {
                                 // found the region with a strict lookup
                                 strictMatch = { hit: region, name: r };
-                            }else if ((hit[0] == region[0] || region[0] == null) && (hit[1] == region[1] || region[1] == null)) {
+                            } else if ((hit[0] == region[0] || region[0] == null) && (hit[1] == region[1] || region[1] == null)) {
                                 // found the region with a loose lookup
                                 looseMatch = { hit: region, name: r };
                             }
@@ -1058,7 +1056,7 @@ var privMethods = {
                             x: point.pageX - offsetOfTile.left,
                             y: point.pageY - offsetOfTile.top
                         };
-                        
+
                         if (!data.$tileParent) {
                             data.$tileParent = $tile.parent();
                         }
@@ -1076,7 +1074,7 @@ var privMethods = {
                                 $tile[0].addEventListener('MSPointerUp', data.bounceMethods.bounceUp, false);
                                 document.addEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
                                 if (data.bounceFollowsMove)
-                                    $tile[0].addEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);                                
+                                    $tile[0].addEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
                             } else {
                                 $(document).bind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
                                 if (data.bounceFollowsMove) {
@@ -1094,7 +1092,7 @@ var privMethods = {
                             data.$tileParent.css(data.bounceMethods.downPcss);
                         }
                     },
-                    bounceUp: function() {
+                    bounceUp: function () {
                         if (data.bounceMethods.down != "no") {
                             data.bounceMethods.unBounce();
                             if (window.navigator.msPointerEnabled) {
@@ -1103,7 +1101,7 @@ var privMethods = {
                                 document.removeEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
                                 if (data.bounceFollowsMove)
                                     $tile[0].removeEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
-                                
+
                             } else
                                 $(document).unbind("mouseup.liveTile, touchend.liveTile, touchcancel.liveTile, dragstart.liveTile", data.bounceMethods.bounceUp);
                             if (data.bounceFollowsMove) {
@@ -1112,7 +1110,7 @@ var privMethods = {
                             }
                         }
                     },// not currently used
-                    bounceMove: function(e) {
+                    bounceMove: function (e) {
                         if (data.bounceMethods.down != "no") {
                             var point = e.originalEvent && e.originalEvent.touches ? e.originalEvent.touches[0] : e,
                                 x = Math.abs(point.pageX - data.bounceMethods.pointPos.x),
@@ -1133,35 +1131,35 @@ var privMethods = {
                             window.setTimeout(function () {
                                 data.$tileParent.css(data.bounceMethods.downPcss);
                             }, 200);
-                            
+
                         }
                         data.bounceMethods.down = "no";
                         data.bounceMethods.inTilePos = data.bounceMethods.zeroPos;
                         data.bounceMethods.eventPos = data.bounceMethods.zeroPos;
                     }
-                };            
+                };
                 // IE 10+
                 if (window.navigator.msPointerEnabled) {// touch only -> // && window.navigator.msMaxTouchPoints) {
-                    $tile[0].addEventListener('MSPointerDown', data.bounceMethods.bounceDown, false);                   
+                    $tile[0].addEventListener('MSPointerDown', data.bounceMethods.bounceDown, false);
                 } else if (metrojs.capabilities.canTouch) {
                     // everybody else                    
                     $tile.bind("touchstart.liveTile", data.bounceMethods.bounceDown);
-                     
+
                 } else {
-                    $tile.bind("mousedown.liveTile", data.bounceMethods.bounceDown);                     
+                    $tile.bind("mousedown.liveTile", data.bounceMethods.bounceDown);
                 }
             })();
         }
     },
-    unbindMsBounce: function($tile, data){
-        if(data.bounce && window.navigator.msPointerEnabled) {// touch only -> // && window.navigator.msMaxTouchPoints) {
+    unbindMsBounce: function ($tile, data) {
+        if (data.bounce && window.navigator.msPointerEnabled) {// touch only -> // && window.navigator.msMaxTouchPoints) {
             $tile[0].removeEventListener('MSPointerDown', data.bounceMethods.bounceDown, false);
             $tile[0].removeEventListener('MSPointerCancel', data.bounceMethods.bounceUp, false);
             $tile[0].removeEventListener('MSPointerOut', data.bounceMethods.bounceUp, false);
             //$tile[0].removeEventListener('MSPointerMove', data.bounceMethods.bounceMove, false);
-        }        
+        }
     },
-    bindLink: function($tile, data){
+    bindLink: function ($tile, data) {
         if (data.link.length > 0) {
             $tile.css({ cursor: 'pointer' }).bind("click.liveTile", function (e) {
                 if (e.target.tagName == "A" && !$(e).is(".live-tile,.slide,.flip"))
@@ -1183,7 +1181,7 @@ var privMethods = {
                     }
                 }
             };
-        
+
         if (tdata.faces.$front.is(":animated"))
             return;
         tdata.timer.pause();
@@ -1194,13 +1192,13 @@ var privMethods = {
             resumeTimer();
             return;
         }
-        tdata.loopCount = loopCount;        
+        tdata.loopCount = loopCount;
         var faded = function () {
             resumeTimer();
             // run content modules and animationComplete callback
             for (var module in tdata.contentModules)
                 tdata.contentModules[module].action(tdata, tdata.faces.$front, tdata.faces.$back);
-            tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);            
+            tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);
         };
         if (tdata.isReversed)
             tdata.faces.$front.fadeIn(tdata.speed, tdata.noHaTransFunc, faded);
@@ -1226,7 +1224,7 @@ var privMethods = {
         if (tdata.mode !== "carousel") {
             tdata.isReversed = tdata.currentIndex % 2 !== 0;  // the count starts at 1
             // carousel mode maintains its own timer
-            tdata.timer.pause();            
+            tdata.timer.pause();
             var start = tdata.animationStarting.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);
             if (typeof (start) != "undefined" && start == false) {
                 resumeTimer();
@@ -1235,8 +1233,8 @@ var privMethods = {
             tdata.loopCount = tdata.loopCount + 1;
         } else {
             // in carousel mode the face that just left the stage is always the $back
-            tdata.isReversed = true;            
-        }        
+            tdata.isReversed = true;
+        }
         // get temp values passed in from data methods
         var direction;
         if (typeof (tdata.tempValues.direction) === "string" && tdata.tempValues.direction.length > 0)
@@ -1253,7 +1251,8 @@ var privMethods = {
             offset = 0,
             amount = 0,
             metric = (direction === "vertical") ? tdata.height : tdata.width,
-            tProp = (direction === "vertical") ? "top" : "left";        
+            tProp = (direction === "vertical") ? "top" : "left",
+            stack = tdata.stack == true;
         // when the slide is complete increment the index or call the callback
         var slideFinished = function () {
             if (typeof (callback) === "undefined") {
@@ -1270,7 +1269,7 @@ var privMethods = {
             // run content modules and animationComplete callback
             for (var module in tdata.contentModules)
                 tdata.contentModules[module].action(tdata, tdata.faces.$front, tdata.faces.$back, tdata.currentIndex);
-            tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);            
+            tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);
             tdata = null;
             aniData = null;
         };
@@ -1288,12 +1287,11 @@ var privMethods = {
                 return;
             aniData.animating = true;
             var props = ['transition-property', 'transition-duration', 'transition-timing-function'],
-                vals =  [tdata.useTranslate ? "transform" : tProp, tdata.speed + 'ms', tdata.haTransFunc];
+                vals = [tdata.useTranslate ? "transform" : tProp, tdata.speed + 'ms', tdata.haTransFunc];
             vals[helperMethods.browserPrefix + 'transition-property'] = helperMethods.browserPrefix + "transform";
             css = helperMethods.appendStyleProperties(css, props, vals);
             cssback = helperMethods.appendStyleProperties(cssback, props, vals);
             var vertical = direction === "vertical",
-                stack = tdata.stack == true,
                 prop = vertical ? "top" : "left",
                 translateTo;
             if (!tdata.useTranslate) {
@@ -1309,8 +1307,8 @@ var privMethods = {
                 }
             }
             tdata.faces.$front.css(css);
-	        if(stack)
-	    	    tdata.faces.$back.css(cssback);
+            if (stack)
+                tdata.faces.$back.css(cssback);
             window.clearTimeout(tdata.completeTimeout);
             tdata.completeTimeout = window.setTimeout(function () {
                 aniData.animating = false;
@@ -1321,14 +1319,15 @@ var privMethods = {
             css[tProp] = stop;
             cssback[tProp] = offset;
             aniData.animating = true;
-            tdata.faces.$front.stop().animate(css, tdata.speed, tdata.noHaTransFunc, function () {
+            var $front = tdata.faces.$front.stop(),
+                $back = tdata.faces.$back.stop()
+            $front.animate(css, tdata.speed, tdata.noHaTransFunc, function () {
                 aniData.animating = false;
                 slideFinished();
             });
-            if (tdata.stack == true) {
-                // change the css value to the offset                
-                tdata.faces.$back.stop().animate(cssback, tdata.speed, tdata.noHaTransFunc, function () { });
-            }
+            // change the css value to the offset
+            if (stack)
+                $back.animate(cssback, tdata.speed, tdata.noHaTransFunc, function () { });
         }
     },
     carousel: function ($tile, count) {
@@ -1365,12 +1364,12 @@ var privMethods = {
             animationDirection = tdata.tempValues.animationDirection;
         else if (typeof (sdata.animationDirection) === "string" && sdata.animationDirection.length > 0) {
             animationDirection = sdata.animationDirection;
-        }else
+        } else
             animationDirection = tdata.animationDirection;
         // the temp value for animation direction is not used in slide so i'm setting it to null
         tdata.tempValues.animationDirection = null;
         var direction;
-        if (typeof (tdata.tempValues.direction) === "string" && tdata.tempValues.direction.length > 0){
+        if (typeof (tdata.tempValues.direction) === "string" && tdata.tempValues.direction.length > 0) {
             direction = tdata.tempValues.direction;
         } else if (typeof (sdata.direction) === "string" && sdata.direction.length > 0) {
             direction = sdata.direction;
@@ -1389,7 +1388,7 @@ var privMethods = {
             vertical = direction === "vertical",
             translateTo;
         if (animationDirection === "backward") {
-            if (!tdata.useTranslate) {
+            if (!tdata.useTranslate || !metrojs.capabilities.canTransition) {
                 if (vertical) {
                     nxtCss.top = "-100%";
                     nxtCss.left = "0%";
@@ -1405,9 +1404,9 @@ var privMethods = {
             }
             tdata.faces.$front = $cur;
             tdata.faces.$back = $nxt;
-            
+
         } else {
-            if (!tdata.useTranslate) {
+            if (!tdata.useTranslate || !metrojs.capabilities.canTransition) {
                 if (vertical) {
                     nxtCss.top = "100%";
                     nxtCss.left = "0%";
@@ -1416,7 +1415,7 @@ var privMethods = {
                     nxtCss.left = "100%";
                 }
             } else {
-                translateTo = vertical ? "translate(0%, 100%)" : "translate(100%, 0%)";                
+                translateTo = vertical ? "translate(0%, 100%)" : "translate(100%, 0%)";
                 nxtCss = helperMethods.appendStyleProperties(nxtCss, ["transform"], [translateTo + " translateZ(0)"]);
             }
             tdata.faces.$front = $nxt;
@@ -1425,11 +1424,10 @@ var privMethods = {
         }
         $nxt.css(nxtCss);
         // the timeout wrapper gives the css call above enough time to finish in case we dynamically set the direction
-        window.setTimeout(function () {            
+        window.setTimeout(function () {
             $cur.removeClass("active");
-                $nxt.addClass("active");
-            privMethods.slide($tile, count, tdata, 0, function ()
-            {                   
+            $nxt.addClass("active");
+            privMethods.slide($tile, count, tdata, 0, function () {
                 tdata.currentIndex = nxtIdx;
                 aniData = null;
                 $cur = null;
@@ -1442,10 +1440,10 @@ var privMethods = {
     flip: function ($tile, count, data, callback) {
         var aniData = $tile.data("metrojs.tile");
         if (aniData.animating == true) {
-            anidata = null;            
+            anidata = null;
             return;
         }
-        var tdata = typeof (data) === "object" ? data : $tile.data("LiveTile");                
+        var tdata = typeof (data) === "object" ? data : $tile.data("LiveTile");
         var $front, $back, direction, deg, rotateDir, css,
             raiseEvt = typeof (callback) === "undefined",
             index = 0,
@@ -1465,18 +1463,18 @@ var privMethods = {
             isReversed = loopCount % 2 === 0;
             tdata.isReversed = isReversed;
             $front = tdata.faces.$front;
-            $back = tdata.faces.$back;            
-            var start = tdata.animationStarting.call($tile[0], tdata, $front, $back);
-            if (typeof (start) != "undefined" && start == false)
-            {
-                resumeTimer();                
+            $back = tdata.faces.$back;
+            var args = isReversed ? [tdata, $back, $front] : [tdata, $front, $back];
+            var start = tdata.animationStarting.apply($tile[0], args);
+            if (typeof (start) != "undefined" && start == false) {
+                resumeTimer();
                 return;
             }
             direction = tdata.direction;
             height = tdata.height;
             width = tdata.width;
-            margin = tdata.margin;            
-            tdata.loopCount = loopCount;                       
+            margin = tdata.margin;
+            tdata.loopCount = loopCount;
         } else {
             isReversed = count % 2 === 0;
             index = aniData.index;
@@ -1487,8 +1485,8 @@ var privMethods = {
             height = tdata.listData[index].height;
             width = tdata.listData[index].width;
             margin = tdata.listData[index].margin;
-        }        
-        
+        }
+
         if (metrojs.capabilities.canFlip3d && tdata.useHardwareAccel) { // Hardware accelerated :)
             deg = !isReversed ? "180deg" : "360deg";
             rotateDir = direction === "vertical" ? "rotateX(" + deg + ")" : "rotateY(" + deg + ")";
@@ -1507,25 +1505,25 @@ var privMethods = {
                         tdata.contentModules[module].action(tdata, $back, $front, index);
                     if (raiseEvt) {
                         resumeTimer();
-                        tdata.animationComplete.call($tile[0], tdata, $back, $front);                        
+                        tdata.animationComplete.call($tile[0], tdata, $back, $front);
                     } else
                         callback(tdata, $back, $front);
-                } else {                    
-                        resetDir = direction === "vertical" ? "rotateX(0deg)" : "rotateY(0deg)";
-                        newCss = helperMethods.appendStyleProperties({}, ["transform", "transition"], [resetDir, "all 0s " + tdata.haTransFunc + " 0s"]);                        
-                        $front.css(newCss);                        
-                        //call content modules
-                        for (module in tdata.contentModules)
-                            tdata.contentModules[module].action(tdata, $front, $back, index);
-                        if (raiseEvt) {
-                            resumeTimer();
-                            tdata.animationComplete.call($tile[0], tdata, $front, $back);                            
-                        } else
-                            callback(tdata, $front, $back);
-                        $front = null;
-                        $back = null;
-                        tdata = null;
-                        aniData = null;
+                } else {
+                    resetDir = direction === "vertical" ? "rotateX(0deg)" : "rotateY(0deg)";
+                    newCss = helperMethods.appendStyleProperties({}, ["transform", "transition"], [resetDir, "all 0s " + tdata.haTransFunc + " 0s"]);
+                    $front.css(newCss);
+                    //call content modules
+                    for (module in tdata.contentModules)
+                        tdata.contentModules[module].action(tdata, $front, $back, index);
+                    if (raiseEvt) {
+                        resumeTimer();
+                        tdata.animationComplete.call($tile[0], tdata, $front, $back);
+                    } else
+                        callback(tdata, $front, $back);
+                    $front = null;
+                    $back = null;
+                    tdata = null;
+                    aniData = null;
                 }
             };
             if (tdata.mode === "flip-list") {
@@ -1547,7 +1545,7 @@ var privMethods = {
             if (!isReversed) {
                 aniData.animating = true;
                 $front.stop().animate(hideCss, { duration: speed });
-                noHaAction = function () {                    
+                noHaAction = function () {
                     aniData.animating = false;
                     $back.stop().animate(showCss, {
                         duration: speed, complete: function () {
@@ -1565,7 +1563,7 @@ var privMethods = {
                         }
                     });
                 };
-                if (tdata.mode === "flip-list") {      
+                if (tdata.mode === "flip-list") {
                     window.clearTimeout(tdata.listData[aniData.index].completeTimeout);
                     tdata.listData[aniData.index].completeTimeout = window.setTimeout(noHaAction, speed);
                 } else {
@@ -1578,7 +1576,8 @@ var privMethods = {
                 noHaAction = function () {
                     aniData.animating = false;
                     $front.stop().animate(showCss, {
-                        duration: speed, complete: function () {
+                        duration: speed,
+                        complete: function () {
                             for (var module in tdata.contentModules)
                                 tdata.contentModules[module].action(tdata, $front, $back, index);
                             if (raiseEvt) {
@@ -1602,7 +1601,7 @@ var privMethods = {
             }
 
         }
-    },    
+    },
     flipList: function ($tile, count) {
         var tdata = $tile.data("LiveTile"),
             maxDelay = tdata.speed,
@@ -1617,7 +1616,7 @@ var privMethods = {
         tdata.timer.pause();
         var start = tdata.animationStarting.call($tile[0], tdata, null, null);
         if (typeof (start) != "undefined" && start == false) {
-            resumeTimer();            
+            resumeTimer();
             return;
         }
         tdata.loopCount = tdata.loopCount + 1;
@@ -1626,17 +1625,17 @@ var privMethods = {
                 ldata = $li.data("metrojs.tile"),
                 tDelay = tdata.triggerDelay(idx),
                 triggerDelay = tdata.speed + Math.max(tDelay, 0),
-                trigger = tdata.alwaysTrigger;               
+                trigger = tdata.alwaysTrigger;
             if (!trigger)
                 trigger = (Math.random() * 351) > 150 ? true : false;
             if (trigger) {
                 triggered = true;
-                maxDelay = Math.max(triggerDelay + tdata.speed, maxDelay);                
+                maxDelay = Math.max(triggerDelay + tdata.speed, maxDelay);
                 window.clearTimeout(ldata.flCompleteTimeout);
-                ldata.flCompleteTimeout = window.setTimeout(function () {                    
+                ldata.flCompleteTimeout = window.setTimeout(function () {
                     // call the flip method with the merged data, but dont fire animationComplete
-                    privMethods.flip($li, ldata.count, tdata, function (data) {                        
-                        ldata.count++;                        
+                    privMethods.flip($li, ldata.count, tdata, function (data) {
+                        ldata.count++;
                         if (ldata.count >= MAX_LOOP_COUNT)
                             ldata.count = 1;
                         $li = null;
@@ -1653,7 +1652,7 @@ var privMethods = {
                 tdata.animationComplete.call($tile[0], tdata, null, null);
                 resumeTimer();
             }, maxDelay + tdata.speed); // add some padding to make sure the final callback finished
-            
+
         }
     }
 };
@@ -1666,14 +1665,14 @@ var helperMethods = {
     browserPrefix: null,
     // a method to append css3 properties for each browser
     // note: values are identical for each property
-    appendStyleProperties: function(obj, names, values) {
+    appendStyleProperties: function (obj, names, values) {
         for (var i = 0; i <= names.length - 1; i++) {
             obj[$.trim(this.browserPrefix + names[i])] = values[i];
             obj[$.trim(names[i])] = values[i];
         }
         return obj;
     },
-    getBrowserPrefix: function (){
+    getBrowserPrefix: function () {
         if (this.browserPrefix == null) {
             var prefix = "";
             for (var i = 0; i <= this.domPrefixes.length - 1; i++) {
@@ -1684,7 +1683,7 @@ var helperMethods = {
         }
         return this.browserPrefix;
     },
-    applyStyleValue: function(obj, value) {
+    applyStyleValue: function (obj, value) {
         for (var x in obj) {
             obj[x] = value;
         }
@@ -1706,7 +1705,7 @@ var defaultModules = {
         data: {
             customDoSwapFront: function () { return false; },
             customDoSwapBack: function () { return false; },
-            customGetContent: function(tdata, $front, $back, index) { return null; }
+            customGetContent: function (tdata, $front, $back, index) { return null; }
         },
         initData: function (tdata, $ele) {
             var swapData = {};
@@ -1744,9 +1743,9 @@ var defaultModules = {
                 prevFrontIndex: -1
             };
             swapData.frontIsRandom = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-israndom", tdata.frontIsRandom) : tdata.frontIsRandom;
-            swapData.frontIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-isingrid", tdata.frontIsInGrid) : tdata.frontIsInGrid;            
+            swapData.frontIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-isingrid", tdata.frontIsInGrid) : tdata.frontIsInGrid;
             swapData.backIsRandom = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-israndom", tdata.backIsRandom) : tdata.backIsRandom;
-            swapData.backIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-isingrid", tdata.backIsInGrid) : tdata.backIsInGrid;            
+            swapData.backIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-isingrid", tdata.backIsInGrid) : tdata.backIsInGrid;
             swapData.doSwapFront = $.inArray('html', tdata.swapFront) > -1 && (tdata.frontContent instanceof Array) && tdata.frontContent.length > 0;
             swapData.doSwapBack = $.inArray('html', tdata.swapBack) > -1 && (tdata.backContent instanceof Array) && tdata.backContent.length > 0;
             if (typeof (tdata.htmlSwap) !== "undefined")
@@ -1921,7 +1920,7 @@ var defaultModules = {
             swapData.doSwapBack = $.inArray('image', tdata.swapBack) > -1 && (tdata.backImages instanceof Array) && tdata.backImages.length > 0;
             swapData.alwaysSwapFront = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-alwaysswap", tdata.alwaysSwapFront) : tdata.alwaysSwapFront;
             swapData.alwaysSwapBack = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-alwaysswap", tdata.alwaysSwapBack) : tdata.alwaysSwapBack;
-            if(typeof(tdata.imgSwap) !== "undefined")
+            if (typeof (tdata.imgSwap) !== "undefined")
                 tdata.imgSwap = $.extend(swapData, tdata.imgSwap);
             else
                 tdata.imgSwap = swapData;
@@ -1995,16 +1994,16 @@ var defaultModules = {
             // get alt text
             if (typeof (image.alt) !== 'undefined')
                 attr.alt = image.alt;
-                // set css
-                if (typeof (image.css) === 'object')
-                    $img.css($.extend(css, image.css));
-                else
-                    $img.css(css);
-                // set attributes
-                if (typeof (image.attr) === 'object')
-                    $img.attr($.extend(attr, image.attr));
-                else
-                    $img.attr(attr);
+            // set css
+            if (typeof (image.css) === 'object')
+                $img.css($.extend(css, image.css));
+            else
+                $img.css(css);
+            // set attributes
+            if (typeof (image.attr) === 'object')
+                $img.attr($.extend(attr, image.attr));
+            else
+                $img.attr(attr);
         },
         action: function (tdata, $front, $back, index) {
             if (!tdata.imgSwap.doSwapFront && !tdata.imgSwap.doSwapBack)
@@ -2027,7 +2026,7 @@ var defaultModules = {
                             tdata.imgSwap.frontStaticIndex = 0;
                     }
                 }
-                if(tdata.alwaysSwapBack || isReversed){
+                if (tdata.alwaysSwapBack || isReversed) {
                     if (tdata.imgSwap.doSwapBack) {
                         // update the random value for grid mode
                         if (tdata.imgSwap.backBag.length === 0)
@@ -2077,8 +2076,7 @@ var defaultModules = {
 
                 }
             }
-            if(tdata.alwaysSwapBack || isReversed)
-            {
+            if (tdata.alwaysSwapBack || isReversed) {
                 if (!tdata.imgSwap.doSwapBack)
                     return;
                 // get the new index
@@ -2153,7 +2151,7 @@ $.fn.metrojs.TileTimer = function (interval, callback, repeatCount) {
     this.resume = function () {
         if (this.repeatCount > 0 || this.repeatCount == -1) {
             if (this.count != this.repeatCount) {
-                this.start(interval);                
+                this.start(interval);
             }
         }
     };

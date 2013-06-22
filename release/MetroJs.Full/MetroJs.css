@@ -3,6 +3,7 @@
 .list-tile,
 .copy-tile,
 .tile-strip .flip-list > li {
+  background-color: red!important;
   height: 150px;
   margin: 5px;
   outline: 1px solid transparent;
@@ -417,7 +418,8 @@
 .list-tile.bounce.bounce-c,
 .copy-tile.bounce.bounce-c,
 .slide.bounce.bounce-c {
-  cursor: pointer;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.95, M12=0, M21=0, M22=0.95)";
+  filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.95, M12=0, M21=0, M22=0.95);
   -webkit-transform: scale(0.95);
   -ms-transform: scale(0.95);
   -moz-transform: scale(0.95);

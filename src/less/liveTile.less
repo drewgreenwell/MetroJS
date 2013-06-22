@@ -3,6 +3,7 @@
 /* Sizes */
 .live-tile, .list-tile, .copy-tile, .tile-strip .flip-list>li
 {
+    background-color:red!important;
     height: @height;
     margin: @margin;
     outline: 1px solid transparent;
@@ -191,13 +192,14 @@
         backface-visibility:hidden;        
 
         &.bounce-c
-        {
-            cursor: pointer;
-            -webkit-transform: scale(.95);
-            -ms-transform: scale(.95);
-            -moz-transform: scale(.95);
-            -o-transform: scale(.95);
-            transform: scale(.95);
+        {            
+            -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.95, M12=0, M21=0, M22=0.95)";
+            filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.95,M12=0,M21=0,M22=0.95);            
+            -webkit-transform: scale(0.95);
+            -ms-transform: scale(0.95);
+            -moz-transform: scale(0.95);
+            -o-transform: scale(0.95);
+            transform: scale(0.95);
         }
 
         &.bounce-t
@@ -264,7 +266,7 @@
             transform: rotateX(10deg) rotateY(-10deg);
         }
         &.bounce-tr
-        {
+        {            
             -webkit-transform: rotateX(10deg) rotateY(10deg);
             -ms-transform: rotateX(10deg) rotateY(10deg);
             -moz-transform: rotateX(10deg) rotateY(10deg);
@@ -404,6 +406,8 @@
 .noselect >.slide,
 .noselect >.slide-front,
 .noselect >.slide-back,
+.noselect >.fade-front,
+.noselect >.fade-back,
 .noselect >.flip-front,
 .noselect >.flip-back
 {
@@ -418,6 +422,8 @@
 .carousel>.slide,
 .live-tile>.slide-front,
 .live-tile>.slide-back,
+.live-tile>.fade-front,
+.live-tile>.fade-back,
 .live-tile>.flip-front,
 .live-tile>.flip-back
 {    
@@ -445,7 +451,7 @@ img.full , a.full, .live-tile .full, .list-tile .full
 	width:100%;    
 }
 
-.live-tile>.back, .live-tile>.slide-back,.live-tile>.flip-back, .flip-list .flip-back
+.live-tile>.back, .live-tile>.slide-back,.live-tile>.fade-back,.live-tile>.flip-back, .flip-list .flip-back
 {
 	position:absolute;
 	z-index:10;	
