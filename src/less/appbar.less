@@ -1,71 +1,190 @@
 ﻿@import "variables.less";
-/* sizes */
-.appbar
-{
-	font-size: .9em;
-    height: 60px;
-    max-height:100%;
-	padding: 10px 0;
-	width: 100%;	
-	&.small
-    {
-		height: 28px;
-    }
-}
-.appbar-buttons
-{	
-	padding: 0 0 2px;
-	width:252px;
-}
-.appbar.small .appbar-buttons
-{
-	width:162px;
-}
-.appbar a.etc, .appbar a.etc:hover, .appbar a.etc:visited
-{
-	font-size:32px;
-	/* add some extra padding to make it easier to touch */
-	height:60px;
-	width:90px; 
-}
-    .appbar.small a.etc, .appbar.small a.etc:hover, .appbar.small a.etc:visited
-    {
-		font-size:16px;
-		height:60px;
-		width:90px;
-    }
-.appbar .theme-options { display:block; margin:0px auto; position: relative; max-width:620px; width: 85%; }
-.appbar .base-theme-options { display:block; margin:0px auto; position: relative; max-width:120px; width:30%; }
-/* application-bar styles */
 .appbar
 {
     background-color: #212021;
     bottom: 0px;
-    color: #fff; 
+    color: #fff;
+    font-size: .9em;
+    height: 60px;
     left: 0px;
     line-height: normal;
     margin: 0;
-    overflow: hidden;    
+    max-height: 100%;
+    overflow: hidden;
+    padding: 10px 0;
     position: fixed;
     text-align: right;
+    width: 100%;
     z-index: 100;
-	-ms-touch-action:manipulation;
-}
+    -ms-touch-action: manipulation;
+
+    a.etc,
+    a.etc:hover,
+    a.etc:visited
+    {
+        color: #fff;
+        cursor: pointer;
+        display: block;
+        font-size: 32px;
+        /* add some extra padding to make it easier to touch */
+        height: 60px;
+        position: absolute;
+        right: 8px;
+        text-decoration: none;
+        top: 0px;
+        width: 90px;
+        z-index: 100;
+    }
+
+    .clear
+    {
+        clear: both;
+    }
+
+    .appbar-buttons
+    {
+        padding: 0 0 2px;
+        width: @abBtnWidthP * 3;
+        &.one { width: @abBtnWidthP; }
+        &.two { width: @abBtnWidthP * 2; }
+        &.three { width: @abBtnWidthP * 3; }
+        &.four { width: @abBtnWidthP * 4; }
+        &.five { width: @abBtnWidthP * 5; }
+        &.six { width: @abBtnWidthP * 6; }
+        &.seven { width: @abBtnWidthP * 7; }
+        &.eight { width: @abBtnWidthP * 8; }
+        &.nine { width: @abBtnWidthP * 9; }
+        &.ten { width: @abBtnWidthP * 10; }
+    }
+
+    .theme-options
+    {
+        display: block;
+        margin: 0px auto;
+        position: relative;
+        max-width: 620px;
+        width: 85%;
+    }
+
+        .theme-options > li
+        {
+            display: block;
+            margin: 8px;
+            float: left;
+            line-height: 32px;
+            height: 32px;
+            width: 32px;
+        }
+
+            .theme-options > li > a, .appbar .theme-options > li > a:hover,
+            .theme-options > li > a:visited
+            {
+                display: block;
+                padding: 0px;
+                text-decoration: none;
+                height: 32px;
+                width: 32px;
+            }
+
+    .base-theme-options
+    {
+        display: block;
+        margin: 0px auto;
+        position: relative;
+        max-width: 120px;
+        width: 30%;
+    }
+
+        .base-theme-options > li
+        {
+            display: block;
+            margin: 8px;
+            float: left;
+            line-height: 32px;
+            height: 32px;
+            width: 32px;
+        }
+
+            .base-theme-options > li > a, .appbar .base-theme-options > li > a:hover,
+            .base-theme-options > li > a:visited
+            {
+                display: block;
+                padding: 0px;
+                text-decoration: none;
+                height: 32px;
+                width: 32px;
+            }
+
+                .base-theme-options > li > a.dark.accent
+                {
+                    background-color: #000;
+                }
+
+    .charm-title
+    {
+        font-size: 10px;
+        display: block;
+        text-align: center;
+    }
+
+    &.small
+    {
+        height: 28px;
+        .appbar-buttons
+        {
+            width: @absBtnWidthP * 3;
+            &.one { width: @absBtnWidthP; }
+            &.two { width: @absBtnWidthP * 2; }
+            &.three { width: @absBtnWidthP * 3; }
+            &.four { width: @absBtnWidthP * 4; }
+            &.five { width: @absBtnWidthP * 5; }
+            &.six { width: @absBtnWidthP * 6; }
+            &.seven { width: @absBtnWidthP * 7; }
+            &.eight { width: @absBtnWidthP * 8; }
+            &.nine { width: @absBtnWidthP * 9; }
+            &.ten { width: @absBtnWidthP * 10; }
+        }
+        a>img
+        {
+            height:@absBtnHeight; 
+            width:@absBtnWidth;
+        }
+        a.etc,
+        a.etc:hover, a.etc:visited
+        {
+            font-size: 16px;
+            height: 60px;
+            width: 90px;
+        }
+    }
+}    
 
 .light .appbar { background-color:#dfdfdf; color:#000; }
 .dark .appbar { background-color:#212021; }
-.appbar .clear { clear:both; }
 .light .appbar-buttons li a { color:#000; }
-.appbar-buttons a>img { background-image:url('images/metroIcons.jpg'); background-repeat:no-repeat; height:64px; width:64px; border:none; }
-.appbar-buttons a.small > img { height:32px; width:32px; }
 .light .appbar-buttons a>img { background-image:url('images/metroIcons_light.jpg'); }
-
+.light .appbar a.etc, .light .appbar a.etc:hover, 
+.light .appbar a.etc:visited { color:#000; }
 .appbar-buttons
-{
-	
+{	
 	position: relative;
 	margin: 0 auto;
 	text-align: right;	   
+    a>img 
+    {
+        background-image:url('images/metroIcons.jpg');
+        background-repeat:no-repeat;
+        border:none;
+        height:@abBtnHeight;
+        width:@abBtnWidth;
+    }
+    a.small > img 
+    { 
+        height:@absBtnHeight; 
+        width:@absBtnWidth;
+
+    }
+
 	a {
 		&.search > img { background-position: -12px -12px; }
 		&.home > img { background-position: -104px -12px; }
@@ -111,53 +230,7 @@
 		&.select > img { background-position: -196px -538px; }
 		&.sun > img { background-position: -288px -538px; }
 		&.dpad > img { background-position: -380px -538px; }
-		&.play > img { background-position: -472px -538px; }
-
-		&.small.search > img { background-position: -562px -6px; }
-		&.small.home > img { background-position: -608px -6px; }
-		&.small.twitter > img { background-position: -654px -6px; }
-		&.small.calendar > img { background-position: -700px -6px; }
-		&.small.storm > img { background-position: -746px -6px; }
-		&.small.down > img { background-position: -792px -6px; }
-		&.small.camera > img { background-position: -562px -50px; }
-		&.small.camcorder > img { background-position: -608px -50px; }
-		&.small.qmark > img,
-		&.small.about > img { background-position: -654px -50px; }
-		&.small.share > img { background-position: -700px -50px; }
-		&.small.rain > img { background-position: -746px -50px; }
-		&.small.cancel > img,
-		&.small.close > img { background-position: -792px -50px; }
-		&.small.delete > img,
-		&.small.trash > img { background-position: -562px -94px; }
-		&.small.tag > img { background-position: -608px -94px; }
-		&.small.addcontact > img { background-position: -654px -94px; }
-		&.small.save> img { background-position: -700px -94px; }
-		&.small.snow > img { background-position: -746px -94px; }
-		&.small.msg > img { background-position: -792px -94px; }
-		&.small.email > img { background-position: -562px -137px; }
-		&.small.clock > img { background-position: -608px -137px; }
-		&.small.edit > img { background-position: -654px -137px; }
-		&.small.circle > img { background-position: -700px -137px; }
-		&.small.moon > img { background-position: -746px -137px; }
-		&.small.calc > img { background-position: -562px -181px; }
-		&.small.gear > img { background-position: -608px -181px; }
-		&.small.plus > img { background-position: -654px -181px; }
-		&.small.dot > img { background-position: -700px -181px; }
-		&.small.restart > img,
-		&.small.return > img { background-position: -746px -181px; }
-		&.small.add > img { background-position: -792px -181px; }
-		&.small.phone > img { background-position: -562px -226px; }
-		&.small.film > img { background-position: -608px -226px; }
-		&.small.back > img { background-position: -654px -226px; }
-		&.small.car > img { background-position: -700px -226px; }
-		&.small.forward > img { background-position: -746px -226px; }
-		&.small.selectmany > img { background-position: -792px -226px; }
-		&.small.stop > img { background-position: -562px -269px; }
-		&.small.contacts > img { background-position: -608px -269px; }
-		&.small.select > img { background-position: -654px -269px; }
-		&.small.sun > img { background-position: -700px -269px; }
-		&.small.dpad > img { background-position: -746px -269px; }
-		&.small.play > img { background-position: -792px -269px; }
+		&.play > img { background-position: -472px -538px; }        
 	}
 
 	li {
@@ -176,29 +249,96 @@
         text-decoration: none;
     }
 }
-
-
-.appbar a.etc, .appbar a.etc:hover,.appbar a.etc:visited
-{   
-	color:#fff;
-	cursor:pointer; 
-	display:block; 
-	position:absolute; 
-	right:8px;
-	text-decoration:none;
-	top:0px;
-	z-index:100;
-}
-.light .appbar a.etc, .light .appbar a.etc:hover, 
-.light .appbar a.etc:visited { color:#000; }
-.appbar .charm-title { font-size:10px; display:block; text-align:center; }
-.appbar .theme-options>li { display:block; margin:8px; float:left; line-height:32px; height:32px; width:32px; }
-.appbar .theme-options>li>a, .appbar .theme-options>li>a:hover,
-.appbar .theme-options>li>a:visited { display:block; padding:0px; text-decoration:none; height:32px; width:32px; }
-.appbar .base-theme-options>li { display:block; margin:8px; float:left; line-height:32px; height:32px; width:32px; }
-.appbar .base-theme-options>li>a, .appbar .base-theme-options>li>a:hover, 
-.appbar .base-theme-options>li>a:visited { display:block; padding:0px; text-decoration:none; height:32px; width:32px; }
-.appbar .base-theme-options>li>a.dark.accent { background-color:#000; }
+.small .appbar-buttons .search > img,
+.appbar-buttons .small.search > img { background-position: -562px -6px; }
+.small .appbar-buttons .home > img,
+.appbar-buttons .small.home > img { background-position: -608px -6px; }
+.small .appbar-buttons .twitter > img,
+.appbar-buttons .small.twitter > img { background-position: -654px -6px; }
+.small .appbar-buttons .calendar > img,
+.appbar-buttons .small.calendar > img { background-position: -700px -6px; }
+.small .appbar-buttons .storm > img,
+.appbar-buttons .small.storm > img { background-position: -746px -6px; }
+.small .appbar-buttons .down > img,
+.appbar-buttons .small.down > img { background-position: -792px -6px; }
+.small .appbar-buttons .camera > img,
+.appbar-buttons .small.camera > img { background-position: -562px -50px; }
+.small .appbar-buttons .camcorder > img,
+.appbar-buttons .small.camcorder > img { background-position: -608px -50px; }
+.small .appbar-buttons .qmark > img,
+.appbar-buttons .small.qmark > img,
+.small .appbar-buttons .about > img,
+.appbar-buttons .small.about > img { background-position: -654px -50px; }
+.small .appbar-buttons .share > img,
+.appbar-buttons .small.share > img { background-position: -700px -50px; }
+.small .appbar-buttons .rain > img,
+.appbar-buttons .small.rain > img { background-position: -746px -50px; }
+.small .appbar-buttons .cancel > img,
+.appbar-buttons .small.cancel > img,
+.small .appbar-buttons .close > img,
+.appbar-buttons .small.close > img { background-position: -792px -50px; }
+.small .appbar-buttons .delete > img,
+.appbar-buttons .small.delete > img,
+.small .appbar-buttons .trash > img,
+.appbar-buttons .small.trash > img { background-position: -562px -94px; }
+.small .appbar-buttons .tag > img,
+.appbar-buttons .small.tag > img { background-position: -608px -94px; }
+.small .appbar-buttons .addcontact > img,
+.appbar-buttons .small.addcontact > img { background-position: -654px -94px; }
+.small .appbar-buttons .save> img,
+.appbar-buttons .small.save> img { background-position: -700px -94px; }
+.small .appbar-buttons .snow > img,
+.appbar-buttons .small.snow > img { background-position: -746px -94px; }
+.small .appbar-buttons .msg > img,
+.appbar-buttons .small.msg > img { background-position: -792px -94px; }
+.small .appbar-buttons .email > img,
+.appbar-buttons .small.email > img { background-position: -562px -137px; }
+.small .appbar-buttons .clock > img,
+.appbar-buttons .small.clock > img { background-position: -608px -137px; }
+.small .appbar-buttons .edit > img,
+.appbar-buttons .small.edit > img { background-position: -654px -137px; }
+.small .appbar-buttons .circle > img,
+.appbar-buttons .small.circle > img { background-position: -700px -137px; }
+.small .appbar-buttons .moon > img,
+.appbar-buttons .small.moon > img { background-position: -746px -137px; }
+.small .appbar-buttons .calc > img,
+.appbar-buttons .small.calc > img { background-position: -562px -181px; }
+.small .appbar-buttons .gear > img,
+.appbar-buttons .small.gear > img { background-position: -608px -181px; }
+.small .appbar-buttons .plus > img,
+.appbar-buttons .small.plus > img { background-position: -654px -181px; }
+.small .appbar-buttons .dot > img,
+.appbar-buttons .small.dot > img { background-position: -700px -181px; }
+.small .appbar-buttons .restart > img,
+.appbar-buttons .small.restart > img,
+.small .appbar-buttons .return > img,
+.appbar-buttons .small.return > img { background-position: -746px -181px; }
+.small .appbar-buttons .add > img,
+.appbar-buttons .small.add > img { background-position: -792px -181px; }
+.small .appbar-buttons .phone > img,
+.appbar-buttons .small.phone > img { background-position: -562px -226px; }
+.small .appbar-buttons .film > img,
+.appbar-buttons .small.film > img { background-position: -608px -226px; }
+.small .appbar-buttons .back > img,
+.appbar-buttons .small.back > img { background-position: -654px -226px; }
+.small .appbar-buttons .car > img,
+.appbar-buttons .small.car > img { background-position: -700px -226px; }
+.small .appbar-buttons .forward > img,
+.appbar-buttons .small.forward > img { background-position: -746px -226px; }
+.small .appbar-buttons .selectmany > img,
+.appbar-buttons .small.selectmany > img { background-position: -792px -226px; }
+.small .appbar-buttons .stop > img,
+.appbar-buttons .small.stop > img { background-position: -562px -269px; }
+.small .appbar-buttons .contacts > img,
+.appbar-buttons .small.contacts > img { background-position: -608px -269px; }
+.small .appbar-buttons .select > img,
+.appbar-buttons .small.select > img { background-position: -654px -269px; }
+.small .appbar-buttons .sun > img,
+.appbar-buttons .small.sun > img { background-position: -700px -269px; }
+.small .appbar-buttons .dpad > img,
+.appbar-buttons .small.dpad > img { background-position: -746px -269px; }
+.small .appbar-buttons .play > img,
+.appbar-buttons .small.play > img { background-position: -792px -269px; }
 /* Media queries */
 @media screen and (max-width: 1025px) 
 {

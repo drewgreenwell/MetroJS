@@ -3249,39 +3249,77 @@ html body .black.accentBorderTop {
   border-top-color: #000000;
 }
 
-/* sizes */
 .appbar {
+  background-color: #212021;
+  bottom: 0px;
+  color: #fff;
   font-size: .9em;
   height: 60px;
+  left: 0px;
+  line-height: normal;
+  margin: 0;
   max-height: 100%;
+  overflow: hidden;
   padding: 10px 0;
+  position: fixed;
+  text-align: right;
   width: 100%;
-}
-.appbar.small {
-  height: 28px;
-}
-.appbar-buttons {
-  padding: 0 0 2px;
-  width: 252px;
-}
-.appbar.small .appbar-buttons {
-  width: 162px;
+  z-index: 100;
+  -ms-touch-action: manipulation;
 }
 .appbar a.etc,
 .appbar a.etc:hover,
 .appbar a.etc:visited {
+  color: #fff;
+  cursor: pointer;
+  display: block;
   font-size: 32px;
   /* add some extra padding to make it easier to touch */
 
   height: 60px;
+  position: absolute;
+  right: 8px;
+  text-decoration: none;
+  top: 0px;
   width: 90px;
+  z-index: 100;
 }
-.appbar.small a.etc,
-.appbar.small a.etc:hover,
-.appbar.small a.etc:visited {
-  font-size: 16px;
-  height: 60px;
-  width: 90px;
+.appbar .clear {
+  clear: both;
+}
+.appbar .appbar-buttons {
+  padding: 0 0 2px;
+  width: 252px;
+}
+.appbar .appbar-buttons.one {
+  width: 84px;
+}
+.appbar .appbar-buttons.two {
+  width: 168px;
+}
+.appbar .appbar-buttons.three {
+  width: 252px;
+}
+.appbar .appbar-buttons.four {
+  width: 336px;
+}
+.appbar .appbar-buttons.five {
+  width: 420px;
+}
+.appbar .appbar-buttons.six {
+  width: 504px;
+}
+.appbar .appbar-buttons.seven {
+  width: 588px;
+}
+.appbar .appbar-buttons.eight {
+  width: 672px;
+}
+.appbar .appbar-buttons.nine {
+  width: 756px;
+}
+.appbar .appbar-buttons.ten {
+  width: 840px;
 }
 .appbar .theme-options {
   display: block;
@@ -3290,6 +3328,23 @@ html body .black.accentBorderTop {
   max-width: 620px;
   width: 85%;
 }
+.appbar .theme-options > li {
+  display: block;
+  margin: 8px;
+  float: left;
+  line-height: 32px;
+  height: 32px;
+  width: 32px;
+}
+.appbar .theme-options > li > a,
+.appbar .appbar .theme-options > li > a:hover,
+.appbar .theme-options > li > a:visited {
+  display: block;
+  padding: 0px;
+  text-decoration: none;
+  height: 32px;
+  width: 32px;
+}
 .appbar .base-theme-options {
   display: block;
   margin: 0px auto;
@@ -3297,19 +3352,77 @@ html body .black.accentBorderTop {
   max-width: 120px;
   width: 30%;
 }
-/* application-bar styles */
-.appbar {
-  background-color: #212021;
-  bottom: 0px;
-  color: #fff;
-  left: 0px;
-  line-height: normal;
-  margin: 0;
-  overflow: hidden;
-  position: fixed;
-  text-align: right;
-  z-index: 100;
-  -ms-touch-action: manipulation;
+.appbar .base-theme-options > li {
+  display: block;
+  margin: 8px;
+  float: left;
+  line-height: 32px;
+  height: 32px;
+  width: 32px;
+}
+.appbar .base-theme-options > li > a,
+.appbar .appbar .base-theme-options > li > a:hover,
+.appbar .base-theme-options > li > a:visited {
+  display: block;
+  padding: 0px;
+  text-decoration: none;
+  height: 32px;
+  width: 32px;
+}
+.appbar .base-theme-options > li > a.dark.accent {
+  background-color: #000;
+}
+.appbar .charm-title {
+  font-size: 10px;
+  display: block;
+  text-align: center;
+}
+.appbar.small {
+  height: 28px;
+}
+.appbar.small .appbar-buttons {
+  width: 156px;
+}
+.appbar.small .appbar-buttons.one {
+  width: 52px;
+}
+.appbar.small .appbar-buttons.two {
+  width: 104px;
+}
+.appbar.small .appbar-buttons.three {
+  width: 156px;
+}
+.appbar.small .appbar-buttons.four {
+  width: 208px;
+}
+.appbar.small .appbar-buttons.five {
+  width: 260px;
+}
+.appbar.small .appbar-buttons.six {
+  width: 312px;
+}
+.appbar.small .appbar-buttons.seven {
+  width: 364px;
+}
+.appbar.small .appbar-buttons.eight {
+  width: 416px;
+}
+.appbar.small .appbar-buttons.nine {
+  width: 468px;
+}
+.appbar.small .appbar-buttons.ten {
+  width: 520px;
+}
+.appbar.small a > img {
+  height: 32px;
+  width: 32px;
+}
+.appbar.small a.etc,
+.appbar.small a.etc:hover,
+.appbar.small a.etc:visited {
+  font-size: 16px;
+  height: 60px;
+  width: 90px;
 }
 .light .appbar {
   background-color: #dfdfdf;
@@ -3318,22 +3431,8 @@ html body .black.accentBorderTop {
 .dark .appbar {
   background-color: #212021;
 }
-.appbar .clear {
-  clear: both;
-}
 .light .appbar-buttons li a {
   color: #000;
-}
-.appbar-buttons a > img {
-  background-image: url('images/metroIcons.jpg');
-  background-repeat: no-repeat;
-  height: 64px;
-  width: 64px;
-  border: none;
-}
-.appbar-buttons a.small > img {
-  height: 32px;
-  width: 32px;
 }
 .light .appbar-buttons a > img {
   background-image: url('images/metroIcons_light.jpg');
@@ -3342,6 +3441,17 @@ html body .black.accentBorderTop {
   position: relative;
   margin: 0 auto;
   text-align: right;
+}
+.appbar-buttons a > img {
+  background-image: url('images/metroIcons.jpg');
+  background-repeat: no-repeat;
+  border: none;
+  height: 64px;
+  width: 64px;
+}
+.appbar-buttons a.small > img {
+  height: 32px;
+  width: 32px;
 }
 .appbar-buttons a.search > img {
   background-position: -12px -12px;
@@ -3470,133 +3580,6 @@ html body .black.accentBorderTop {
 .appbar-buttons a.play > img {
   background-position: -472px -538px;
 }
-.appbar-buttons a.small.search > img {
-  background-position: -562px -6px;
-}
-.appbar-buttons a.small.home > img {
-  background-position: -608px -6px;
-}
-.appbar-buttons a.small.twitter > img {
-  background-position: -654px -6px;
-}
-.appbar-buttons a.small.calendar > img {
-  background-position: -700px -6px;
-}
-.appbar-buttons a.small.storm > img {
-  background-position: -746px -6px;
-}
-.appbar-buttons a.small.down > img {
-  background-position: -792px -6px;
-}
-.appbar-buttons a.small.camera > img {
-  background-position: -562px -50px;
-}
-.appbar-buttons a.small.camcorder > img {
-  background-position: -608px -50px;
-}
-.appbar-buttons a.small.qmark > img,
-.appbar-buttons a.small.about > img {
-  background-position: -654px -50px;
-}
-.appbar-buttons a.small.share > img {
-  background-position: -700px -50px;
-}
-.appbar-buttons a.small.rain > img {
-  background-position: -746px -50px;
-}
-.appbar-buttons a.small.cancel > img,
-.appbar-buttons a.small.close > img {
-  background-position: -792px -50px;
-}
-.appbar-buttons a.small.delete > img,
-.appbar-buttons a.small.trash > img {
-  background-position: -562px -94px;
-}
-.appbar-buttons a.small.tag > img {
-  background-position: -608px -94px;
-}
-.appbar-buttons a.small.addcontact > img {
-  background-position: -654px -94px;
-}
-.appbar-buttons a.small.save > img {
-  background-position: -700px -94px;
-}
-.appbar-buttons a.small.snow > img {
-  background-position: -746px -94px;
-}
-.appbar-buttons a.small.msg > img {
-  background-position: -792px -94px;
-}
-.appbar-buttons a.small.email > img {
-  background-position: -562px -137px;
-}
-.appbar-buttons a.small.clock > img {
-  background-position: -608px -137px;
-}
-.appbar-buttons a.small.edit > img {
-  background-position: -654px -137px;
-}
-.appbar-buttons a.small.circle > img {
-  background-position: -700px -137px;
-}
-.appbar-buttons a.small.moon > img {
-  background-position: -746px -137px;
-}
-.appbar-buttons a.small.calc > img {
-  background-position: -562px -181px;
-}
-.appbar-buttons a.small.gear > img {
-  background-position: -608px -181px;
-}
-.appbar-buttons a.small.plus > img {
-  background-position: -654px -181px;
-}
-.appbar-buttons a.small.dot > img {
-  background-position: -700px -181px;
-}
-.appbar-buttons a.small.restart > img,
-.appbar-buttons a.small.return > img {
-  background-position: -746px -181px;
-}
-.appbar-buttons a.small.add > img {
-  background-position: -792px -181px;
-}
-.appbar-buttons a.small.phone > img {
-  background-position: -562px -226px;
-}
-.appbar-buttons a.small.film > img {
-  background-position: -608px -226px;
-}
-.appbar-buttons a.small.back > img {
-  background-position: -654px -226px;
-}
-.appbar-buttons a.small.car > img {
-  background-position: -700px -226px;
-}
-.appbar-buttons a.small.forward > img {
-  background-position: -746px -226px;
-}
-.appbar-buttons a.small.selectmany > img {
-  background-position: -792px -226px;
-}
-.appbar-buttons a.small.stop > img {
-  background-position: -562px -269px;
-}
-.appbar-buttons a.small.contacts > img {
-  background-position: -608px -269px;
-}
-.appbar-buttons a.small.select > img {
-  background-position: -654px -269px;
-}
-.appbar-buttons a.small.sun > img {
-  background-position: -700px -269px;
-}
-.appbar-buttons a.small.dpad > img {
-  background-position: -746px -269px;
-}
-.appbar-buttons a.small.play > img {
-  background-position: -792px -269px;
-}
 .appbar-buttons li {
   display: inline;
   padding: 0 10px;
@@ -3613,64 +3596,182 @@ html body .black.accentBorderTop {
 .appbar-buttons .appbar-buttons li a:hover {
   text-decoration: none;
 }
-.appbar a.etc,
-.appbar a.etc:hover,
-.appbar a.etc:visited {
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  position: absolute;
-  right: 8px;
-  text-decoration: none;
-  top: 0px;
-  z-index: 100;
+.small .appbar-buttons .search > img,
+.appbar-buttons .small.search > img {
+  background-position: -562px -6px;
+}
+.small .appbar-buttons .home > img,
+.appbar-buttons .small.home > img {
+  background-position: -608px -6px;
+}
+.small .appbar-buttons .twitter > img,
+.appbar-buttons .small.twitter > img {
+  background-position: -654px -6px;
+}
+.small .appbar-buttons .calendar > img,
+.appbar-buttons .small.calendar > img {
+  background-position: -700px -6px;
+}
+.small .appbar-buttons .storm > img,
+.appbar-buttons .small.storm > img {
+  background-position: -746px -6px;
+}
+.small .appbar-buttons .down > img,
+.appbar-buttons .small.down > img {
+  background-position: -792px -6px;
+}
+.small .appbar-buttons .camera > img,
+.appbar-buttons .small.camera > img {
+  background-position: -562px -50px;
+}
+.small .appbar-buttons .camcorder > img,
+.appbar-buttons .small.camcorder > img {
+  background-position: -608px -50px;
+}
+.small .appbar-buttons .qmark > img,
+.appbar-buttons .small.qmark > img,
+.small .appbar-buttons .about > img,
+.appbar-buttons .small.about > img {
+  background-position: -654px -50px;
+}
+.small .appbar-buttons .share > img,
+.appbar-buttons .small.share > img {
+  background-position: -700px -50px;
+}
+.small .appbar-buttons .rain > img,
+.appbar-buttons .small.rain > img {
+  background-position: -746px -50px;
+}
+.small .appbar-buttons .cancel > img,
+.appbar-buttons .small.cancel > img,
+.small .appbar-buttons .close > img,
+.appbar-buttons .small.close > img {
+  background-position: -792px -50px;
+}
+.small .appbar-buttons .delete > img,
+.appbar-buttons .small.delete > img,
+.small .appbar-buttons .trash > img,
+.appbar-buttons .small.trash > img {
+  background-position: -562px -94px;
+}
+.small .appbar-buttons .tag > img,
+.appbar-buttons .small.tag > img {
+  background-position: -608px -94px;
+}
+.small .appbar-buttons .addcontact > img,
+.appbar-buttons .small.addcontact > img {
+  background-position: -654px -94px;
+}
+.small .appbar-buttons .save > img,
+.appbar-buttons .small.save > img {
+  background-position: -700px -94px;
+}
+.small .appbar-buttons .snow > img,
+.appbar-buttons .small.snow > img {
+  background-position: -746px -94px;
+}
+.small .appbar-buttons .msg > img,
+.appbar-buttons .small.msg > img {
+  background-position: -792px -94px;
+}
+.small .appbar-buttons .email > img,
+.appbar-buttons .small.email > img {
+  background-position: -562px -137px;
+}
+.small .appbar-buttons .clock > img,
+.appbar-buttons .small.clock > img {
+  background-position: -608px -137px;
+}
+.small .appbar-buttons .edit > img,
+.appbar-buttons .small.edit > img {
+  background-position: -654px -137px;
+}
+.small .appbar-buttons .circle > img,
+.appbar-buttons .small.circle > img {
+  background-position: -700px -137px;
+}
+.small .appbar-buttons .moon > img,
+.appbar-buttons .small.moon > img {
+  background-position: -746px -137px;
+}
+.small .appbar-buttons .calc > img,
+.appbar-buttons .small.calc > img {
+  background-position: -562px -181px;
+}
+.small .appbar-buttons .gear > img,
+.appbar-buttons .small.gear > img {
+  background-position: -608px -181px;
+}
+.small .appbar-buttons .plus > img,
+.appbar-buttons .small.plus > img {
+  background-position: -654px -181px;
+}
+.small .appbar-buttons .dot > img,
+.appbar-buttons .small.dot > img {
+  background-position: -700px -181px;
+}
+.small .appbar-buttons .restart > img,
+.appbar-buttons .small.restart > img,
+.small .appbar-buttons .return > img,
+.appbar-buttons .small.return > img {
+  background-position: -746px -181px;
+}
+.small .appbar-buttons .add > img,
+.appbar-buttons .small.add > img {
+  background-position: -792px -181px;
+}
+.small .appbar-buttons .phone > img,
+.appbar-buttons .small.phone > img {
+  background-position: -562px -226px;
+}
+.small .appbar-buttons .film > img,
+.appbar-buttons .small.film > img {
+  background-position: -608px -226px;
+}
+.small .appbar-buttons .back > img,
+.appbar-buttons .small.back > img {
+  background-position: -654px -226px;
+}
+.small .appbar-buttons .car > img,
+.appbar-buttons .small.car > img {
+  background-position: -700px -226px;
+}
+.small .appbar-buttons .forward > img,
+.appbar-buttons .small.forward > img {
+  background-position: -746px -226px;
+}
+.small .appbar-buttons .selectmany > img,
+.appbar-buttons .small.selectmany > img {
+  background-position: -792px -226px;
+}
+.small .appbar-buttons .stop > img,
+.appbar-buttons .small.stop > img {
+  background-position: -562px -269px;
+}
+.small .appbar-buttons .contacts > img,
+.appbar-buttons .small.contacts > img {
+  background-position: -608px -269px;
+}
+.small .appbar-buttons .select > img,
+.appbar-buttons .small.select > img {
+  background-position: -654px -269px;
+}
+.small .appbar-buttons .sun > img,
+.appbar-buttons .small.sun > img {
+  background-position: -700px -269px;
+}
+.small .appbar-buttons .dpad > img,
+.appbar-buttons .small.dpad > img {
+  background-position: -746px -269px;
+}
+.small .appbar-buttons .play > img,
+.appbar-buttons .small.play > img {
+  background-position: -792px -269px;
 }
 .light .appbar a.etc,
 .light .appbar a.etc:hover,
 .light .appbar a.etc:visited {
   color: #000;
-}
-.appbar .charm-title {
-  font-size: 10px;
-  display: block;
-  text-align: center;
-}
-.appbar .theme-options > li {
-  display: block;
-  margin: 8px;
-  float: left;
-  line-height: 32px;
-  height: 32px;
-  width: 32px;
-}
-.appbar .theme-options > li > a,
-.appbar .theme-options > li > a:hover,
-.appbar .theme-options > li > a:visited {
-  display: block;
-  padding: 0px;
-  text-decoration: none;
-  height: 32px;
-  width: 32px;
-}
-.appbar .base-theme-options > li {
-  display: block;
-  margin: 8px;
-  float: left;
-  line-height: 32px;
-  height: 32px;
-  width: 32px;
-}
-.appbar .base-theme-options > li > a,
-.appbar .base-theme-options > li > a:hover,
-.appbar .base-theme-options > li > a:visited {
-  display: block;
-  padding: 0px;
-  text-decoration: none;
-  height: 32px;
-  width: 32px;
-}
-.appbar .base-theme-options > li > a.dark.accent {
-  background-color: #000;
 }
 /* Media queries */
 @media screen and (max-width: 1025px) {
