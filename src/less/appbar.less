@@ -13,11 +13,15 @@
     overflow: hidden;
     padding: 10px 0;
     position: fixed;
+    right: 0px;
     text-align: right;
     width: 100%;
     z-index: 100;
     -ms-touch-action: manipulation;
-
+    &.top {
+        bottom: auto !important;
+        top:0px;
+    }
     a.etc,
     a.etc:hover,
     a.etc:visited
@@ -35,38 +39,23 @@
         width: 90px;
         z-index: 100;
     }
-
     .clear
     {
         clear: both;
     }
-
-    .appbar-buttons
-    {
-        padding: 0 0 2px;
-        width: @abBtnWidthP * 3;
-        &.one { width: @abBtnWidthP; }
-        &.two { width: @abBtnWidthP * 2; }
-        &.three { width: @abBtnWidthP * 3; }
-        &.four { width: @abBtnWidthP * 4; }
-        &.five { width: @abBtnWidthP * 5; }
-        &.six { width: @abBtnWidthP * 6; }
-        &.seven { width: @abBtnWidthP * 7; }
-        &.eight { width: @abBtnWidthP * 8; }
-        &.nine { width: @abBtnWidthP * 9; }
-        &.ten { width: @abBtnWidthP * 10; }
-    }
-
     .theme-options
     {
         display: block;
-        margin: 0px auto;
+        float:left;
+        margin: 0px;
         position: relative;
-        max-width: 620px;
-        width: 85%;
+        width: 80%;
     }
-
-        .theme-options > li
+    .theme-options>ul
+    {
+        padding-right: 8px;
+    }
+    .theme-options li
         {
             display: block;
             margin: 8px;
@@ -75,9 +64,8 @@
             height: 32px;
             width: 32px;
         }
-
-            .theme-options > li > a, .appbar .theme-options > li > a:hover,
-            .theme-options > li > a:visited
+            .theme-options li > a, .theme-options li > a:hover,
+            .theme-options li > a:visited
             {
                 display: block;
                 padding: 0px;
@@ -89,13 +77,16 @@
     .base-theme-options
     {
         display: block;
-        margin: 0px auto;
-        position: relative;
-        max-width: 120px;
-        width: 30%;
+        float: left;
+        margin: 0px;
+        position: relative;        
+        width: 20%;
     }
-
-        .base-theme-options > li
+        .base-theme-options>ul
+        {
+            padding-left:2px;
+        }
+        .base-theme-options li
         {
             display: block;
             margin: 8px;
@@ -104,9 +95,8 @@
             height: 32px;
             width: 32px;
         }
-
-            .base-theme-options > li > a, .appbar .base-theme-options > li > a:hover,
-            .base-theme-options > li > a:visited
+            .base-theme-options li > a, .base-theme-options li > a:hover,
+            .base-theme-options li > a:visited
             {
                 display: block;
                 padding: 0px;
@@ -114,41 +104,38 @@
                 height: 32px;
                 width: 32px;
             }
-
-                .base-theme-options > li > a.dark.accent
+                .base-theme-options li > a.dark.accent
                 {
                     background-color: #000;
                 }
-
+    .theme-options h2,
+    .base-theme-options h2 
+    { 
+        font-size:2em;
+        font-weight:normal;
+        padding: 8px 8px 12px;
+        text-align:left;
+    }
     .charm-title
     {
         font-size: 10px;
         display: block;
         text-align: center;
     }
+    .links
+    {
+        font-size: 2em;
+        padding: 24px 0 0 8px;
+        text-align: left;
 
+        a, a:link
+        {
+            text-decoration:none;
+        }
+    }
     &.small
     {
-        height: 28px;
-        .appbar-buttons
-        {
-            width: @absBtnWidthP * 3;
-            &.one { width: @absBtnWidthP; }
-            &.two { width: @absBtnWidthP * 2; }
-            &.three { width: @absBtnWidthP * 3; }
-            &.four { width: @absBtnWidthP * 4; }
-            &.five { width: @absBtnWidthP * 5; }
-            &.six { width: @absBtnWidthP * 6; }
-            &.seven { width: @absBtnWidthP * 7; }
-            &.eight { width: @absBtnWidthP * 8; }
-            &.nine { width: @absBtnWidthP * 9; }
-            &.ten { width: @absBtnWidthP * 10; }
-        }
-        a>img
-        {
-            height:@absBtnHeight; 
-            width:@absBtnWidth;
-        }
+        height: 28px;        
         a.etc,
         a.etc:hover, a.etc:visited
         {
@@ -165,11 +152,46 @@
 .light .appbar-buttons a>img { background-image:url('images/metroIcons_light.jpg'); }
 .light .appbar a.etc, .light .appbar a.etc:hover, 
 .light .appbar a.etc:visited { color:#000; }
+.small .appbar-buttons
+{
+    a>img
+    {
+        height:@absBtnHeight; 
+        width:@absBtnWidth;
+    }
+    /* default width is 3 buttons */
+    width: @absBtnWidthP * 3;
+    &.one { width: @absBtnWidthP; }
+    &.two { width: @absBtnWidthP * 2; }
+    &.three { width: @absBtnWidthP * 3; }
+    &.four { width: @absBtnWidthP * 4; }
+    &.five { width: @absBtnWidthP * 5; }
+    &.six { width: @absBtnWidthP * 6; }
+    &.seven { width: @absBtnWidthP * 7; }
+    &.eight { width: @absBtnWidthP * 8; }
+    &.nine { width: @absBtnWidthP * 9; }
+    &.ten { width: @absBtnWidthP * 10; }
+}
 .appbar-buttons
-{	
-	position: relative;
+{		
 	margin: 0 auto;
-	text-align: right;	   
+    overflow: hidden;
+    position: relative;
+    padding: 0 0 2px;
+	text-align: right;
+    /* default width is 3 buttons */
+    width: @abBtnWidthP * 3;
+    &.one { width: @abBtnWidthP; }
+    &.two { width: @abBtnWidthP * 2; }
+    &.three { width: @abBtnWidthP * 3; }
+    &.four { width: @abBtnWidthP * 4; }
+    &.five { width: @abBtnWidthP * 5; }
+    &.six { width: @abBtnWidthP * 6; }
+    &.seven { width: @abBtnWidthP * 7; }
+    &.eight { width: @abBtnWidthP * 8; }
+    &.nine { width: @abBtnWidthP * 9; }
+    &.ten { width: @abBtnWidthP * 10; }
+         
     a>img 
     {
         background-image:url('images/metroIcons.jpg');
@@ -182,7 +204,6 @@
     { 
         height:@absBtnHeight; 
         width:@absBtnWidth;
-
     }
 
 	a {
@@ -235,7 +256,7 @@
 
 	li {
 		display: inline;
-		padding: 0 10px;
+		padding: 0 @abBtnPadding;
 		float:left;
 		list-style: none;
 	}
@@ -248,6 +269,7 @@
     {
         text-decoration: none;
     }
+
 }
 .small .appbar-buttons .search > img,
 .appbar-buttons .small.search > img { background-position: -562px -6px; }
@@ -341,10 +363,17 @@
 .appbar-buttons .small.play > img { background-position: -792px -269px; }
 /* Media queries */
 @media screen and (max-width: 1025px) 
-{
-	/*.appbar .theme-options { width:650px; } /* ensures alignment and no wrapping on ipad */
-	/*.appbar .base-theme-options { width:140px; } /* ensures alignment and no wrapping on ipad */
-	.appbar .theme-options li, .appbar .theme-options li a
+{  
+    .appbar .theme-options h2,
+    .appbar .base-theme-options h2,
+    .appbar .links
+    { 
+        font-size:1.7em; 
+        padding: 8px 8px 2px;
+        text-align:left;
+    }
+	.appbar .base-theme-options li, .appbar .base-theme-options li a,
+    .appbar .theme-options li, .appbar .theme-options li a
     {
         display:block; 
         height:32px;
@@ -354,5 +383,25 @@
 }
 @media screen and (max-width: 801px)
 {
-	/*.appbar .theme-options { width:360px; }*/
+    .appbar .theme-options h2,
+    .appbar .base-theme-options h2,
+    .appbar .links
+    {
+        font-size: 1.3em;
+    }
+    .appbar .theme-options>ul
+    {
+        padding-right: 6px;
+    }
+}
+@media screen and (max-width: 641px)
+{
+    .appbar .theme-options
+    {
+        width: 70%;
+    }
+    .appbar .base-theme-options
+    {        
+        width: 30%;
+    }    
 }

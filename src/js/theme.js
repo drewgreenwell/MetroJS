@@ -132,8 +132,8 @@
             'dark'
         ],
         accentListTemplate: "<li><a href='javascript:;' title='{0}' class='accent {0}'></a></li>", // template to generate accent options
-        accentListContainer: ".theme-options",                    // selector of container to append accents
+        accentListContainer: "ul.theme-options,.theme-options>ul",                   // selector of container to append accents
         baseThemeListTemplate: "<li><a href='javascript:;' title='{0}' class='accent {0}'></a></li>", // template to generate accent options
-        baseThemeListContainer: ".base-theme-options"                    // selector of container to append accents
+        baseThemeListContainer: "ul.base-theme-options,.base-theme-options>ul"                    // selector of container to append accents
     }
 };

@@ -345,6 +345,7 @@
 
     a
     {
+        color: #fff;
         &.tile-title:link,
         &.tile-title:visited,
         &.tile-title:hover,
@@ -371,32 +372,29 @@
     .copy-tile
     {
         color: #000;
-
         &.accent
         {
-			color:#fff;
-        }
-
-        a
-        {
-            &:link, &:visited, &:hover
+			color:#fff;            
+            a, a:link, a:visited, a:hover
             {
-                color: #000;
+                color: #fff;
             }
         }
-
+        a, a:link, a:visited, a:hover
+        {
+            color: #000;
+        }
         .face, .accent
         {
             color: #fff;
-
-            a:link, a:visited, a:hover
+            a, a:link, a:visited, a:hover
             {
                 color: #fff;
             }
         }
     }
 }
-.copy-tile  p {
+.copy-tile p {
   padding: 5px 5px 0px 5px;
   font-size:.95em;
 }
@@ -518,8 +516,6 @@ img.full , a.full, .live-tile .full, .list-tile .full
 {
    height:0px;
 }
-
-
 
 /* ------ Hardware Accelerated Tiles --------*/
 /* flip */

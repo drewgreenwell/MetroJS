@@ -589,6 +589,11 @@
   width: 98%;
   z-index: 30;
 }
+.live-tile a,
+.list-tile a,
+.copy-tile a {
+  color: #fff;
+}
 .live-tile a.tile-title:link,
 .list-tile a.tile-title:link,
 .copy-tile a.tile-title:link,
@@ -624,6 +629,13 @@
 .light .copy-tile.accent {
   color: #fff;
 }
+.light .copy-tile.accent a,
+.light .copy-tile.accent a:link,
+.light .copy-tile.accent a:visited,
+.light .copy-tile.accent a:hover {
+  color: #fff;
+}
+.light .copy-tile a,
 .light .copy-tile a:link,
 .light .copy-tile a:visited,
 .light .copy-tile a:hover {
@@ -633,6 +645,8 @@
 .light .copy-tile .accent {
   color: #fff;
 }
+.light .copy-tile .face a,
+.light .copy-tile .accent a,
 .light .copy-tile .face a:link,
 .light .copy-tile .accent a:link,
 .light .copy-tile .face a:visited,
@@ -3262,10 +3276,15 @@ html body .black.accentBorderTop {
   overflow: hidden;
   padding: 10px 0;
   position: fixed;
+  right: 0px;
   text-align: right;
   width: 100%;
   z-index: 100;
   -ms-touch-action: manipulation;
+}
+.appbar.top {
+  bottom: auto !important;
+  top: 0px;
 }
 .appbar a.etc,
 .appbar a.etc:hover,
@@ -3287,48 +3306,17 @@ html body .black.accentBorderTop {
 .appbar .clear {
   clear: both;
 }
-.appbar .appbar-buttons {
-  padding: 0 0 2px;
-  width: 252px;
-}
-.appbar .appbar-buttons.one {
-  width: 84px;
-}
-.appbar .appbar-buttons.two {
-  width: 168px;
-}
-.appbar .appbar-buttons.three {
-  width: 252px;
-}
-.appbar .appbar-buttons.four {
-  width: 336px;
-}
-.appbar .appbar-buttons.five {
-  width: 420px;
-}
-.appbar .appbar-buttons.six {
-  width: 504px;
-}
-.appbar .appbar-buttons.seven {
-  width: 588px;
-}
-.appbar .appbar-buttons.eight {
-  width: 672px;
-}
-.appbar .appbar-buttons.nine {
-  width: 756px;
-}
-.appbar .appbar-buttons.ten {
-  width: 840px;
-}
 .appbar .theme-options {
   display: block;
-  margin: 0px auto;
+  float: left;
+  margin: 0px;
   position: relative;
-  max-width: 620px;
-  width: 85%;
+  width: 80%;
 }
-.appbar .theme-options > li {
+.appbar .theme-options > ul {
+  padding-right: 8px;
+}
+.appbar .theme-options li {
   display: block;
   margin: 8px;
   float: left;
@@ -3336,9 +3324,9 @@ html body .black.accentBorderTop {
   height: 32px;
   width: 32px;
 }
-.appbar .theme-options > li > a,
-.appbar .appbar .theme-options > li > a:hover,
-.appbar .theme-options > li > a:visited {
+.appbar .theme-options li > a,
+.appbar .theme-options li > a:hover,
+.appbar .theme-options li > a:visited {
   display: block;
   padding: 0px;
   text-decoration: none;
@@ -3347,12 +3335,15 @@ html body .black.accentBorderTop {
 }
 .appbar .base-theme-options {
   display: block;
-  margin: 0px auto;
+  float: left;
+  margin: 0px;
   position: relative;
-  max-width: 120px;
-  width: 30%;
+  width: 20%;
 }
-.appbar .base-theme-options > li {
+.appbar .base-theme-options > ul {
+  padding-left: 2px;
+}
+.appbar .base-theme-options li {
   display: block;
   margin: 8px;
   float: left;
@@ -3360,62 +3351,41 @@ html body .black.accentBorderTop {
   height: 32px;
   width: 32px;
 }
-.appbar .base-theme-options > li > a,
-.appbar .appbar .base-theme-options > li > a:hover,
-.appbar .base-theme-options > li > a:visited {
+.appbar .base-theme-options li > a,
+.appbar .base-theme-options li > a:hover,
+.appbar .base-theme-options li > a:visited {
   display: block;
   padding: 0px;
   text-decoration: none;
   height: 32px;
   width: 32px;
 }
-.appbar .base-theme-options > li > a.dark.accent {
+.appbar .base-theme-options li > a.dark.accent {
   background-color: #000;
+}
+.appbar .theme-options h2,
+.appbar .base-theme-options h2 {
+  font-size: 2em;
+  font-weight: normal;
+  padding: 8px 8px 12px;
+  text-align: left;
 }
 .appbar .charm-title {
   font-size: 10px;
   display: block;
   text-align: center;
 }
+.appbar .links {
+  font-size: 2em;
+  padding: 24px 0 0 8px;
+  text-align: left;
+}
+.appbar .links a,
+.appbar .links a:link {
+  text-decoration: none;
+}
 .appbar.small {
   height: 28px;
-}
-.appbar.small .appbar-buttons {
-  width: 156px;
-}
-.appbar.small .appbar-buttons.one {
-  width: 52px;
-}
-.appbar.small .appbar-buttons.two {
-  width: 104px;
-}
-.appbar.small .appbar-buttons.three {
-  width: 156px;
-}
-.appbar.small .appbar-buttons.four {
-  width: 208px;
-}
-.appbar.small .appbar-buttons.five {
-  width: 260px;
-}
-.appbar.small .appbar-buttons.six {
-  width: 312px;
-}
-.appbar.small .appbar-buttons.seven {
-  width: 364px;
-}
-.appbar.small .appbar-buttons.eight {
-  width: 416px;
-}
-.appbar.small .appbar-buttons.nine {
-  width: 468px;
-}
-.appbar.small .appbar-buttons.ten {
-  width: 520px;
-}
-.appbar.small a > img {
-  height: 32px;
-  width: 32px;
 }
 .appbar.small a.etc,
 .appbar.small a.etc:hover,
@@ -3437,10 +3407,89 @@ html body .black.accentBorderTop {
 .light .appbar-buttons a > img {
   background-image: url('images/metroIcons_light.jpg');
 }
+.light .appbar a.etc,
+.light .appbar a.etc:hover,
+.light .appbar a.etc:visited {
+  color: #000;
+}
+.small .appbar-buttons {
+  /* default width is 3 buttons */
+
+  width: 156px;
+}
+.small .appbar-buttons a > img {
+  height: 32px;
+  width: 32px;
+}
+.small .appbar-buttons.one {
+  width: 52px;
+}
+.small .appbar-buttons.two {
+  width: 104px;
+}
+.small .appbar-buttons.three {
+  width: 156px;
+}
+.small .appbar-buttons.four {
+  width: 208px;
+}
+.small .appbar-buttons.five {
+  width: 260px;
+}
+.small .appbar-buttons.six {
+  width: 312px;
+}
+.small .appbar-buttons.seven {
+  width: 364px;
+}
+.small .appbar-buttons.eight {
+  width: 416px;
+}
+.small .appbar-buttons.nine {
+  width: 468px;
+}
+.small .appbar-buttons.ten {
+  width: 520px;
+}
 .appbar-buttons {
-  position: relative;
   margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  padding: 0 0 2px;
   text-align: right;
+  /* default width is 3 buttons */
+
+  width: 252px;
+}
+.appbar-buttons.one {
+  width: 84px;
+}
+.appbar-buttons.two {
+  width: 168px;
+}
+.appbar-buttons.three {
+  width: 252px;
+}
+.appbar-buttons.four {
+  width: 336px;
+}
+.appbar-buttons.five {
+  width: 420px;
+}
+.appbar-buttons.six {
+  width: 504px;
+}
+.appbar-buttons.seven {
+  width: 588px;
+}
+.appbar-buttons.eight {
+  width: 672px;
+}
+.appbar-buttons.nine {
+  width: 756px;
+}
+.appbar-buttons.ten {
+  width: 840px;
 }
 .appbar-buttons a > img {
   background-image: url('images/metroIcons.jpg');
@@ -3768,15 +3817,17 @@ html body .black.accentBorderTop {
 .appbar-buttons .small.play > img {
   background-position: -792px -269px;
 }
-.light .appbar a.etc,
-.light .appbar a.etc:hover,
-.light .appbar a.etc:visited {
-  color: #000;
-}
 /* Media queries */
 @media screen and (max-width: 1025px) {
-  /*.appbar .theme-options { width:650px; } /* ensures alignment and no wrapping on ipad */
-  /*.appbar .base-theme-options { width:140px; } /* ensures alignment and no wrapping on ipad */
+  .appbar .theme-options h2,
+  .appbar .base-theme-options h2,
+  .appbar .links {
+    font-size: 1.7em;
+    padding: 8px 8px 2px;
+    text-align: left;
+  }
+  .appbar .base-theme-options li,
+  .appbar .base-theme-options li a,
   .appbar .theme-options li,
   .appbar .theme-options li a {
     display: block;
@@ -3786,6 +3837,21 @@ html body .black.accentBorderTop {
   }
 }
 @media screen and (max-width: 801px) {
-  /*.appbar .theme-options { width:360px; }*/
+  .appbar .theme-options h2,
+  .appbar .base-theme-options h2,
+  .appbar .links {
+    font-size: 1.3em;
+  }
+  .appbar .theme-options > ul {
+    padding-right: 6px;
+  }
+}
+@media screen and (max-width: 641px) {
+  .appbar .theme-options {
+    width: 70%;
+  }
+  .appbar .base-theme-options {
+    width: 30%;
+  }
 }
 

@@ -55,7 +55,9 @@ $.fn.liveTile.defaults = {
     bounceDirections: 'all',                // which direction the tile will tile 'all', 'edges, 'corners'
     bounceFollowsMove: true,                // should a tile in bounce state tilt in the direction of the mouse as it moves
     pauseOnHover: false,                    // should tile animations be paused on hover in and restarted on hover out
+    pauseOnHoverEvent: 'both',              // pause is called on mouseover, mouseout, or both
     playOnHover: false,                     // should "play" be called on hover
+    playOnHoverEvent: 'mouseover',         // play is called on mouseover, mouseout, or both
     onHoverDelay: 0,                        // the amount of time to wait before the onHover event is fired
     repeatCount: -1,                        // number of times to repeat the animation        
     appendBack: true,                       // appends the .last tile if one doesnt exist (slide and flip only)        
@@ -483,6 +485,7 @@ var privMethods = {
                 bounce: this.getDataOrDefault($tile, "bounce", stgs.bounce),
                 bounceDirections: this.getDataOrDefault($tile, "bounce-dir", stgs.bounceDirections),
                 bounceFollowsMove: this.getDataOrDefault($tile, "bounce-follows", stgs.bounceFollowsMove),
+                click: this.getDataOrDefault($tile, "click", stgs.click),
                 link: this.getDataOrDefault($tile, "link", stgs.link),
                 newWindow: this.getDataOrDefault($tile, "new-window", stgs.newWindow),
                 alwaysTrigger: this.getDataOrDefault($tile, "always-trigger", stgs.alwaysTrigger),
@@ -490,8 +493,7 @@ var privMethods = {
                 pauseOnHover: this.getDataOrDefault($tile, "pause-onhover", stgs.pauseOnHover),
                 playOnHover: this.getDataOrDefault($tile, "play-onhover", stgs.playOnHover),
                 onHoverDelay: this.getDataOrDefault($tile, "hover-delay", stgs.onHoverDelay),
-                noHAflipOpacity: this.getDataOrDefault($tile, "flip-opacity", stgs.noHAflipOpacity),
-                useTranslate: stgs.useTranslate,
+                noHAflipOpacity: this.getDataOrDefault($tile, "flip-opacity", stgs.noHAflipOpacity),                
                 runEvents: false,
                 isReversed: false,
                 loopCount: 0,
@@ -836,7 +838,9 @@ var privMethods = {
         (function () {
             var data = $tile.data("LiveTile"),
                 isOver = false,
-                isPending = false;
+                isPending = false,
+                pauseIn = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseover" || data.pauseOnHoverEvent == "mouseenter"),
+                pauseOut = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseout");
             data.pOnHoverMethods = {
                 over: function (e) {
                     if (isOver || isPending)
@@ -845,7 +849,8 @@ var privMethods = {
                         isPending = true;
                         data.eventTimeout = window.setTimeout(function () {
                             isPending = false;
-                            isOver = true;
+                            if(pauseOut)
+                                isOver = true;
                             data.timer.pause();
                             if (data.mode === "flip-list") {
                                 data.faces.$listTiles.each(function (idx, li) {
@@ -861,25 +866,32 @@ var privMethods = {
                         isPending = false;
                         return;
                     }
-                    if (!isOver && !isPending)
-                        return;
+                    if (pauseIn) {
+                        if (!isOver && !isPending)
+                            return;
+                    }
                     if (data.runEvents)
                         data.timer.start(data.hasRun ? data.delay : data.initDelay);
                     isOver = false;
                 }
-            };
+            };            
             if (!metrojs.capabilities.canTouch) {
-                $tile.bind("mouseover.liveTile", data.pOnHoverMethods.over);
-                $tile.bind("mouseout.liveTile", data.pOnHoverMethods.out);
+                if (pauseIn)
+                    $tile.bind("mouseover.liveTile", data.pOnHoverMethods.over);
+                if (pauseOut)
+                    $tile.bind("mouseout.liveTile", data.pOnHoverMethods.out);
             } else {
                 if (window.navigator.msPointerEnabled) { // pointer
-                    $tile[0].addEventListener('MSPointerOver', data.pOnHoverMethods.over, false);
-                    $tile[0].addEventListener('MSPointerOut', data.pOnHoverMethods.out, false);
+                    if (pauseIn)
+                        $tile[0].addEventListener('MSPointerOver', data.pOnHoverMethods.over, false);
+                    if (pauseOut)
+                        $tile[0].addEventListener('MSPointerOut', data.pOnHoverMethods.out, false);
                 } else { // touch events
-                    $tile.bind("touchstart.liveTile", data.pOnHoverMethods.over);
-                    $tile.bind("touchend.liveTile", data.pOnHoverMethods.out);
+                    if (pauseIn)
+                        $tile.bind("touchstart.liveTile", data.pOnHoverMethods.over);
+                    if (pauseOut)
+                        $tile.bind("touchend.liveTile", data.pOnHoverMethods.out);
                 }
-
             }
         })();
     },
@@ -893,7 +905,9 @@ var privMethods = {
         // play the tile immediately when hovered
         (function () {
             var isOver = false,
-                isPending = false;
+                isPending = false,
+                playIn = (data.playOnHoverEvent == "both" || data.playOnHoverEvent == "mouseover" || data.playOnHoverEvent == "mouseenter"),
+                playOut = (data.playOnHoverEvent == "both" || data.playOnHoverEvent == "mouseout");
             data.onHoverMethods = {
                 over: function (event) {
                     if (isOver || isPending || (data.bounce && data.bounceMethods.down != "no"))
@@ -905,7 +919,8 @@ var privMethods = {
                         isPending = true;
                         data.eventTimeout = window.setTimeout(function () {
                             isPending = false;
-                            isOver = true;
+                            if(playOut)
+                                isOver = true;
                             pubMethods["play"].apply($tile[0], [0]);
                         }, data.onHoverDelay);
                     }
@@ -916,8 +931,10 @@ var privMethods = {
                         isPending = false;
                         return;
                     }
-                    if (!isOver && !isPending)
-                        return;
+                    if (playIn) {
+                        if (!isOver && !isPending)
+                            return;
+                    }
                     window.clearTimeout(data.eventTimeout);
                     data.eventTimeout = window.setTimeout(function () {
                         var rev = (data.mode == "flip") || (data.startNow ? data.isReversed : !data.isReversed);
@@ -930,22 +947,22 @@ var privMethods = {
             };
             $tile.addClass("noselect");
             if (!metrojs.capabilities.canTouch) {
-                $tile.bind('mouseenter.liveTile', function (e) {
-                    data.onHoverMethods.over(e);
-                });
-                $tile.bind('mouseleave.liveTile', function (e) {
-                    data.onHoverMethods.out(e);
-                });
-                //$tile.bind("mouseenter.liveTile", over);
-                //$tile.bind("mouseleave.liveTile", out);
+                if (playIn)
+                    $tile.bind('mouseenter.liveTile', data.onHoverMethods.over);
+                if (playOut)
+                    $tile.bind('mouseleave.liveTile', data.onHoverMethods.out);                
             } else {
                 if (window.navigator.msPointerEnabled) { // pointer
-                    $tile[0].addEventListener('MSPointerDown', data.onHoverMethods.over, false);
+                    if(playIn)
+                        $tile[0].addEventListener('MSPointerDown', data.onHoverMethods.over, false);
                     // mouseleave gives a more consistent effect than out when the children are transformed
-                    $tile.bind("mouseleave.liveTile", data.onHoverMethods.out);
+                    if(playOut)
+                        $tile.bind("mouseleave.liveTile", data.onHoverMethods.out);
                 } else { // touch events
-                    $tile.bind("touchstart.liveTile", data.onHoverMethods.over);
-                    $tile.bind("touchend.liveTile", data.onHoverMethods.out);
+                    if(playIn)
+                        $tile.bind("touchstart.liveTile", data.onHoverMethods.over);
+                    if(playOut)
+                        $tile.bind("touchend.liveTile", data.onHoverMethods.out);
                 }
 
             }
@@ -1085,10 +1102,7 @@ var privMethods = {
                             var bClass = "bounce-" + hit.name;
                             $tile.addClass(bClass);
                             data.bounceMethods.down = bClass;
-                            if (!data.bounceMethods.downPcss)
-                                data.bounceMethods.downPcss = helperMethods.appendStyleProperties({}, ['perspective-origin'], [data.bounceMethods.eventPos.x + "px " + data.bounceMethods.eventPos.y + "px"]);
-                            else
-                                data.bounceMethods.downPcss = helperMethods.applyStyleValue(data.bounceMethods.downPcss, data.bounceMethods.eventPos.x + "px " + data.bounceMethods.eventPos.y + "px");
+                            data.bounceMethods.downPcss = helperMethods.appendStyleProperties({}, ['perspective-origin'], [data.bounceMethods.eventPos.x + "px " + data.bounceMethods.eventPos.y + "px"]);                            
                             data.$tileParent.css(data.bounceMethods.downPcss);
                         }
                     },
@@ -1125,8 +1139,10 @@ var privMethods = {
                     },
                     unBounce: function () {
                         $tile.removeClass(data.bounceMethods.down);
-                        if (data.bounceMethods.downPcss) {
-                            data.bounceMethods.downPcss = helperMethods.applyStyleValue(data.bounceMethods.downPcss, '');
+                        if (typeof (data.bounceMethods.downPcss) == "object") {
+                            var names = ['perspective-origin', 'perspective-origin-x', 'perspective-origin-y'],
+                                vals = ['', '', ''];
+                            data.bounceMethods.downPcss = helperMethods.appendStyleProperties({}, names, vals);
                             // let the bounce finish and then strip out the perspective
                             window.setTimeout(function () {
                                 data.$tileParent.css(data.bounceMethods.downPcss);
@@ -1672,6 +1688,11 @@ var helperMethods = {
         }
         return obj;
     },
+    applyStyleValue: function (obj, name, value) {        
+            obj[$.trim(this.browserPrefix + name)] = value;
+            obj[name] = value;
+        return obj;
+    },
     getBrowserPrefix: function () {
         if (this.browserPrefix == null) {
             var prefix = "";
@@ -1682,13 +1703,7 @@ var helperMethods = {
             return this.browserPrefix = prefix;
         }
         return this.browserPrefix;
-    },
-    applyStyleValue: function (obj, value) {
-        for (var x in obj) {
-            obj[x] = value;
-        }
-        return obj;
-    },
+    },    
     //a shuffle method to provide more randomness than sort
     //credit: http://javascript.about.com/library/blshuffle.htm
     //note: avoiding prototype for sharepoint compatability
