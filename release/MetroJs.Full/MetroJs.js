@@ -521,7 +521,8 @@ var privMethods = {
                 pauseOnHover: this.getDataOrDefault($tile, "pause-onhover", stgs.pauseOnHover),
                 playOnHover: this.getDataOrDefault($tile, "play-onhover", stgs.playOnHover),
                 onHoverDelay: this.getDataOrDefault($tile, "hover-delay", stgs.onHoverDelay),
-                noHAflipOpacity: this.getDataOrDefault($tile, "flip-opacity", stgs.noHAflipOpacity),                
+                noHAflipOpacity: this.getDataOrDefault($tile, "flip-opacity", stgs.noHAflipOpacity),
+                useTranslate: this.getDataOrDefault($tile, "use-translate", stgs.useTranslate),
                 runEvents: false,
                 isReversed: false,
                 loopCount: 0,
@@ -680,9 +681,15 @@ var privMethods = {
                     ret.$back = $('<div></div>');
                 // stack mode
                 if (tdata.stack == true) {
-                    var vertical = tdata.direction === "vertical",
-                        prop = vertical ? "top" : "left",
-                        translate = vertical ? 'translate(0%, -100%) translateZ(0)' : 'translate(-100%, 0%) translateZ(0)';
+                    var prop,
+                        translate;
+                    if (tdata.direction === "vertical") {
+                        prop = "top",
+                        translate = 'translate(0%, -100%) translateZ(0)';
+                    } else {
+                        prop = "left",
+                        translate = 'translate(-100%, 0%) translateZ(0)';
+                    }
                     backCss = {};
                     if (tdata.useTranslate)
                         helperMethods.appendStyleProperties(backCss, ['transform'], [translate]);
@@ -713,21 +720,21 @@ var privMethods = {
                         if (dir === "vertical") {
                             tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(0%, 100%) translateZ(0)']) :
                                                    { left: '0%', top: '100%' };
-                            $slide.css(tileCss); //{ top: tdata.height + 'px', left:'0px' });
+                            $slide.css(tileCss);
                         } else {
                             tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(100%, 0%) translateZ(0)']) :
                                                    { left: '100%', top: '0%' };
-                            $slide.css(tileCss); //{ left: tdata.width + 'px', top: '0px' });
+                            $slide.css(tileCss);
                         }
                     } else if (aniDir === "backward") {
                         if (dir === "vertical") {
                             tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(0%, -100%) translateZ(0)']) :
                                                    { left: '0%', top: '-100%' };
-                            $slide.css(tileCss); //{ top: -tdata.height + 'px', left:'0px' });
+                            $slide.css(tileCss);
                         } else {
                             tileCss = tdata.useTranslate ? helperMethods.appendStyleProperties({}, ['transform'], ['translate(-100%, 0%) translateZ(0)']) :
                                                    { left: '-100%', top: '0%' };
-                            $slide.css(tileCss); //{ left: -tdata.width + 'px', top:'0px' });
+                            $slide.css(tileCss);
                         }
                     }
                     // link and bounce can be bound per slide
@@ -870,6 +877,14 @@ var privMethods = {
                 pauseIn = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseover" || data.pauseOnHoverEvent == "mouseenter"),
                 pauseOut = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseout");
             data.pOnHoverMethods = {
+                pause: function () {
+                    data.timer.pause();
+                    if (data.mode === "flip-list") {
+                        data.faces.$listTiles.each(function (idx, li) {
+                            window.clearTimeout($(li).data("metrojs.tile").completeTimeout);
+                        });
+                    }
+                },
                 over: function (e) {
                     if (isOver || isPending)
                         return;
@@ -877,14 +892,9 @@ var privMethods = {
                         isPending = true;
                         data.eventTimeout = window.setTimeout(function () {
                             isPending = false;
-                            if(pauseOut)
+                            if (pauseOut)
                                 isOver = true;
-                            data.timer.pause();
-                            if (data.mode === "flip-list") {
-                                data.faces.$listTiles.each(function (idx, li) {
-                                    window.clearTimeout($(li).data("metrojs.tile").completeTimeout);
-                                });
-                            }
+                            data.pOnHoverMethods.pause();
                         }, data.onHoverDelay);
                     }
                 },
@@ -897,9 +907,11 @@ var privMethods = {
                     if (pauseIn) {
                         if (!isOver && !isPending)
                             return;
-                    }
-                    if (data.runEvents)
-                        data.timer.start(data.hasRun ? data.delay : data.initDelay);
+                        if (data.runEvents)
+                            data.timer.start(data.hasRun ? data.delay : data.initDelay);
+                    } else {
+                        data.pOnHoverMethods.pause();
+                    }                   
                     isOver = false;
                 }
             };            
@@ -1037,7 +1049,7 @@ var privMethods = {
                             looseMatch = null,
                             defResult = { hit: [0, 0], name: 'c' };
                         // scale only for android 2.x and old ie
-                        if (metrojs.capabilities.isOldAndroid || !metrojs.capabilities.canTransform)
+                        if (metrojs.capabilities.isOldAndroid || !metrojs.capabilities.canTransition)
                             return defResult;
                         if (typeof (checkFor) == "undefined") {
                             if (typeof (targetRegions) === "string")
@@ -1175,7 +1187,6 @@ var privMethods = {
                             window.setTimeout(function () {
                                 data.$tileParent.css(data.bounceMethods.downPcss);
                             }, 200);
-
                         }
                         data.bounceMethods.down = "no";
                         data.bounceMethods.inTilePos = data.bounceMethods.zeroPos;
