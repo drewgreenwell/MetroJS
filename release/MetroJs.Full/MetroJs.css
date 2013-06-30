@@ -6,6 +6,9 @@
   height: 150px;
   margin: 5px;
   outline: 1px solid transparent;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0px;
   width: 150px;
 }
@@ -682,6 +685,9 @@
 .live-tile > .fade-back,
 .live-tile > .flip-front,
 .live-tile > .flip-back {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   top: 0px;
   left: 0px;
   margin: 0px;

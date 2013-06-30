@@ -6,6 +6,9 @@
     height: @height;
     margin: @margin;
     outline: 1px solid transparent;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     padding: 0px;
     width: @width;
 	&.half-tile { height:(@heightd2 - (@margin)); width: (@widthd2 - (@margin)); }
@@ -422,7 +425,10 @@
 .live-tile>.fade-back,
 .live-tile>.flip-front,
 .live-tile>.flip-back
-{    
+{   
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 	top:0px;
 	left:0px;
 	margin:0px;
