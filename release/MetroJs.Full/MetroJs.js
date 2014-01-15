@@ -45,21 +45,25 @@ $.fn.liveTile = function (method) {
 
 
 $.fn.liveTile.contentModules = {
-    modules: {},
+    modules: [],
     /* the default module layout
-    {
-        image: defaultModules.imageSwap,
-        html: defaultModules.htmlSwap
-    },*/
+    [
+                defaultModules.imageSwap,
+        defaultModules.htmlSwap
+    ],*/
     addContentModule: function (moduleName, module) {
-        if (typeof (this.modules) !== "object")
-            this.modules = {};
-        this.modules[moduleName] = module;
+        if (!(this.modules instanceof Array))
+            this.modules = [];
+        this.modules.push(module);
     },
     hasContentModule: function (moduleName) {
-        if (typeof (moduleName) === "undefined" || typeof (this.modules) !== "object")
-            return false;
-        return (typeof (this.modules[moduleName]) !== "undefined");
+        if (typeof (moduleName) === "undefined" || !(this.modules instanceof Array))
+                return -1;
+        for (var i = 0; i < this.modules.length; i++) {
+                if (typeof (this.modules[i].moduleName) != "undefined" && this.modules[i].moduleName == moduleName)
+                        return i;
+        }
+            return -1;
     }
 };
 
@@ -85,7 +89,7 @@ $.fn.liveTile.defaults = {
     pauseOnHover: false,                    // should tile animations be paused on hover in and restarted on hover out
     pauseOnHoverEvent: 'both',              // pause is called on mouseover, mouseout, or both
     playOnHover: false,                     // should "play" be called on hover
-    playOnHoverEvent: 'mouseover',         // play is called on mouseover, mouseout, or both
+    playOnHoverEvent: 'both',               // play is called on mouseover, mouseout, or both
     onHoverDelay: 0,                        // the amount of time to wait before the onHover event is fired
     repeatCount: -1,                        // number of times to repeat the animation        
     appendBack: true,                       // appends the .last tile if one doesnt exist (slide and flip only)        
@@ -112,7 +116,7 @@ $.fn.liveTile.defaults = {
     triggerDelay: function (idx) {          // used by flip-list to decide how random the tile flipping should be
         return Math.random() * 3000;
     },
-    swap: '',                               // which swap modules are active for this tile (image, html) 
+    swap: '',                               // which swap modules are active for this tile (image, html)
     swapFront: '-',                         // override the available swap modules for the front face
     swapBack: '-',                          // override the available swap modules for the back face
     contentModules: []
@@ -121,20 +125,19 @@ $.fn.liveTile.defaults = {
 var pubMethods = {
     init: function (options) {
         // Setup the public options for the livetile
-        var stgs = {};
-        $.extend(stgs, $.fn.liveTile.defaults, options);
+        var settings = $.extend({}, $.fn.liveTile.defaults, options);
         // checks for browser feature support to enable hardware acceleration                        
-        metrojs.checkCapabilities(stgs);
+        metrojs.checkCapabilities(settings);
         helperMethods.getBrowserPrefix();
         // setup the default content modules
-        if (!$.fn.liveTile.contentModules.hasContentModule("image"))
+        if ($.fn.liveTile.contentModules.hasContentModule("image") == -1)
             $.fn.liveTile.contentModules.addContentModule("image", defaultModules.imageSwap);
-        if (!$.fn.liveTile.contentModules.hasContentModule("html"))
+        if ($.fn.liveTile.contentModules.hasContentModule("html") == -1)
             $.fn.liveTile.contentModules.addContentModule("html", defaultModules.htmlSwap);
         // this is where the magic happens
         return $(this).each(function (tileIndex, ele) {
             var $this = $(ele),
-                data = privMethods.initTileData($this, stgs);
+            data = privMethods.initTileData($this, settings);
             // append back tiles and add appropriate classes to prepare tiles
             data.faces = privMethods.prepTile($this, data);
             // action methods
@@ -228,7 +231,7 @@ var pubMethods = {
                 };
             } else {
                 $.error(options + " is not a recognized action for .liveTile(\"goto\")");
-                return;
+                return $(this);
             }
         } else if (t === "object") {
             if (typeof (options.delay) === "undefined") {
@@ -251,7 +254,7 @@ var pubMethods = {
                 aniData = $tile.data("metrojs.tile"),
                 goTo = opts.index;
             if (aniData.animating === true)
-                return;
+                return $(this);
             if (data.mode === "carousel") {
                 // get the index based off of the active carousel slide
                 var $cur = data.faces.$listTiles.filter(".active");
@@ -489,8 +492,8 @@ var privMethods = {
     },
     getDataOrDefault: null,
     initTileData: function ($tile, stgs) {
-        var useData = !stgs.ignoreDataAttributes,
-            tdata;
+        var useData = stgs.ignoreDataAttributes == false,
+            tdata = null;
         if (this.getDataOrDefault == null)
             this.getDataOrDefault = metrojs.capabilities.isOldJQuery ? this.dataAtr : this.dataMethod;
         if (useData) {
@@ -506,7 +509,7 @@ var privMethods = {
                 swap: this.getDataOrDefault($tile, "swap", stgs.swap),
                 appendBack: this.getDataOrDefault($tile, "appendback", stgs.appendBack),
                 currentIndex: this.getDataOrDefault($tile, "start-index", stgs.currentIndex),
-                animationDirection: this.getDataOrDefault($tile, "slide-direction", stgs.animationDirection),
+                animationDirection: this.getDataOrDefault($tile, "ani-direction", stgs.animationDirection),
                 startNow: this.getDataOrDefault($tile, "start-now", stgs.startNow),
                 tileSelector: this.getDataOrDefault($tile, "tile-selector", stgs.tileSelector),
                 tileFaceSelector: this.getDataOrDefault($tile, "face-selector", stgs.tileFaceSelector),
@@ -526,18 +529,18 @@ var privMethods = {
                 runEvents: false,
                 isReversed: false,
                 loopCount: 0,
-                contentModules: {},
+                contentModules: [],
                 listData: [],
                 height: $tile.height(),
                 width: $tile.width(),
                 tempValues: {}
             };
         } else {
-            tdata = $.extend({
+            tdata = $.extend(true,{
                 runEvents: false,
                 isReversed: false,
                 loopCount: 0,
-                contentModules: {},
+                contentModules: [],
                 listData: [],
                 height: $tile.height(),
                 width: $tile.width(),
@@ -558,7 +561,7 @@ var privMethods = {
         var sf = useData ? this.getDataOrDefault($tile, "swap-front", stgs.swapFront) : stgs.swapFront;
         var sb = useData ? this.getDataOrDefault($tile, "swap-back", stgs.swapBack) : stgs.swapBack;
         // set the data to the global value if its still the default
-        tdata.swapFront = sf === '-' ? swaps : sf.replace(' ', '').split(",");
+            tdata.swapFront = sf === '-' ? swaps : sf.replace(' ', '').split(",");
         tdata.swapBack = sb === '-' ? swaps : sb.replace(' ', '').split(",");
         // make sure the swaps includes all front and back swaps
         var i;
@@ -570,12 +573,15 @@ var privMethods = {
             if (tdata.swapBack[i].length > 0 && $.inArray(tdata.swapBack[i], swaps) === -1)
                 swaps.push(tdata.swapBack[i]);
         }
-        tdata.swap = swaps;
+        tdata.swap = swaps;        
         // add all required content modules for the swaps
         for (i = 0; i < swaps.length; i++) {
-            if (swaps[i].length > 0 && typeof ($.fn.liveTile.contentModules.modules[swaps[i]]) !== "undefined") {
-                tdata.contentModules[swaps[i]] = $.fn.liveTile.contentModules.modules[swaps[i]];
-            }
+                if (swaps[i].length > 0) {
+                        var moduleIdx = $.fn.liveTile.contentModules.hasContentModule(swaps[i]);
+                        if (moduleIdx > -1) {
+                                tdata.contentModules.push($.fn.liveTile.contentModules.modules[moduleIdx]);
+                        }
+                }
         }
         // set the initDelay value to the delay if it's not set
         tdata.initDelay = useData ? this.getDataOrDefault($tile, "initdelay", stgs.initDelay) : stgs.initDelay;
@@ -588,10 +594,9 @@ var privMethods = {
         if (tdata.initDelay < 0)
             tdata.initDelay = tdata.delay;
         // merge the objects
-        var mergedData = {},
-            module;
-        for (module in tdata.contentModules)
-            $.extend(mergedData, tdata.contentModules[module].data);
+        var mergedData = {};
+        for (i = 0; i < tdata.contentModules.length; i++)
+            $.extend(mergedData, tdata.contentModules[i].data);
         $.extend(mergedData, stgs, tdata);
         // add flip-list / carousel data
         var $tiles;
@@ -628,9 +633,9 @@ var privMethods = {
             });
         }
         // get any additional options from the modules
-        for (module in mergedData.contentModules) {
-            if (typeof (mergedData.contentModules[module].initData) === "function")
-                mergedData.contentModules[module].initData(mergedData, $tile);
+        for (i = 0; i < tdata.contentModules.length; i++){
+            if (typeof (mergedData.contentModules[i].initData) === "function")
+                mergedData.contentModules[i].initData(mergedData, $tile);
         }
         tdata = null;
         return mergedData;
@@ -787,12 +792,12 @@ var privMethods = {
                     } else { // not hardware accelerated :(
                         // the front tile face will take up the entire tile
                         frontCss = (tdata.listData[idx].direction === "vertical") ?
-								        { height: '100%', width: '100%', marginTop: '0px', opacity: '1' } :
-								        { height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
+				{ height: '100%', width: '100%', marginTop: '0px', opacity: '1' } :
+				{ height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
                         // the back tile face is hidden by default and expanded halfway through a flip
                         backCss = (tdata.listData[idx].direction === "vertical") ?
-							            { height: '0px', width: '100%', marginTop: tdata.listData[idx].margin + 'px', opacity: tdata.noHAflipOpacity } :
-							            { height: '100%', width: '0px', marginLeft: tdata.listData[idx].margin + 'px', opacity: tdata.noHAflipOpacity };
+				{ height: '0px', width: '100%', marginTop: tdata.listData[idx].margin + 'px', opacity: tdata.noHAflipOpacity } :
+				{ height: '100%', width: '0px', marginLeft: tdata.listData[idx].margin + 'px', opacity: tdata.noHAflipOpacity };
                         $lFront.css(frontCss);
                         $lBack.css(backCss);
                     }
@@ -855,12 +860,12 @@ var privMethods = {
                     // not hardware accelerated :(
                     // the front tile face will take up the entire tile
                     frontCss = (tdata.direction === "vertical") ?
-								        { height: '100%', width: '100%', marginTop: '0px', opacity: '1' } :
-								        { height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
+			{ height: '100%', width: '100%', marginTop: '0px', opacity: '1' } :
+			{ height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
                     // the back tile face is hidden by default and expanded halfway through a flip
                     backCss = (tdata.direction === "vertical") ?
-							            { height: '0%', width: '100%', marginTop: tdata.margin + 'px', opacity: '0' } :
-							            { height: '100%', width: '0%', marginLeft: tdata.margin + 'px', opacity: '0' };
+			{ height: '0%', width: '100%', marginTop: tdata.margin + 'px', opacity: '0' } :
+			{ height: '100%', width: '0%', marginLeft: tdata.margin + 'px', opacity: '0' };
                     ret.$front.css(frontCss);
                     ret.$back.css(backCss);
                 }
@@ -875,7 +880,7 @@ var privMethods = {
                 isOver = false,
                 isPending = false,
                 pauseIn = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseover" || data.pauseOnHoverEvent == "mouseenter"),
-                pauseOut = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseout");
+                pauseOut = (data.pauseOnHoverEvent == "both" || data.pauseOnHoverEvent == "mouseout" || data.pauseOnHoverEvent == "mouseleave");
             data.pOnHoverMethods = {
                 pause: function () {
                     data.timer.pause();
@@ -907,11 +912,13 @@ var privMethods = {
                     if (pauseIn) {
                         if (!isOver && !isPending)
                             return;
-                        if (data.runEvents)
-                            data.timer.start(data.hasRun ? data.delay : data.initDelay);
+                        if (data.runEvents) {
+                        	// todo: use a custom value if provided
+                        	data.timer.start(data.hasRun ? data.delay : data.initDelay);
+                        }
                     } else {
                         data.pOnHoverMethods.pause();
-                    }                   
+                    }                  
                     isOver = false;
                 }
             };            
@@ -947,7 +954,7 @@ var privMethods = {
             var isOver = false,
                 isPending = false,
                 playIn = (data.playOnHoverEvent == "both" || data.playOnHoverEvent == "mouseover" || data.playOnHoverEvent == "mouseenter"),
-                playOut = (data.playOnHoverEvent == "both" || data.playOnHoverEvent == "mouseout");
+                playOut = (data.playOnHoverEvent == "both" || data.playOnHoverEvent == "mouseout" || data.playOnHoverEvent == "mouseleave");
             data.onHoverMethods = {
                 over: function (event) {
                     if (isOver || isPending || (data.bounce && data.bounceMethods.down != "no"))
@@ -966,14 +973,15 @@ var privMethods = {
                     }
                 },
                 out: function (event) {
-                    if (isPending) {
+                    if (isPending) {                        
                         window.clearTimeout(data.eventTimeout);
                         isPending = false;
                         return;
                     }
                     if (playIn) {
-                        if (!isOver && !isPending)
+                        if (!isOver && !isPending) {                            
                             return;
+                        }
                     }
                     window.clearTimeout(data.eventTimeout);
                     data.eventTimeout = window.setTimeout(function () {
@@ -984,9 +992,8 @@ var privMethods = {
                         isOver = false;
                     }, data.speed + 200);
                 }
-            };
-            $tile.addClass("noselect");
-            if (!metrojs.capabilities.canTouch) {
+            };            
+            if (!metrojs.capabilities.canTouch) {                
                 if (playIn)
                     $tile.bind('mouseenter.liveTile', data.onHoverMethods.over);
                 if (playOut)
@@ -1017,6 +1024,7 @@ var privMethods = {
         // add bounce
         if (data.bounce) {
             $tile.addClass("bounce");
+            $tile.addClass("noselect");
             (function () {
                 data.bounceMethods = {
                     down: "no",
@@ -1226,6 +1234,13 @@ var privMethods = {
             });
         }
     },
+    runContenModules: function (data, $front, $back, index) {
+        for (var i = 0; i < data.contentModules.length; i++) {
+                var currentModule = data.contentModules[i];
+                if (typeof (currentModule.action) == "function")
+                        currentModule.action(data, $front, $back, index);
+            }
+    },
     fade: function ($tile, count, data) {
         var tdata = typeof (data) === "object" ? data : $tile.data("LiveTile"),
             resumeTimer = function () {
@@ -1251,8 +1266,7 @@ var privMethods = {
         var faded = function () {
             resumeTimer();
             // run content modules and animationComplete callback
-            for (var module in tdata.contentModules)
-                tdata.contentModules[module].action(tdata, tdata.faces.$front, tdata.faces.$back);
+            privMethods.runContenModules(tdata, tdata.faces.$front, tdata.faces.$back);
             tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);
         };
         if (tdata.isReversed)
@@ -1321,9 +1335,8 @@ var privMethods = {
             if (tdata.mode != "carousel") {
                 resumeTimer();
             }
-            // run content modules and animationComplete callback
-            for (var module in tdata.contentModules)
-                tdata.contentModules[module].action(tdata, tdata.faces.$front, tdata.faces.$back, tdata.currentIndex);
+            // run content modules and animationComplete callback            
+            privMethods.runContenModules(tdata, tdata.faces.$front, tdata.faces.$back, tdata.currentIndex);
             tdata.animationComplete.call($tile[0], tdata, tdata.faces.$front, tdata.faces.$back);
             tdata = null;
             aniData = null;
@@ -1375,7 +1388,7 @@ var privMethods = {
             cssback[tProp] = offset;
             aniData.animating = true;
             var $front = tdata.faces.$front.stop(),
-                $back = tdata.faces.$back.stop()
+                $back = tdata.faces.$back.stop();
             $front.animate(css, tdata.speed, tdata.noHaTransFunc, function () {
                 aniData.animating = false;
                 slideFinished();
@@ -1489,13 +1502,13 @@ var privMethods = {
                 $nxt = null;
                 resumeTimer();
             });
-        }, 200);
+        }, 150);
 
     },
     flip: function ($tile, count, data, callback) {
         var aniData = $tile.data("metrojs.tile");
         if (aniData.animating == true) {
-            anidata = null;
+            aniData = null;
             return;
         }
         var tdata = typeof (data) === "object" ? data : $tile.data("LiveTile");
@@ -1554,10 +1567,9 @@ var privMethods = {
 
             var action = function () {
                 aniData.animating = false;
-                var resetDir, newCss, module;
-                if (!isReversed) {
-                    for (module in tdata.contentModules)
-                        tdata.contentModules[module].action(tdata, $back, $front, index);
+                var resetDir, newCss;
+                if (!isReversed) {                    
+                    privMethods.runContenModules(tdata, $back, $front, index);
                     if (raiseEvt) {
                         resumeTimer();
                         tdata.animationComplete.call($tile[0], tdata, $back, $front);
@@ -1568,8 +1580,7 @@ var privMethods = {
                     newCss = helperMethods.appendStyleProperties({}, ["transform", "transition"], [resetDir, "all 0s " + tdata.haTransFunc + " 0s"]);
                     $front.css(newCss);
                     //call content modules
-                    for (module in tdata.contentModules)
-                        tdata.contentModules[module].action(tdata, $front, $back, index);
+                    privMethods.runContenModules(tdata, $front, $back, index);
                     if (raiseEvt) {
                         resumeTimer();
                         tdata.animationComplete.call($tile[0], tdata, $front, $back);
@@ -1591,11 +1602,11 @@ var privMethods = {
         } else { // not Hardware accelerated :(
             var speed = tdata.speed / 2;
             var hideCss = (direction === "vertical") ?
-							   { height: '0px', width: '100%', marginTop: margin + 'px', opacity: tdata.noHAflipOpacity } :
-							   { height: '100%', width: '0px', marginLeft: margin + 'px', opacity: tdata.noHAflipOpacity };
+						{ height: '0px', width: '100%', marginTop: margin + 'px', opacity: tdata.noHAflipOpacity } :
+						{ height: '100%', width: '0px', marginLeft: margin + 'px', opacity: tdata.noHAflipOpacity };
             var showCss = (direction === "vertical") ?
-								{ height: '100%', width: '100%', marginTop: '0px', opacity: '1' } :
-								{ height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
+                        { height: '100%', width: '100%', marginTop: '0px', opacity: '1' } :
+                        { height: '100%', width: '100%', marginLeft: '0px', opacity: '1' };
             var noHaAction;
             if (!isReversed) {
                 aniData.animating = true;
@@ -1603,9 +1614,9 @@ var privMethods = {
                 noHaAction = function () {
                     aniData.animating = false;
                     $back.stop().animate(showCss, {
-                        duration: speed, complete: function () {
-                            for (var module in tdata.contentModules)
-                                tdata.contentModules[module].action(tdata, $back, $front, index);
+                        duration: speed,
+                        complete: function () {
+                            privMethods.runContenModules(tdata, $back, $front, index);
                             if (raiseEvt) {
                                 resumeTimer();
                                 tdata.animationComplete.call($tile[0], tdata, $back, $front);
@@ -1632,9 +1643,8 @@ var privMethods = {
                     aniData.animating = false;
                     $front.stop().animate(showCss, {
                         duration: speed,
-                        complete: function () {
-                            for (var module in tdata.contentModules)
-                                tdata.contentModules[module].action(tdata, $front, $back, index);
+                        complete: function () {                            
+                            privMethods.runContenModules(tdata, $front, $back, index);
                             if (raiseEvt) {
                                 resumeTimer();
                                 tdata.animationComplete.call($tile[0], tdata, $front, $back);
@@ -1702,8 +1712,7 @@ var privMethods = {
         if (triggered) {
             window.clearTimeout(tdata.flCompleteTimeout);
             tdata.flCompleteTimeout = window.setTimeout(function () {
-                for (var module in tdata.contentModules)
-                    tdata.contentModules[module].action(tdata, null, null, -1);
+                privMethods.runContenModules(tdata, null, null, -1);
                 tdata.animationComplete.call($tile[0], tdata, null, null);
                 resumeTimer();
             }, maxDelay + tdata.speed); // add some padding to make sure the final callback finished
@@ -1755,6 +1764,7 @@ var helperMethods = {
 };
 
 var defaultModules = {
+        moduleName: 'custom',
     customSwap: {
         data: {
             customDoSwapFront: function () { return false; },
@@ -1775,6 +1785,7 @@ var defaultModules = {
         }
     },
     htmlSwap: {
+        moduleName: 'html',
         data: { // public data for the swap module                
             frontContent: [],                       // a list of html to use for the front
             frontIsRandom: true,                    // should html be chosen at random or in order                
@@ -1796,10 +1807,17 @@ var defaultModules = {
                 frontStaticRndm: -1,
                 prevFrontIndex: -1
             };
-            swapData.frontIsRandom = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-israndom", tdata.frontIsRandom) : tdata.frontIsRandom;
-            swapData.frontIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-isingrid", tdata.frontIsInGrid) : tdata.frontIsInGrid;
-            swapData.backIsRandom = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-israndom", tdata.backIsRandom) : tdata.backIsRandom;
-            swapData.backIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-isingrid", tdata.backIsInGrid) : tdata.backIsInGrid;
+            if (!tdata.ignoreDataAttributes) {
+                swapData.frontIsRandom = privMethods.getDataOrDefault($ele, "front-israndom", tdata.frontIsRandom);
+                swapData.frontIsInGrid = privMethods.getDataOrDefault($ele, "front-isingrid", tdata.frontIsInGrid);
+                swapData.backIsRandom = privMethods.getDataOrDefault($ele, "back-israndom", tdata.backIsRandom);
+                swapData.backIsInGrid = privMethods.getDataOrDefault($ele, "back-isingrid", tdata.backIsInGrid);
+            } else {
+                swapData.frontIsRandom = tdata.frontIsRandom;
+                swapData.frontIsInGrid = tdata.frontIsInGrid;
+                swapData.backIsRandom = tdata.backIsRandom;
+                swapData.backIsInGrid = tdata.backIsInGrid;
+                        }
             swapData.doSwapFront = $.inArray('html', tdata.swapFront) > -1 && (tdata.frontContent instanceof Array) && tdata.frontContent.length > 0;
             swapData.doSwapBack = $.inArray('html', tdata.swapBack) > -1 && (tdata.backContent instanceof Array) && tdata.backContent.length > 0;
             if (typeof (tdata.htmlSwap) !== "undefined")
@@ -1936,6 +1954,7 @@ var defaultModules = {
         }
     },
     imageSwap: {
+            moduleName: 'image',
         data: {
             preloadImages: false,
             imageCssSelector: '>img,>a>img',        // the selector used to choose a an image to apply a src or background to
@@ -1961,19 +1980,34 @@ var defaultModules = {
                 frontStaticRndm: -1,
                 prevBackIndex: -1,
                 prevFrontIndex: -1
-            };
-            swapData.imageCssSelector = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "image-css", tdata.imageCssSelector) : tdata.imageCssSelector;
-            swapData.fadeSwap = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "fadeswap", tdata.fadeSwap) : tdata.fadeSwap;
-            swapData.frontIsRandom = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-israndom", tdata.frontIsRandom) : tdata.frontIsRandom;
-            swapData.frontIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-isingrid", tdata.frontIsInGrid) : tdata.frontIsInGrid;
-            swapData.frontIsBackgroundImage = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-isbg", tdata.frontIsBackgroundImage) : tdata.frontIsBackgroundImage;
-            swapData.backIsRandom = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-israndom", tdata.backIsRandom) : tdata.backIsRandom;
-            swapData.backIsInGrid = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-isingrid", tdata.backIsInGrid) : tdata.backIsInGrid;
-            swapData.backIsBackgroundImage = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-isbg", tdata.backIsBackgroundImage) : tdata.backIsBackgroundImage;
-            swapData.doSwapFront = $.inArray('image', tdata.swapFront) > -1 && (tdata.frontImages instanceof Array) && tdata.frontImages.length > 0;
-            swapData.doSwapBack = $.inArray('image', tdata.swapBack) > -1 && (tdata.backImages instanceof Array) && tdata.backImages.length > 0;
-            swapData.alwaysSwapFront = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "front-alwaysswap", tdata.alwaysSwapFront) : tdata.alwaysSwapFront;
-            swapData.alwaysSwapBack = !tdata.ignoreDataAttributes ? privMethods.getDataOrDefault($ele, "back-alwaysswap", tdata.alwaysSwapBack) : tdata.alwaysSwapBack;
+                }, useData = tdata.ignoreDataAttributes;
+                if (useData) {
+                        swapData.imageCssSelector = privMethods.getDataOrDefault($ele, "image-css", tdata.imageCssSelector);
+                        swapData.fadeSwap = privMethods.getDataOrDefault($ele, "fadeswap", tdata.fadeSwap);
+                        swapData.frontIsRandom = privMethods.getDataOrDefault($ele, "front-israndom", tdata.frontIsRandom);
+                        swapData.frontIsInGrid = privMethods.getDataOrDefault($ele, "front-isingrid", tdata.frontIsInGrid);
+                        swapData.frontIsBackgroundImage = privMethods.getDataOrDefault($ele, "front-isbg", tdata.frontIsBackgroundImage);
+                        swapData.backIsRandom = privMethods.getDataOrDefault($ele, "back-israndom", tdata.backIsRandom);
+                        swapData.backIsInGrid = privMethods.getDataOrDefault($ele, "back-isingrid", tdata.backIsInGrid);
+                        swapData.backIsBackgroundImage = privMethods.getDataOrDefault($ele, "back-isbg", tdata.backIsBackgroundImage);
+                        swapData.doSwapFront = $.inArray('image', tdata.swapFront) > -1 && (tdata.frontImages instanceof Array) && tdata.frontImages.length > 0;
+                        swapData.doSwapBack = $.inArray('image', tdata.swapBack) > -1 && (tdata.backImages instanceof Array) && tdata.backImages.length > 0;
+                        swapData.alwaysSwapFront = privMethods.getDataOrDefault($ele, "front-alwaysswap", tdata.alwaysSwapFront);
+                        swapData.alwaysSwapBack = privMethods.getDataOrDefault($ele, "back-alwaysswap", tdata.alwaysSwapBack);
+                } else {
+                        swapData.imageCssSelector = tdata.imageCssSelector;
+                        swapData.fadeSwap = tdata.fadeSwap;
+                        swapData.frontIsRandom = tdata.frontIsRandom;
+                        swapData.frontIsInGrid = tdata.frontIsInGrid;
+                        swapData.frontIsBackgroundImage = tdata.frontIsBackgroundImage;
+                        swapData.backIsRandom = tdata.backIsRandom;
+                        swapData.backIsInGrid = tdata.backIsInGrid;
+                        swapData.backIsBackgroundImage = tdata.backIsBackgroundImage;
+                        swapData.doSwapFront = $.inArray('image', tdata.swapFront) > -1 && (tdata.frontImages instanceof Array) && tdata.frontImages.length > 0;
+                        swapData.doSwapBack = $.inArray('image', tdata.swapBack) > -1 && (tdata.backImages instanceof Array) && tdata.backImages.length > 0;
+                        swapData.alwaysSwapFront = tdata.alwaysSwapFront;
+                        swapData.alwaysSwapBack = tdata.alwaysSwapBack;
+                        }
             if (typeof (tdata.imgSwap) !== "undefined")
                 tdata.imgSwap = $.extend(swapData, tdata.imgSwap);
             else
@@ -2022,17 +2056,17 @@ var defaultModules = {
         getBackSwapIndex: function (tdata) {
             var idx = 0;
             if (!tdata.imgSwap.backIsRandom) {
-                idx = tdata.imgSwap.backIsInGrid ? tdata.imgSwap.backStaticIndex : tdata.imgSwap.backIndex;
+                idx = tdata.imgSwap.backIsInGrid ? tdata.imgSwap.backStaticIndex : tdata.imgSwap.backIndex;                
             } else {
                 if (tdata.imgSwap.backBag.length === 0) {
                     tdata.imgSwap.backBag = this.prepBag(tdata.imgSwap.backBag, tdata.backImages, tdata.imgSwap.prevBackIndex);
                 }
                 if (tdata.imgSwap.backIsInGrid) {
-                    idx = tdata.imgSwap.backStaticRndm;
-                } else {
-                    idx = tdata.imgSwap.backBag.pop();
+                    idx = tdata.imgSwap.backStaticRndm;                    
+                } else {                
+                    idx = tdata.imgSwap.backBag.pop();                    
                 }
-            }
+            }            
             return idx;
         },
         setImageProperties: function ($img, image, isBackground) {
@@ -2060,7 +2094,7 @@ var defaultModules = {
                 $img.attr(attr);
         },
         action: function (tdata, $front, $back, index) {
-            if (!tdata.imgSwap.doSwapFront && !tdata.imgSwap.doSwapBack)
+                if (!tdata.imgSwap.doSwapFront && !tdata.imgSwap.doSwapBack)
                 return;
             var isList = tdata.mode === "flip-list",
                 isSlide = tdata.mode == "slide",
@@ -2069,7 +2103,7 @@ var defaultModules = {
             if (isList && index == -1) {
                 // flip list completed
                 if (tdata.alwaysSwapFront || !isReversed) {
-                    if (tdata.imgSwap.doSwapFront) {
+                    if (tdata.imgSwap.doSwapFront) {                        
                         // update the random value for grid mode
                         if (tdata.imgSwap.frontBag.length === 0)
                             tdata.imgSwap.frontBag = this.prepBag(tdata.imgSwap.frontBag, tdata.frontImages, tdata.imgSwap.frontStaticRndm);
@@ -2080,12 +2114,12 @@ var defaultModules = {
                             tdata.imgSwap.frontStaticIndex = 0;
                     }
                 }
-                if (tdata.alwaysSwapBack || isReversed) {
-                    if (tdata.imgSwap.doSwapBack) {
+                if (tdata.alwaysSwapBack || isReversed) {                    
+                    if (tdata.imgSwap.doSwapBack) {                        
                         // update the random value for grid mode
                         if (tdata.imgSwap.backBag.length === 0)
                             tdata.imgSwap.backBag = this.prepBag(tdata.imgSwap.backBag, tdata.backImages, tdata.imgSwap.backStaticRndm);
-                        tdata.imgSwap.backStaticRndm = tdata.imgSwap.backBag.pop();
+                        tdata.imgSwap.backStaticRndm = tdata.imgSwap.backBag.pop();                        
                         // update the static index
                         tdata.imgSwap.backStaticIndex++;
                         if (tdata.imgSwap.backStaticIndex >= tdata.backImages.length)
@@ -2107,14 +2141,23 @@ var defaultModules = {
                 $face = (tdata.mode === "slide") ? $front : $back;
                 $img = $face.find(tdata.imgSwap.imageCssSelector);
                 image = typeof (tdata.frontImages[swapIndex]) === "object" ? tdata.frontImages[swapIndex] : { src: tdata.frontImages[swapIndex] };
-                swap = function () {
-                    // set src, alt, css and attribute values
-                    defaultModules.imageSwap.setImageProperties($img, image, tdata.imgSwap.frontIsBackgroundImage);
+                swap = function (callback) {
+                        // set src, alt, css and attribute values
+                        var isBg = tdata.imgSwap.frontIsBackgroundImage;
+                        if (typeof(callback) == "function") {
+                                if (isBg)
+                                        window.setTimeout(callback, 100);
+                                else
+                                        $img[0].onload = callback;
+                        }
+                        defaultModules.imageSwap.setImageProperties($img, image, isBg);
+                       
                 };
                 if (tdata.fadeSwap) {
                     $img.fadeOut(function () {
-                        swap();
-                        $img.fadeIn();
+                        swap(function () {
+                                $img.fadeIn();
+                        });
                     });
                 } else
                     swap();
@@ -2146,8 +2189,9 @@ var defaultModules = {
                 };
                 if (tdata.fadeSwap) {
                     $img.fadeOut(function () {
-                        swap();
-                        $img.fadeIn();
+                        swap(function () {
+                                $img.fadeIn();
+                        });
                     });
                 } else
                     swap();
@@ -2183,7 +2227,7 @@ $.fn.metrojs.TileTimer = function (interval, callback, repeatCount) {
         }, delay);
     };
 
-    this.tick = function (interval) {
+    this.tick = function (when) {
         this.action(this.count + 1);
         this.count++;
         // reset the loop count
@@ -2191,7 +2235,7 @@ $.fn.metrojs.TileTimer = function (interval, callback, repeatCount) {
             this.count = 0;
         if (this.repeatCount > 0 || this.repeatCount == -1) {
             if (this.count != this.repeatCount) {
-                this.start(interval);
+                this.start(when);
             } else
                 this.stop();
         }
@@ -2375,14 +2419,14 @@ jQuery.fn.applicationBar = function (options) {
         if (stgs.shouldApplyTheme) {         
             theme.loadDefaultTheme(stgs);
         }
-        var themeContainer = stgs.accentListContainer + " a";
+        var themeContainer = stgs.accentListContainer.replace(",", " a,") + " a";
         var themeContainerClick = function () {
             var accent = jQuery(this).attr("class").replace("accent", "").replace(" ", "");
             theme.applyTheme(null, accent, stgs);
             if (typeof (stgs.accentPicked) == "function")
                 stgs.accentPicked(accent);
         };
-        var baseContainer = stgs.baseThemeListContainer + " a";
+        var baseContainer = stgs.baseThemeListContainer.replace(","," a,") + " a";
         var baseContainerClick = function () {
             var accent = jQuery(this).attr("class").replace("accent", '').replace(' ', '');
             theme.applyTheme(accent, null, stgs);
@@ -2398,9 +2442,11 @@ jQuery.fn.applicationBar = function (options) {
         }
     }
     //this should really only run once but we can support multiple application bars
-    return jQuery(this).each(function (idx, ele) {
-        var $this = jQuery(ele),
+    return $(this).each(function (idx, ele) {
+    	var $this = $(ele),
             data = $.extend({}, stgs);
+    	if(data.collapseHeight == "auto")
+        	data.collapseHeight = $(this).height();
 
         //unfortunately we have to sniff out mobile browsers because of the inconsistent implementation of position:fixed
         //most desktop methods return false positives on a mobile
@@ -2467,7 +2513,7 @@ jQuery.fn.applicationBar.defaults = {
     loaded: function (tColor, aColor) { },                  // called if applyTheme is true onload when a theme has been loaded from local storage or overridden by options
     duration: 300,                                          // how fast should animation be performed, in milliseconds
     expandHeight: "320px",                                  // height the application bar to expand to when opened
-    collapseHeight: "60px",                                 // height the application bar will collapse back to when closed
+    collapseHeight: "auto",                                 // height the application bar will collapse back to when closed
     bindKeyboard: true,                                     // should up and down keys on keyborad be bound to the application bar
     handleSelector: "a.etc",
     metroLightUrl: 'images/metroIcons_light.jpg',  // the url for the metro light icons (only needed if preload 'preloadAltBaseTheme' is true)
@@ -2475,34 +2521,41 @@ jQuery.fn.applicationBar.defaults = {
     preloadAltBaseTheme: false                             // should the applicationBar icons be pre loaded for the alternate theme to enable fast theme switching    
 };
 /* Preload Images */
-// Usage: jQuery(['img1.jpg','img2.jpg']).metrojs.preloadImages(function(){ ... });
+// Usage: jQuery(['img1.jpg', { src: 'img2.jpg' }]).metrojs.preloadImages(function(){ ... });
 // Callback function gets called after all images are preloaded
-jQuery.fn.metrojs.preloadImages = function (callback) {
-    var checklist = jQuery(this).toArray();
-    var $img = jQuery("<img style='display:none;' />").appendTo("body");
-    jQuery(this).each(function () {
-        $img.attr({ src: this }).load(function () {
-            var src = jQuery(this).attr('src');
-            for (var i = 0; i < checklist.length; i++) {
-                if (checklist[i] == element) { checklist.splice(i, 1); }
-            }
-            if (checklist.length == 0) { callback(); }
+$.fn.metrojs.preloadImages = function (callback) {
+        var checklist = $(this).toArray();
+        var $img = $("<img style='display:none;' />").appendTo("body");
+        $(this).each(function () {
+                var src = this;
+                if (typeof(this) == "object")
+                        src = this.src;
+                $img.attr({ src: src }).load(function() {
+                        for (var i = 0; i < checklist.length; i++) {
+                                if (checklist[i] == element) {
+                                        checklist.splice(i, 1);
+                                }
+                        }
+                        if (checklist.length == 0) {
+                                callback();
+                        }
+                });
+               
         });
-    });
     $img.remove();
 };
 // object used for compatibility checks
 $.fn.metrojs.MetroModernizr = function (stgs) {
-    if(typeof(stgs) === "undefined"){
-        stgs = { useHardwareAccel: true, useModernizr: typeof(window.Modernizr) !== "undefined"  }
-    }
-    this.isOldJQuery =  /^1\.[0123]/.test(jQuery.fn.jquery),
+    if(typeof(stgs) === "undefined") {
+                stgs = { useHardwareAccel: true, useModernizr: typeof(window.Modernizr) !== "undefined" };
+        }
+    this.isOldJQuery =  /^1\.[0123]/.test($.fn.jquery),
     this.isOldAndroid = (function(){
         try{
             var ua = navigator.userAgent;        
             if( ua.indexOf("Android") >= 0 )
             {
-                var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8)); 
+                var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
                 if (androidversion < 2.3)
                     return true;
             }
@@ -2571,11 +2624,11 @@ $.fn.metrojs.MetroModernizr = function (stgs) {
                     return !!ret;
                 };
                 var test_touch = function() {
-                    return canTouch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch || 
-                        (typeof(window.navigator.msMaxTouchPoints) !== "undefined" && window.navigator.msMaxTouchPoints > 0) || 
+                    return canTouch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch ||
+                        (typeof(window.navigator.msMaxTouchPoints) !== "undefined" && window.navigator.msMaxTouchPoints > 0) ||
                         testMediaQuery(['@media (',prefixes.join('touch-enabled),('),mod,')','{#metromodernizr{top:9px;position:absolute}}'].join(''), function(div){
                             return div.offsetTop === 9;
-                        }); 
+                        });
                 };
                 this.canTransform = !!test_props(['transformProperty', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform']);
                 this.canTransition = test_props_all('transitionProperty');

@@ -7,14 +7,14 @@
         if (stgs.shouldApplyTheme) {         
             theme.loadDefaultTheme(stgs);
         }
-        var themeContainer = stgs.accentListContainer + " a";
+        var themeContainer = stgs.accentListContainer.replace(",", " a,") + " a";
         var themeContainerClick = function () {
             var accent = jQuery(this).attr("class").replace("accent", "").replace(" ", "");
             theme.applyTheme(null, accent, stgs);
             if (typeof (stgs.accentPicked) == "function")
                 stgs.accentPicked(accent);
         };
-        var baseContainer = stgs.baseThemeListContainer + " a";
+        var baseContainer = stgs.baseThemeListContainer.replace(","," a,") + " a";
         var baseContainerClick = function () {
             var accent = jQuery(this).attr("class").replace("accent", '').replace(' ', '');
             theme.applyTheme(accent, null, stgs);
@@ -30,9 +30,11 @@
         }
     }
     //this should really only run once but we can support multiple application bars
-    return jQuery(this).each(function (idx, ele) {
-        var $this = jQuery(ele),
+    return $(this).each(function (idx, ele) {
+    	var $this = $(ele),
             data = $.extend({}, stgs);
+    	if(data.collapseHeight == "auto")
+        	data.collapseHeight = $(this).height();
 
         //unfortunately we have to sniff out mobile browsers because of the inconsistent implementation of position:fixed
         //most desktop methods return false positives on a mobile
@@ -99,7 +101,7 @@ jQuery.fn.applicationBar.defaults = {
     loaded: function (tColor, aColor) { },                  // called if applyTheme is true onload when a theme has been loaded from local storage or overridden by options
     duration: 300,                                          // how fast should animation be performed, in milliseconds
     expandHeight: "320px",                                  // height the application bar to expand to when opened
-    collapseHeight: "60px",                                 // height the application bar will collapse back to when closed
+    collapseHeight: "auto",                                 // height the application bar will collapse back to when closed
     bindKeyboard: true,                                     // should up and down keys on keyborad be bound to the application bar
     handleSelector: "a.etc",
     metroLightUrl: 'images/metroIcons_light.jpg',  // the url for the metro light icons (only needed if preload 'preloadAltBaseTheme' is true)

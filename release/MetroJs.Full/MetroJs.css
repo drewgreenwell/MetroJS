@@ -382,11 +382,7 @@
 .slide {
   float: left;
 }
-.tile-strip.bounce,
-.live-tile.bounce,
-.list-tile.bounce,
-.copy-tile.bounce,
-.slide.bounce {
+.bounce {
   cursor: pointer;
   outline: 1px solid transparent;
   -webkit-user-select: none;
@@ -415,11 +411,7 @@
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.tile-strip.bounce.bounce-c,
-.live-tile.bounce.bounce-c,
-.list-tile.bounce.bounce-c,
-.copy-tile.bounce.bounce-c,
-.slide.bounce.bounce-c {
+.bounce.bounce-c {
   filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.95, M12=0, M21=0, M22=0.95);
   -webkit-transform: scale(0.95);
   -ms-transform: scale(0.95);
@@ -427,11 +419,7 @@
   -o-transform: scale(0.95);
   transform: scale(0.95);
 }
-.tile-strip.bounce.bounce-t,
-.live-tile.bounce.bounce-t,
-.list-tile.bounce.bounce-t,
-.copy-tile.bounce.bounce-t,
-.slide.bounce.bounce-t {
+.bounce.bounce-t {
   -webkit-transform: rotateX(20deg);
   -ms-transform: rotateX(20deg);
   -moz-transform: rotateX(20deg);
@@ -443,11 +431,7 @@
   -o-transform-origin: 0% 100%;
   transform-origin: 0% 100%;
 }
-.tile-strip.bounce.bounce-b,
-.live-tile.bounce.bounce-b,
-.list-tile.bounce.bounce-b,
-.copy-tile.bounce.bounce-b,
-.slide.bounce.bounce-b {
+.bounce.bounce-b {
   -webkit-transform: rotateX(-20deg);
   -ms-transform: rotateX(-20deg);
   -moz-transform: rotateX(-20deg);
@@ -459,11 +443,7 @@
   -o-transform-origin: 50% 0%;
   transform-origin: 50% 0%;
 }
-.tile-strip.bounce.bounce-r,
-.live-tile.bounce.bounce-r,
-.list-tile.bounce.bounce-r,
-.copy-tile.bounce.bounce-r,
-.slide.bounce.bounce-r {
+.bounce.bounce-r {
   -webkit-transform: rotateY(20deg);
   -ms-transform: rotateY(20deg);
   -moz-transform: rotateY(20deg);
@@ -475,11 +455,7 @@
   -o-transform-origin: 0% 50%;
   transform-origin: 0% 50%;
 }
-.tile-strip.bounce.bounce-l,
-.live-tile.bounce.bounce-l,
-.list-tile.bounce.bounce-l,
-.copy-tile.bounce.bounce-l,
-.slide.bounce.bounce-l {
+.bounce.bounce-l {
   -webkit-transform: rotateY(-20deg);
   -ms-transform: rotateY(-20deg);
   -moz-transform: rotateY(-20deg);
@@ -491,44 +467,28 @@
   -o-transform-origin: 100% 50%;
   transform-origin: 100% 50%;
 }
-.tile-strip.bounce.bounce-tl,
-.live-tile.bounce.bounce-tl,
-.list-tile.bounce.bounce-tl,
-.copy-tile.bounce.bounce-tl,
-.slide.bounce.bounce-tl {
+.bounce.bounce-tl {
   -webkit-transform: rotateX(10deg) rotateY(-10deg);
   -ms-transform: rotateX(10deg) rotateY(-10deg);
   -moz-transform: rotateX(10deg) rotateY(-10deg);
   -o-transform: rotateX(10deg) rotateY(-10deg);
   transform: rotateX(10deg) rotateY(-10deg);
 }
-.tile-strip.bounce.bounce-tr,
-.live-tile.bounce.bounce-tr,
-.list-tile.bounce.bounce-tr,
-.copy-tile.bounce.bounce-tr,
-.slide.bounce.bounce-tr {
+.bounce.bounce-tr {
   -webkit-transform: rotateX(10deg) rotateY(10deg);
   -ms-transform: rotateX(10deg) rotateY(10deg);
   -moz-transform: rotateX(10deg) rotateY(10deg);
   -o-transform: rotateX(10deg) rotateY(10deg);
   transform: rotateX(10deg) rotateY(10deg);
 }
-.tile-strip.bounce.bounce-bl,
-.live-tile.bounce.bounce-bl,
-.list-tile.bounce.bounce-bl,
-.copy-tile.bounce.bounce-bl,
-.slide.bounce.bounce-bl {
+.bounce.bounce-bl {
   -webkit-transform: rotateX(-10deg) rotateY(-10deg);
   -ms-transform: rotateX(-10deg) rotateY(-10deg);
   -moz-transform: rotateX(-10deg) rotateY(-10deg);
   -o-transform: rotateX(-10deg) rotateY(-10deg);
   transform: rotateX(-10deg) rotateY(-10deg);
 }
-.tile-strip.bounce.bounce-br,
-.live-tile.bounce.bounce-br,
-.list-tile.bounce.bounce-br,
-.copy-tile.bounce.bounce-br,
-.slide.bounce.bounce-br {
+.bounce.bounce-br {
   -webkit-transform: rotateX(-10deg) rotateY(10deg);
   -ms-transform: rotateX(-10deg) rotateY(10deg);
   -moz-transform: rotateX(-10deg) rotateY(10deg);
@@ -710,6 +670,23 @@ a.full,
   height: 100%;
   text-decoration: none;
   width: 100%;
+}
+img.full-w,
+a.full-w,
+.live-tile .full-w,
+.list-tile .full-w {
+  display: block;
+  margin: 0px;
+  text-decoration: none;
+  width: 100%;
+}
+img.full-h,
+a.full-h,
+.live-tile .full-h,
+.list-tile .full-h {
+  display: block;
+  margin: 0px;
+  height: 100%;
 }
 .live-tile > .back,
 .live-tile > .slide-back,
@@ -902,6 +879,9 @@ a.live-tile .metroExtraSmall:link {
 }
 /*live tile accent colors */
 .amber .accent,
+.amber .accentBg,
+.amber .accentBgHover:hover,
+.amber .accentBgHover a:hover,
 .amber .live-tile > div,
 .amber .copy-tile > div,
 .amber .live-tile > .face,
@@ -942,6 +922,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #f1a30b;
 }
 .blue .accent,
+.blue .accentBg,
+.blue .accentBgHover:hover,
+.blue .accentBgHover a:hover,
 .blue .live-tile > div,
 .blue .copy-tile > div,
 .blue .live-tile > .face,
@@ -982,6 +965,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #1ba1e2;
 }
 .brown .accent,
+.brown .accentBg,
+.brown .accentBgHover:hover,
+.brown .accentBgHover a:hover,
 .brown .live-tile > div,
 .brown .copy-tile > div,
 .brown .live-tile > .face,
@@ -1022,6 +1008,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #a05000;
 }
 .cobalt .accent,
+.cobalt .accentBg,
+.cobalt .accentBgHover:hover,
+.cobalt .accentBgHover a:hover,
 .cobalt .live-tile > div,
 .cobalt .copy-tile > div,
 .cobalt .live-tile > .face,
@@ -1062,6 +1051,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #0050ef;
 }
 .crimson .accent,
+.crimson .accentBg,
+.crimson .accentBgHover:hover,
+.crimson .accentBgHover a:hover,
 .crimson .live-tile > div,
 .crimson .copy-tile > div,
 .crimson .live-tile > .face,
@@ -1102,6 +1094,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #a20025;
 }
 .cyan .accent,
+.cyan .accentBg,
+.cyan .accentBgHover:hover,
+.cyan .accentBgHover a:hover,
 .cyan .live-tile > div,
 .cyan .copy-tile > div,
 .cyan .live-tile > .face,
@@ -1142,6 +1137,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #1ba0e1;
 }
 .emerald .accent,
+.emerald .accentBg,
+.emerald .accentBgHover:hover,
+.emerald .accentBgHover a:hover,
 .emerald .live-tile > div,
 .emerald .copy-tile > div,
 .emerald .live-tile > .face,
@@ -1182,6 +1180,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #008a00;
 }
 .green .accent,
+.green .accentBg,
+.green .accentBgHover:hover,
+.green .accentBgHover a:hover,
 .green .live-tile > div,
 .green .copy-tile > div,
 .green .live-tile > .face,
@@ -1222,6 +1223,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #339933;
 }
 .indigo .accent,
+.indigo .accentBg,
+.indigo .accentBgHover:hover,
+.indigo .accentBgHover a:hover,
 .indigo .live-tile > div,
 .indigo .copy-tile > div,
 .indigo .live-tile > .face,
@@ -1262,6 +1266,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #6a00ff;
 }
 .lime .accent,
+.lime .accentBg,
+.lime .accentBgHover:hover,
+.lime .accentBgHover a:hover,
 .lime .live-tile > div,
 .lime .copy-tile > div,
 .lime .live-tile > .face,
@@ -1302,6 +1309,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #a2c139;
 }
 .magenta .accent,
+.magenta .accentBg,
+.magenta .accentBgHover:hover,
+.magenta .accentBgHover a:hover,
 .magenta .live-tile > div,
 .magenta .copy-tile > div,
 .magenta .live-tile > .face,
@@ -1342,6 +1352,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #d80073;
 }
 .mango .accent,
+.mango .accentBg,
+.mango .accentBgHover:hover,
+.mango .accentBgHover a:hover,
 .mango .live-tile > div,
 .mango .copy-tile > div,
 .mango .live-tile > .face,
@@ -1382,6 +1395,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #f09609;
 }
 .mauve .accent,
+.mauve .accentBg,
+.mauve .accentBgHover:hover,
+.mauve .accentBgHover a:hover,
 .mauve .live-tile > div,
 .mauve .copy-tile > div,
 .mauve .live-tile > .face,
@@ -1422,6 +1438,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #765f89;
 }
 .olive .accent,
+.olive .accentBg,
+.olive .accentBgHover:hover,
+.olive .accentBgHover a:hover,
 .olive .live-tile > div,
 .olive .copy-tile > div,
 .olive .live-tile > .face,
@@ -1462,6 +1481,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #6d8764;
 }
 .orange .accent,
+.orange .accentBg,
+.orange .accentBgHover:hover,
+.orange .accentBgHover a:hover,
 .orange .live-tile > div,
 .orange .copy-tile > div,
 .orange .live-tile > .face,
@@ -1502,6 +1524,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #fa6801;
 }
 .pink .accent,
+.pink .accentBg,
+.pink .accentBgHover:hover,
+.pink .accentBgHover a:hover,
 .pink .live-tile > div,
 .pink .copy-tile > div,
 .pink .live-tile > .face,
@@ -1542,6 +1567,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #e671b8;
 }
 .purple .accent,
+.purple .accentBg,
+.purple .accentBgHover:hover,
+.purple .accentBgHover a:hover,
 .purple .live-tile > div,
 .purple .copy-tile > div,
 .purple .live-tile > .face,
@@ -1582,6 +1610,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #a200ff;
 }
 .violet .accent,
+.violet .accentBg,
+.violet .accentBgHover:hover,
+.violet .accentBgHover a:hover,
 .violet .live-tile > div,
 .violet .copy-tile > div,
 .violet .live-tile > .face,
@@ -1622,6 +1653,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #a200ff;
 }
 .red .accent,
+.red .accentBg,
+.red .accentBgHover:hover,
+.red .accentBgHover a:hover,
 .red .live-tile > div,
 .red .copy-tile > div,
 .red .live-tile > .face,
@@ -1662,6 +1696,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #e51400;
 }
 .sienna .accent,
+.sienna .accentBg,
+.sienna .accentBgHover:hover,
+.sienna .accentBgHover a:hover,
 .sienna .live-tile > div,
 .sienna .copy-tile > div,
 .sienna .live-tile > .face,
@@ -1702,6 +1739,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #7b3a3e;
 }
 .steel .accent,
+.steel .accentBg,
+.steel .accentBgHover:hover,
+.steel .accentBgHover a:hover,
 .steel .live-tile > div,
 .steel .copy-tile > div,
 .steel .live-tile > .face,
@@ -1742,6 +1782,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #657688;
 }
 .teal .accent,
+.teal .accentBg,
+.teal .accentBgHover:hover,
+.teal .accentBgHover a:hover,
 .teal .live-tile > div,
 .teal .copy-tile > div,
 .teal .live-tile > .face,
@@ -1782,6 +1825,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #00aba9;
 }
 .yellow .accent,
+.yellow .accentBg,
+.yellow .accentBgHover:hover,
+.yellow .accentBgHover a:hover,
 .yellow .live-tile > div,
 .yellow .copy-tile > div,
 .yellow .live-tile > .face,
@@ -1822,6 +1868,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #d8c101;
 }
 .trans .accent,
+.trans .accentBg,
+.trans .accentBgHover:hover,
+.trans .accentBgHover a:hover,
 .trans .live-tile > div,
 .trans .copy-tile > div,
 .trans .live-tile > .face,
@@ -1862,6 +1911,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: transparent;
 }
 .white .accent,
+.white .accentBg,
+.white .accentBgHover:hover,
+.white .accentBgHover a:hover,
 .white .live-tile > div,
 .white .copy-tile > div,
 .white .live-tile > .face,
@@ -1902,6 +1954,9 @@ a.live-tile .metroExtraSmall:link {
   border-top-color: #ffffff;
 }
 .black .accent,
+.black .accentBg,
+.black .accentBgHover:hover,
+.black .accentBgHover a:hover,
 .black .live-tile > div,
 .black .copy-tile > div,
 .black .live-tile > .face,

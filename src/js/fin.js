@@ -1,32 +1,39 @@
 ﻿/* Preload Images */
-// Usage: jQuery(['img1.jpg','img2.jpg']).metrojs.preloadImages(function(){ ... });
+// Usage: jQuery(['img1.jpg', { src: 'img2.jpg' }]).metrojs.preloadImages(function(){ ... });
 // Callback function gets called after all images are preloaded
-jQuery.fn.metrojs.preloadImages = function (callback) {
-    var checklist = jQuery(this).toArray();
-    var $img = jQuery("<img style='display:none;' />").appendTo("body");
-    jQuery(this).each(function () {
-        $img.attr({ src: this }).load(function () {
-            var src = jQuery(this).attr('src');
-            for (var i = 0; i < checklist.length; i++) {
-                if (checklist[i] == element) { checklist.splice(i, 1); }
-            }
-            if (checklist.length == 0) { callback(); }
+$.fn.metrojs.preloadImages = function (callback) {
+        var checklist = $(this).toArray();
+        var $img = $("<img style='display:none;' />").appendTo("body");
+        $(this).each(function () {
+                var src = this;
+                if (typeof(this) == "object")
+                        src = this.src;
+                $img.attr({ src: src }).load(function() {
+                        for (var i = 0; i < checklist.length; i++) {
+                                if (checklist[i] == element) {
+                                        checklist.splice(i, 1);
+                                }
+                        }
+                        if (checklist.length == 0) {
+                                callback();
+                        }
+                });
+               
         });
-    });
     $img.remove();
 };
 // object used for compatibility checks
 $.fn.metrojs.MetroModernizr = function (stgs) {
-    if(typeof(stgs) === "undefined"){
-        stgs = { useHardwareAccel: true, useModernizr: typeof(window.Modernizr) !== "undefined"  }
-    }
-    this.isOldJQuery =  /^1\.[0123]/.test(jQuery.fn.jquery),
+    if(typeof(stgs) === "undefined") {
+                stgs = { useHardwareAccel: true, useModernizr: typeof(window.Modernizr) !== "undefined" };
+        }
+    this.isOldJQuery =  /^1\.[0123]/.test($.fn.jquery),
     this.isOldAndroid = (function(){
         try{
             var ua = navigator.userAgent;        
             if( ua.indexOf("Android") >= 0 )
             {
-                var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8)); 
+                var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
                 if (androidversion < 2.3)
                     return true;
             }
@@ -95,11 +102,11 @@ $.fn.metrojs.MetroModernizr = function (stgs) {
                     return !!ret;
                 };
                 var test_touch = function() {
-                    return canTouch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch || 
-                        (typeof(window.navigator.msMaxTouchPoints) !== "undefined" && window.navigator.msMaxTouchPoints > 0) || 
+                    return canTouch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch ||
+                        (typeof(window.navigator.msMaxTouchPoints) !== "undefined" && window.navigator.msMaxTouchPoints > 0) ||
                         testMediaQuery(['@media (',prefixes.join('touch-enabled),('),mod,')','{#metromodernizr{top:9px;position:absolute}}'].join(''), function(div){
                             return div.offsetTop === 9;
-                        }); 
+                        });
                 };
                 this.canTransform = !!test_props(['transformProperty', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform']);
                 this.canTransition = test_props_all('transitionProperty');
