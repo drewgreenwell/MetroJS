@@ -34,7 +34,7 @@
     	var $this = $(ele),
             data = $.extend({}, stgs);
     	if(data.collapseHeight == "auto")
-        	data.collapseHeight = $(this).height();
+        	data.collapseHeight = $(this).outerHeight();
 
         //unfortunately we have to sniff out mobile browsers because of the inconsistent implementation of position:fixed
         //most desktop methods return false positives on a mobile
@@ -55,13 +55,27 @@
                 data.animateAppBar(true);
         };
         data.animateAppBar = function (isExpanded) {
-            var hgt = isExpanded ? data.collapseHeight : data.expandHeight;
-            if (isExpanded)
-                $this.removeClass("expanded");
-            else
-                if (!$this.hasClass("expanded"))
-                    $this.addClass("expanded");
-            $this.stop().animate({ height: hgt }, { duration: data.duration });
+        	var hgt = isExpanded ? data.collapseHeight : data.expandHeight,
+        		t;
+        	if (isExpanded) {
+        		t = stgs.collapse();
+        		if (typeof (t) != "undefined" && t === false)
+        			return;
+        		$this.removeClass("expanded");
+        	} else {
+        		t = stgs.expand();
+        		if (typeof (t) != "undefined" && t === false)
+					return
+        		if (!$this.hasClass("expanded"))
+        			$this.addClass("expanded");
+        	}
+            $this.stop().animate({ height: hgt }, { duration: data.duration }, function () {
+            	if (isExpanded) {
+            		stgs.collapsed();
+            	} else {
+            		stgs.expanded();
+            	}
+            });
         };
         $this.data("ApplicationBar", data)
 
@@ -106,5 +120,9 @@ jQuery.fn.applicationBar.defaults = {
     handleSelector: "a.etc",
     metroLightUrl: 'images/metroIcons_light.jpg',  // the url for the metro light icons (only needed if preload 'preloadAltBaseTheme' is true)
     metroDarkUrl: 'images/metroIcons.jpg',         // the url for the metro dark icons (only needed if preload 'preloadAltBaseTheme' is true)
-    preloadAltBaseTheme: false                             // should the applicationBar icons be pre loaded for the alternate theme to enable fast theme switching    
+    preloadAltBaseTheme: false,                             // should the applicationBar icons be pre loaded for the alternate theme to enable fast theme switching
+    expand: function () { },								// called before expanding. return false to cancel
+    collapse: function() { },								// called before collapsing. return false to cancel
+    expanded: function () { },								// called after expanding
+    collapsed: function () { }								// called agter collapsing
 };

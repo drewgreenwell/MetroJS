@@ -1,0 +1,29 @@
+{
+  "name": "metrojs",
+  "version": "0.9.76",
+  "homepage": "http://www.drewgreenwell.com/projects/metrojs",
+  "authors": [
+    "Drew Greenwell <drewgreenwell@hotmail.com>"
+  ],
+  "description": "Metro JS is a plugin to help make Metro ( also known as flat or modern ) interfaces on the web. Example features include Live Tiles that can fade, flip, slide at custom points or in a carousel. Theme and accent colors are supported along with custom tile layouts and fixed position application bars.",
+  "main": "release/MetroJs.Full/MetroJs.js",
+  "keywords": [
+    "metro",
+    "flat",
+    "flat-ui",
+    "modern-ui",
+    "transform3d"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+	"src",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": ">=1.3.2"
+  }
+}

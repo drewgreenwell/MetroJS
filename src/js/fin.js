@@ -103,7 +103,8 @@ $.fn.metrojs.MetroModernizr = function (stgs) {
                 };
                 var test_touch = function() {
                     return canTouch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch ||
-                        (typeof(window.navigator.msMaxTouchPoints) !== "undefined" && window.navigator.msMaxTouchPoints > 0) ||
+                        (window.PointerEvent && window.navigator.maxTouchPoints > 0) ||
+                        (window.MSPointerEvent && window.navigator.msMaxTouchPoints > 0) ||
                         testMediaQuery(['@media (',prefixes.join('touch-enabled),('),mod,')','{#metromodernizr{top:9px;position:absolute}}'].join(''), function(div){
                             return div.offsetTop === 9;
                         });

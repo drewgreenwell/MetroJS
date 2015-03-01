@@ -1,0 +1,158 @@
+﻿@import "variables.less";
+/* Sizes */
+.live-tile, .list-tile, .copy-tile, .tile-strip .flip-list>li
+{
+    height: @height;
+    margin: @margin;
+    outline: 1px solid transparent;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0px;
+    width: @width;
+	&.half-tile { height:(@heightd2 - (@margin)); width: (@widthd2 - (@margin)); }
+    &.half-wide { width: (@widthd2 - (@margin)); }
+	&.two-wide { width: ((@width * 2) + (@margin * 2)); }
+	&.three-wide { width: ((@width * 3) + (@margin * 4)); }
+	&.four-wide { width: ((@width * 4) + (@margin * 6)); }
+	&.five-wide { width: ((@width * 5) + (@margin * 8)); }
+	&.six-wide { width: ((@width * 6) + (@margin * 10)); }
+	&.seven-wide { width: ((@width * 7) + (@margin * 12)); }
+	&.eight-wide { width: ((@width * 8) + (@margin * 14)); }
+	&.nine-wide { width: ((@width * 9) + (@margin * 16)); }
+	&.ten-wide { width: ((@width * 10) + (@margin * 18)); }
+    &.half-tall { height:(@heightd2 - (@margin)); }
+	&.two-tall { height:((@height * 2) + (@margin * 2)); }
+	&.three-tall { height:((@height * 3) + (@margin * 4)); }
+	&.four-tall { height:((@height * 4) + (@margin * 6)); }
+	&.five-tall { height:((@height * 5) + (@margin * 8)); }
+	&.six-tall { height:((@height * 6) + (@margin * 10)); }
+	&.seven-tall { height:((@height * 7) + (@margin * 12)); }
+	&.eight-tall { height:((@height * 8) + (@margin * 14)); }
+	&.nine-tall { height:((@height * 9) + (@margin * 16)); }
+	&.ten-tall { height:((@height * 10) + (@margin * 18)); }
+}
+/* End Sizes */
+/* flip-list tile grid sprite styles */
+.live-tile > .flip-list,
+.list-tile > .flip-list
+{
+	height:100%;
+	width:100%;
+}
+.flip-list
+{
+    >li
+    {
+        height: @heightd3;
+        margin: 0px;
+        padding: 0px;
+        width: @widthd3;
+    }
+
+    &.fourTiles > li
+    {
+        border: none;
+        padding: 0;
+        margin: 0;
+        height: 50%;
+        width: 50%;
+    }
+
+    &.nineTiles > li
+    {
+        height: 33%;
+        width: 33%;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+	
+		&.fourTiles > li > div,
+		&.fourTiles > li > div > a,
+		&.fourTiles > li > div > img,
+		&.nineTiles > li > div,
+		&.nineTiles > li > div > a,
+        &.nineTiles > li > div > img
+        {
+			border: none;
+			height:100%;
+			width:100%;
+			padding: 0;
+			margin: 0;
+        }
+}
+/* fourTile background positions */
+.fourTiles
+{
+	.fourTiles1 img, img.fourTiles1, .fourTiles1 a,
+    .tile-1 img, .tile-1 a { background-position: 0px 0px; }
+	.fourTiles2 img, img.fourTiles2, .fourTiles2 a,
+	.tile-2 img, .tile-2 a { background-position: -@widthd2 0px; }
+	.fourTiles3 img, img.fourTiles3, .fourTiles3 a,
+	.tile-3 img, .tile-3 a { background-position: 0px -@heightd2; }
+	.fourTiles4 img, img.fourTiles4, .fourTiles4 a,
+	.tile-4 img, .tile-4 a { background-position: -@widthd2 -@heightd2; }
+}
+
+/* nineTile background positions */
+.nineTiles
+{
+	.nineTiles1 img, img.nineTiles1, .nineTiles1 a,
+	.tile-1 img, .tile-1 a{ background-position: 0px 0px; }
+	.nineTiles2 img, img.nineTiles2, .nineTiles2 a,
+	.tile-2 img, .tile-2 a{ background-position: -@widthd3 0px; }
+	.nineTiles3 img, img.nineTiles3, .nineTiles3 a,
+	.tile-3 img, .tile-3 a{ background-position: -@widthd3r2 0px; }
+	.nineTiles4 img,  img.nineTiles4, .nineTiles4 a,
+	.tile-4 img, .tile-4 a{ background-position: 0px -@heightd3; }
+	.nineTiles5 img, img.nineTiles5, .nineTiles5 a,
+	.tile-5 img, .tile-5 a{ background-position: -@widthd3 -@heightd3; }
+	.nineTiles6 img,  img.nineTiles6,.nineTiles6 a,
+	.tile-6 img, .tile-6 a{ background-position: -@widthd3r2 -@heightd3; }
+	.nineTiles7 img, img.nineTiles7, .nineTiles7 a,
+	.tile-7 img, .tile-7 a{ background-position: 0px -@heightd3r2; }
+	.nineTiles8 img, img.nineTiles8, .nineTiles8 a,
+	.tile-8 img, .tile-8 a{ background-position: -@widthd3 -@heightd3r2; }
+	.nineTiles9 img,  img.nineTiles9, .nineTiles9 a,
+	.tile-9 img, .tile-9 a{ background-position: -@widthd3r2 -@heightd3r2; }
+}
+
+.tile-group, .tile-strip
+{
+	display:block;
+	overflow:hidden;
+	position:relative;
+	z-index:20;
+    -webkit-perspective:800px;
+    -moz-perspective:800px;
+    -ms-perspective:800px;
+    perspective:800px;
+    &.one-tile {		
+		height: (@height) + (@margin * 2);
+		width: (@width) + (@margin * 2); 
+	}	
+    &.half-wide { width: (@widthd2) + (@margin); }
+	&.one-wide { width: (@width) + (@margin * 2); }
+	&.two-wide { width: (@width * 2) + (@margin * 4); }
+    &.three-wide { width: (@width * 3) + (@margin * 6); }
+    &.four-wide { width:(@width * 4) + (@margin * 8); }
+	&.five-wide { width:(@width * 5) + (@margin * 10); }
+	&.six-wide { width:(@width * 6) + (@margin * 12); }
+	&.seven-wide { width:(@width * 7) + (@margin * 14); }
+	&.eight-wide { width:(@width * 8) + (@margin * 16); }
+	&.nine-wide { width:(@width * 9) + (@margin * 18); }
+	&.ten-wide { width:(@width * 10) + (@margin * 20); }
+
+	&.half-tall { height: (@heightd2) + (@margin); }
+	&.one-tall { height: (@height) + (@margin * 2); }
+	&.two-tall { height: (@height * 2) + (@margin * 4); }
+    &.three-tall { height: (@height * 3) + (@margin * 6); }
+    &.four-tall { height:(@height * 4) + (@margin * 8); }
+	&.five-tall { height:(@height * 5) + (@margin * 10); }
+	&.six-tall { height:(@height * 6) + (@margin * 12); }
+	&.seven-tall { height:(@height * 7) + (@margin * 14); }
+	&.eight-tall { height:(@height * 8) + (@margin * 16); }
+	&.nine-tall { height:(@height * 9) + (@margin * 18); }
+	&.ten-tall { height:(@height * 10) + (@margin * 20); }
+}
