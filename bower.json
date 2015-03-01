@@ -7,7 +7,12 @@
   ],
   "description": "Metro JS is a plugin to help make Metro ( also known as flat or modern ) interfaces on the web. Example features include Live Tiles that can fade, flip, slide at custom points or in a carousel. Theme and accent colors are supported along with custom tile layouts and fixed position application bars.",
   "main": "release/MetroJs.Full/MetroJs.js",
+  "repository": {
+	"type": "git",
+	"url": "git://github.com/drewgreenwell/MetroJS.git"
+  },
   "keywords": [
+	"jquery-plugin",
     "metro",
     "flat",
     "flat-ui",
