@@ -23,13 +23,7 @@
 "url": "http://www.drewgreenwell.com"
 }
 ],
-"main": [
-  "release/MetroJs.Full/MetroJs.js",
-  "release/MetroJs.Full/MetroJs.css",
-  "release/MetroJs.Full/images/metroIcons_light.jpg",
-  "release/MetroJs.Full/images/metroIcons.jpg",
-  "release/MetroJs.Full/images/1pixel.gif"
-  ],
+"main": "release/MetroJs.Full/MetroJs.js",
 "repository": {
 "type": "git",
 "url": "git://github.com/drewgreenwell/MetroJS.git"
