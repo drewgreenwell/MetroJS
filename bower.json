@@ -1,6 +1,6 @@
 {
   "name": "metrojs",
-  "version": "0.9.76",
+  "version": "0.9.77",
   "homepage": "http://www.drewgreenwell.com/projects/metrojs",
   "authors": [
     "Drew Greenwell <drewgreenwell@hotmail.com>"
@@ -25,14 +25,21 @@
     "modern-ui",
     "transform3d"
   ],
-  "license": "MIT",
+  "licenses": [
+{
+"type": "MIT",
+"url": "http://opensource.org/licenses/MIT"
+}
+],
   "ignore": [
     "/.*",
 	"src",
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+	"metrojs.jquery.json",
+	"package.json"
   ],
   "dependencies": {
     "jquery": ">=1.3.2"
