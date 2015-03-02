@@ -9,22 +9,22 @@
 "modern-ui",
 "flat-ui"
 ],
-"version": "0.9.76",
+"version": "0.9.77",
 "author": {
-"name": "Drew Greenwell",
-"url": "http://www.drewgreenwell.com"
+	"name": "Drew Greenwell",
+	"url": "http://www.drewgreenwell.com"
 },
 "maintainers": [
 {
-"name": "Drew Greenwell",
-"email": "drewgreenwell@hotmail.com",
-"url": "http://www.drewgreenwell.com"
+	"name": "Drew Greenwell",
+	"email": "drewgreenwell@hotmail.com",
+	"url": "http://www.drewgreenwell.com"
 }
 ],
 "licenses": [
 {
-"type": "MIT",
-"url": "http://opensource.org/licenses/MIT"
+	"type": "MIT",
+	"url": "http://opensource.org/licenses/MIT"
 }
 ],
 "bugs": "https://github.com/drewgreenwell/MetroJs/issues",
